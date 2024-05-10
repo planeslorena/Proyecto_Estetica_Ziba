@@ -1,0 +1,14 @@
+body{
+    background-color: white;
+}
+
+.containerLogo{
+    text-align: center;
+}
+
+@media screen and (max-width: 376px){
+    img{
+        width: 250px;
+        height: 100px;
+    }
+}
