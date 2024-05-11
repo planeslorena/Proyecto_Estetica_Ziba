@@ -1,7 +1,7 @@
 'use client'
-import { Logo } from "@/app/componentes/logo/logo";
-import { PortadaHome } from "@/app/componentes/portadaHome/portadaHome";
-import { Menu } from "@/app/componentes/nav/nav";
+import { Logo } from "@/app/components/logo/logo";
+import { BannerHome } from "@/app/components/bannerHome/bannerHome";
+import { Menu } from "@/app/components/nav/nav";
 
 export default function Home() {
     return (
@@ -15,7 +15,7 @@ export default function Home() {
           </header>
     
           <main>
-           <PortadaHome></PortadaHome>
+           <BannerHome></BannerHome>
           </main>
           
         </>

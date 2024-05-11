@@ -1,7 +1,7 @@
 'use client'
-import { Logo } from "@/app/componentes/logo/logo";
-import { PortadaHome } from "@/app/componentes/portadaHome/portadaHome";
-import { Menu } from "@/app/componentes/nav/nav";
+import { Logo } from "@/app/components/logo/logo";
+import { PortadaHome } from "@/app/components/bannerHome/portadaHome";
+import { Menu } from "@/app/components/nav/nav";
 
 export default function Login() {
     return (
