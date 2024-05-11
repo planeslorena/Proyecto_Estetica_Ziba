@@ -6,13 +6,7 @@ import './portadaHome.css'
 export function PortadaHome() {
   return (
     <>
-      <div className="containerPortada">
-        <img src="imagenes/portadaHome.jpg" className="img-fluid imgPortada" alt="Imagen spa."></img>
-      </div>
-      <div>
-        <p className="tituloPortada">Centro de estética</p>
-      </div>
+        <img src="imagenes/portadaHome.jpg" className="img-fluid img-portada" alt="Imagen spa."></img>
     </>
-
   )
 }

@@ -1,4 +1,13 @@
+.nav{
+    background-color: white;
+}
+
+.navbar-toggler{
+    border: transparent !important;
+}
+
 .menu{
+    margin-left: 10%;
     width: 100vw;
     height: 55px;
     display: flex;
@@ -6,31 +15,31 @@
     align-content: center; 
 }
 
-.items{
-    display: flex;
-    list-style: none;
-    align-content: center;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-}
-
-
 .links{
     padding: 7px 13px;
-    text-decoration: none ;
+    text-decoration: none;
     font-size: 18px;
     justify-content: center;
     align-content: center; 
     display: block;
-    color: #423155 ;
-    transition: .3s;
+    color: #423155;
+    transition: .3;
 }
 
 .cuenta{
-    float: right;
-    list-style-type: none;
-    text-align: left;
+    padding: 7px 13px;
+    text-decoration: none;
+    font-size: 18px;
+    justify-content: center;
+    align-content: center; 
+    display: block;
+    color: #423155;
+    transition: .3;
+}
+
+.placeholder{
+    font-size: 18px;
+    color: transparent !important;
 }
 
 .links:hover{

@@ -3,7 +3,7 @@ import { Logo } from "@/app/componentes/logo/logo";
 import { PortadaHome } from "@/app/componentes/portadaHome/portadaHome";
 import { Menu } from "@/app/componentes/nav/nav";
 
-export default function Home() {
+export default function Login() {
     return (
         <>
           <header>

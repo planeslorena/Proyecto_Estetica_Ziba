@@ -3,12 +3,19 @@ body{
 }
 
 .containerLogo{
+    padding: 2%;
     text-align: center;
 }
 
+.img-logo{
+    width: auto;
+}
+
+/**
 @media screen and (max-width: 376px){
     img{
         width: 250px;
         height: 100px;
     }
 }
+*/
