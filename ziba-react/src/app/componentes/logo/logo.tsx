@@ -5,7 +5,7 @@ export const Logo = () => {
 
     return ( 
         <div className="containerLogo">
-                <img src="/imagenes/logoZiba.jpg" alt="logo ziba"/>         
+                <img className='img-logo' src="/imagenes/logoZiba.jpg" alt="logo ziba"/>         
         </div>
     );
 } 
