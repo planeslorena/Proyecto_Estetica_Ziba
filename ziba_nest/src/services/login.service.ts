@@ -24,13 +24,14 @@ export class LoginService {
       [username],
     );
 
+    //Si resultQuery esta vacio, es porque no se encontro el usuario o esta deshabilitado
     if (resultQuery.length == 0) {
-      throw new HttpException('El usuario no existe', HttpStatus.FORBIDDEN)
+      throw new HttpException('El usuario no existe o fue deshabilitado', HttpStatus.FORBIDDEN)
     }
-
     console.log(resultQuery);
 
-    if (username === 'jose') {
+    //Si lo encuentra debo chequear que la contraseña sea la misma
+    if (username.toLowerCase === resultQuery['usuario']) {
       const passEncriptado = await bcrypt.hash(password, this.salt);
       if (this.joseHash == passEncriptado) {
         // retorno el objeto usuario
