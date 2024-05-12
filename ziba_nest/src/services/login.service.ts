@@ -8,13 +8,7 @@ import loginQueries from './queries/login.queries';
 @Injectable()
 export class LoginService {
   salt: string = '$2a$08$W59jWcwio1TiLx4A8iRyTO';
-  joseHash: string;
   constructor(private jwtService: JwtService, private dbService: DatabaseService) {
-    this.genSalt();
-  }
-
-  async genSalt() {
-    this.joseHash = await bcrypt.hash('jose', this.salt);
   }
 
   async validateUser(username: string, password: string): Promise<any> {
@@ -26,25 +20,25 @@ export class LoginService {
 
     //Si resultQuery esta vacio, es porque no se encontro el usuario o esta deshabilitado
     if (resultQuery.length == 0) {
-      throw new HttpException('El usuario no existe o fue deshabilitado', HttpStatus.FORBIDDEN)
+      throw new HttpException('El usuario o contraseña son invalidos', HttpStatus.FORBIDDEN)
     }
     console.log(resultQuery);
 
+    //Esta encriptacion debe estar al momento de guardar la clave en la DB cuando se crea el usuario
+    const passEncrip = await bcrypt.hash(password, this.salt);
+
     //Si lo encuentra debo chequear que la contraseña sea la misma
-    if (username.toLowerCase === resultQuery['usuario']) {
-      const passEncriptado = await bcrypt.hash(password, this.salt);
-      if (this.joseHash == passEncriptado) {
+    const passEncriptado = await bcrypt.hash(password, this.salt);
+      if (passEncrip== passEncriptado) {
         // retorno el objeto usuario
         return {
           username: username,
-          role: 'ADMIN',
-          nombre: 'Jose Eyler',
+          role: resultQuery['role'],
+          nombre: resultQuery['name'],
         };
       }
       return null;
     }
-    return null;
-  }
 
   login(user: any) {
     const payload = { usuario: user };
