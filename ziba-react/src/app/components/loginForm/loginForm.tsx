@@ -36,7 +36,7 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                                     required: 'Por favor ingrese su dirección de email',
                                     pattern: {
                                         value: /^(?![_.-])((?![_.-][_.-])[a-zA-Z\d_.-]){0,63}[a-zA-Z\d]@((?!-)((?!--)[a-zA-Z\d-]){0,63}[a-zA-Z\d]\.){1,2}([a-zA-Z]{2,14}\.)?[a-zA-Z]{2,14}$/,
-                                        message: 'Correo invalido.'
+                                        message: 'Email invalido.'
                                     }
                                 })} />
                             <small className='texto-validaciones'>{errors.email?.message}</small>
@@ -53,7 +53,7 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                         </div>
                         <input type="submit" disabled={!isValid} className='btn btn-success' value="Iniciar sesión" />
                     </form>
-                    <small>¿Es tu primera vez en Zibá? <a href="#" onClick={onSwitchToRegister}>Regístrate</a></small>
+                    <small>¿Es tu primera vez en Zibá?{' '} <a href="#" onClick={onSwitchToRegister}>Regístrate</a></small>
                 </div>
             </div>
 

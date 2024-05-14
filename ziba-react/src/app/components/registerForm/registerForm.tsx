@@ -1,5 +1,5 @@
 "use client"
-import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
 
@@ -22,7 +22,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-    const { register, handleSubmit, formState: { errors }, watch, control } = useForm<datos>();
+    const { register, handleSubmit, formState: { errors }, watch } = useForm<datos>();
 
     const onSubmit: SubmitHandler<datos> = (datos) => {
 
@@ -102,11 +102,13 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                 placeholder="Ingrese su dni (Sin puntos)"
                                 {...register("dni", {
                                     required: 'Por favor ingrese su dni',
-                                    validate: (value: number) => {
-                                        if (value < 1000000 || value >= 100000000) {
-                                            return 'Debe ingresar un DNI valido.';
-                                        }
-                                        return true;
+                                    minLength: {
+                                        value: 1000000,
+                                        message: 'Debe ingresar un DNI valido',
+                                    },
+                                    maxLength: {
+                                        value: 100000000,
+                                        message: 'Debe ingresar un DNI valido'
                                     },
                                     pattern: {
                                         value: /^(0|[1-9]\d*)(\.\d+)?$/,
@@ -131,7 +133,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                         <div>
                             <label className='form-label'>Teléfono celular</label>
                             <input className='form-control'
-                                placeholder="Ingrese su teléfono celular (Con codigo de área)"
+                                placeholder="Ingrese su teléfono celular (Ej.: 2284123456)"
                                 {...register("phone", {
                                     required: 'Por favor ingrese su número de celular',
                                     minLength: {
@@ -166,7 +168,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                     },
                                     maxLength: {
                                         value: 32,
-                                        message: 'El contenido no puede exceder los 100 caractéres.'
+                                        message: 'El contenido no puede exceder los 32 caractéres.'
                                     },
                                     onBlur: () => { setShowTooltip(false) },
                                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
