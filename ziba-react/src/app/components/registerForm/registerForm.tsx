@@ -22,7 +22,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-    const { register, handleSubmit, formState: { errors }, watch } = useForm<datos>();
+    const { register, handleSubmit, formState: { errors, isValid }, watch } = useForm<datos>({ mode: 'onChange'});
 
     const onSubmit: SubmitHandler<datos> = (datos) => {
 
@@ -102,13 +102,10 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                 placeholder="Ingrese su dni (Sin puntos)"
                                 {...register("dni", {
                                     required: 'Por favor ingrese su dni',
-                                    minLength: {
-                                        value: 1000000,
-                                        message: 'Debe ingresar un DNI valido',
-                                    },
-                                    maxLength: {
-                                        value: 100000000,
-                                        message: 'Debe ingresar un DNI valido'
+                                    validate: (value: number) => {
+                                        if (value < 1000000 || value > 100000000) {
+                                            return 'Debe ingresar un DNI valido';
+                                        }
                                     },
                                     pattern: {
                                         value: /^(0|[1-9]\d*)(\.\d+)?$/,
@@ -162,14 +159,8 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                 }}
                                 {...register("password", {
                                     required: 'Por favor ingrese una contraseña',
-                                    minLength: {
-                                        value: 8,
-                                        message: 'El contenido no puede ser menos de 2 caractéres.'
-                                    },
-                                    maxLength: {
-                                        value: 32,
-                                        message: 'El contenido no puede exceder los 32 caractéres.'
-                                    },
+                                    minLength: 8,
+                                    maxLength: 32,
                                     onBlur: () => { setShowTooltip(false) },
                                     onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
                                         setPassword(e.target.value)
@@ -177,11 +168,11 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                 })} />
                             {
                                 (showPassword === false) ?
-                                    <img width="48" height="48" src="https://img.icons8.com/pulsar-color/48/423155/visible.png" alt="visible" onClick={() => { setShowPassword(!showPassword) }} /> : <img width="48" height="48" src="https://img.icons8.com/pulsar-color/48/423155/closed-eye.png" alt="invisible" onClick={() => { setShowPassword(!showPassword) }} />
+                                    <img width="24" height="24" src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowPassword(!showPassword) }} /> : <img width="24" height="24" src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowPassword(!showPassword) }} />
                             }
                             {showTooltip && !checkComplexity(password) && (
                                 <p className="text-danger">
-                                    Contraseña debe contener por lo menos 8 caractéres, mayúscula, minuscula, numeros, y caractéres especiales.
+                                    Contraseña debe contener por lo menos 8 caractéres (máx. 32), mayúscula, minuscula, numeros, y caractéres especiales.
                                 </p>
                             )}
                             <small className='texto-validaciones'>{errors.password?.message}</small>
@@ -203,10 +194,13 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                         message: 'Numero de telefono invalido'
                                     }
                                 })} />
-                            <input type="button" onClick={() => { setShowRepeatPassword(!showRepeatPassword) }} value='Show' />
+                            {
+                                (showRepeatPassword === false) ?
+                                    <img width="24" height="24" src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowRepeatPassword(!showRepeatPassword) }} /> : <img width="24" height="24" src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowRepeatPassword(!showRepeatPassword) }} />
+                            }
                             <small className='texto-validaciones'>{errors.repeatPassword?.message}</small>
                         </div>
-                        <input type="submit" className='btn btn-success' value="Registrarse" />
+                        <input type="submit" disabled={!isValid} className='btn btn-success' value="Registrarse" />
                     </form>
                     <small>¿Ya tenés una cuenta?{' '} <a href="#" onClick={onSwitchToLogin}>Iniciá sesión</a></small>
                 </div>

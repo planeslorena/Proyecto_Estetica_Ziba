@@ -2,6 +2,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { login } from "@/app/services/Login";
+import { useState } from "react";
 
 interface data {
     username:string,
@@ -13,6 +14,7 @@ interface loginFormProps {
 }
 
 export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
+    const [showPassword, setShowPassword] = useState(false);
     const { register, handleSubmit, formState: { errors, isValid }} = useForm<data>({ mode: "onChange" });
     const onSubmit: SubmitHandler<data> = async (data) => {
 
@@ -45,12 +47,16 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                         <div>
                             <label className='form-label'>Contraseña</label>
                             <input className='form-control'
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             placeholder="Ingrese su contraseña"
                                 {...register("password", {
                                     required: 'Por favor ingrese su contraseña'
                                 })} />
                             <small className='texto-validaciones'>{errors.password?.message}</small>
+                            {
+                                (showPassword === false) ?
+                                    <img width="24" height="24" src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowPassword(!showPassword) }} /> : <img width="24" height="24" src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowPassword(!showPassword) }} />
+                            }
                         </div>
                         <input type="submit" disabled={!isValid} className='btn btn-success' value="Iniciar sesión" />
                     </form>
