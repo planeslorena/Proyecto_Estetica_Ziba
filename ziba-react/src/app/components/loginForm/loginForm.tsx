@@ -1,9 +1,10 @@
 "use client"
 import { SubmitHandler, useForm } from "react-hook-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { login } from "@/app/services/Login";
 
 interface data {
-    email:string,
+    username:string,
     password:string
 }
 
@@ -13,10 +14,10 @@ interface loginFormProps {
 
 export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     const { register, handleSubmit, formState: { errors, isValid }} = useForm<data>({ mode: "onChange" });
-    const onSubmit: SubmitHandler<data> = (data) => {
+    const onSubmit: SubmitHandler<data> = async (data) => {
 
         console.log(data);
-
+        const resp = await login(data);
         alert('exito');
     };
 
@@ -32,14 +33,14 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                             <input className='form-control'
                                 type="email"
                                 placeholder="Ingrese su email"
-                                {...register("email", {
+                                {...register("username", {
                                     required: 'Por favor ingrese su dirección de email',
                                     pattern: {
                                         value: /^(?![_.-])((?![_.-][_.-])[a-zA-Z\d_.-]){0,63}[a-zA-Z\d]@((?!-)((?!--)[a-zA-Z\d-]){0,63}[a-zA-Z\d]\.){1,2}([a-zA-Z]{2,14}\.)?[a-zA-Z]{2,14}$/,
                                         message: 'Email invalido.'
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.email?.message}</small>
+                            <small className='texto-validaciones'>{errors.username?.message}</small>
                         </div>
                         <div>
                             <label className='form-label'>Contraseña</label>
