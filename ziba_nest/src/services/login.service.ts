@@ -8,14 +8,13 @@ import User from 'src/models/user.dto';
 
 @Injectable()
 export class LoginService {
-  salt: string = '$2a$08$W59jWcwio1TiLx4A8iRyTO';
   constructor(private jwtService: JwtService, private dbService: DatabaseService) {
   }
 
   async validateUser(username: string, password: string): Promise<User> {
     //obtener de la base de datos el usuario
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
-      loginQueries.selectUsuario,
+      loginQueries.selectUser,
       [username],
     );
 
@@ -24,12 +23,8 @@ export class LoginService {
       throw new HttpException('El usuario no existe o esta deshabilitado', HttpStatus.FORBIDDEN)
     }
 
-    //Esta encriptacion debe estar al momento de guardar la clave en la DB cuando se crea el usuario
-    const passEncrip = await bcrypt.hash(resultQuery[0].password, this.salt);
-
     //Si lo encuentra debo chequear que la contraseña sea la misma
-    const passEncriptado = await bcrypt.hash(password, this.salt);
-      if (passEncrip == passEncriptado) {
+      if (await bcrypt.compare(password,resultQuery[0].password)) {
         // retorno el objeto usuario
         return {
           username: username, 

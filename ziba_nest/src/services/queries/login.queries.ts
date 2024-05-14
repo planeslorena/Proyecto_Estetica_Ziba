@@ -1,5 +1,5 @@
 const loginQueries = {
-    selectUsuario: 'select * from users where mail = ? and active = 1'
+    selectUser: 'select * from users where mail = ? and active = 1'
 }
 
 export default loginQueries;
