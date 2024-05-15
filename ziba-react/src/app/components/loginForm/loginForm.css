@@ -1,0 +1,50 @@
+body{
+    background-color: rgb(255, 255, 255);
+  }
+  .contenedor{
+    margin: 60px auto;
+    max-width: 1200px;
+    width: 85%;
+  }
+  
+  .contenedor-form{
+    display:flex ;
+  }
+  
+  .form-registro{
+    background-color: rgb(206, 212, 167);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+  }
+
+  .title{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    color: rgb(8, 41, 11);
+  }
+  
+  .form-label{
+    color: rgb(8, 41, 11);
+    padding: 5px;
+  }
+  
+  .image{
+    background-image: url('../../../../public/imagenes/image-auth.jpg');
+    background-position: center center;
+    background-size: cover;
+    flex: 0 0 calc(60%);
+  }
+
+  .btn{
+    background-color: rgb(36, 80, 36);
+    margin-top: 10px;
+    margin-left: 160px;
+  }
+
+  .texto-validaciones{
+    color:brown;
+  }
