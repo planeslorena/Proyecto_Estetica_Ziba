@@ -17,7 +17,7 @@ interface loginFormProps {
 export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     const [showPassword, setShowPassword] = useState(false);
     const jwt = require("jsonwebtoken");
-    const { register, handleSubmit, formState: { errors, isValid }} = useForm<data>({ mode: "onChange" });
+    const { register, handleSubmit, formState: { errors, isValid, dirtyFields }} = useForm<data>({ mode: "onChange" });
     const onSubmit: SubmitHandler<data> = async (data) => {
         console.log(data);
         const resp = await login(data);
@@ -35,7 +35,7 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                     <form onSubmit={handleSubmit(onSubmit)} className="form">
                         <div>
                             <label className='form-label'>Email</label>
-                            <input className='form-control'
+                            <input className='form-input'
                                 type="email"
                                 placeholder="Ingrese su email"
                                 {...register("username", {
@@ -49,18 +49,24 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                         </div>
                         <div>
                             <label className='form-label'>Contraseña</label>
-                            <input className='form-control'
+                        <div className="password-input">
+                            <input id="password" className='form-input'
                             type={showPassword ? 'text' : 'password'}
                             placeholder="Ingrese su contraseña"
                                 {...register("password", {
                                     required: 'Por favor ingrese su contraseña'
                                 })} />
-                            <small className='texto-validaciones'>{errors.password?.message}</small>
+                            
+                            <div className="visible-invisible">
                             {
-                                (showPassword === false) ?
-                                    <img width="24" height="24" src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowPassword(!showPassword) }} /> : <img width="24" height="24" src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowPassword(!showPassword) }} />
+                                dirtyFields.password && (showPassword === false ?
+                                    <img src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowPassword(!showPassword) }} /> : <img src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowPassword(!showPassword) }} />
+                                )
                             }
+                            </div>
                         </div>
+                        </div>
+                        <small className='texto-validaciones'>{errors.password?.message}</small>
                         <input type="submit" disabled={!isValid} className='btn btn-success' value="Iniciar sesión" />
                     </form>
                     <small>¿Es tu primera vez en Zibá?{' '} <a href="#" onClick={onSwitchToRegister}>Regístrate</a></small>
