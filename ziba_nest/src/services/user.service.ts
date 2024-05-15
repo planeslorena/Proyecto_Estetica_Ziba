@@ -1,32 +1,35 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { DatabaseService } from './db.service';
-import Client from 'src/models/client.dto';
 import * as bcrypt from 'bcryptjs';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
-import clientQueries from './queries/client.queries';
+import userQueries from './queries/user.queries';
+import User from 'src/models/user.dto';
 
 
 @Injectable()
-export class ClientService {
+export class UserService {
     constructor(private dbService: DatabaseService) {
     }
     
-    async createClient(client: Client):Promise<Client> {
+    async createUser(user: User):Promise<User> {
         const salt = await bcrypt.genSalt(8);
-        const passEncryp = await bcrypt.hash(client.password, salt);
+        const passEncryp = await bcrypt.hash(user.password, salt);
 
         try {
         const resultQuery: ResultSetHeader = await this.dbService.executeQuery(
-            clientQueries.insertUser,
+            userQueries.insertUser,
             [
-                client.mail,
+                user.mail,
                 passEncryp,
-                client.name
+                user.name,
+                user.dni,
+                user.phone,
+                user.role
             ],
           );
           return {
-            ...client,
-            id_client: resultQuery.insertId,
+            ...user,
+            id_user: resultQuery.insertId,
           };
         } catch (error) {
             if (error.errno == 1062) {

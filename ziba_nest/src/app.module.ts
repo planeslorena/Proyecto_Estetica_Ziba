@@ -5,8 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { LoginController } from './controllers/login.controller';
 import { LoginService } from './services/login.service';
 import { DatabaseService } from './services/db.service';
-import { ClientController } from './controllers/client.controller';
-import { ClientService } from './services/client.service';
+import { UserController } from './controllers/user.controller';
+import { UserService } from './services/user.service';
 @Module({
   imports: [JwtModule.register({
     secret:
@@ -14,7 +14,7 @@ import { ClientService } from './services/client.service';
     signOptions: { expiresIn: '1h' },
   }),],
   
-  controllers: [AppController,LoginController,ClientController],
-  providers: [AppService,LoginService,DatabaseService,ClientService],
+  controllers: [AppController,LoginController,UserController],
+  providers: [AppService,LoginService,DatabaseService,UserService],
 })
 export class AppModule {}

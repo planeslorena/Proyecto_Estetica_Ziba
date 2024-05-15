@@ -11,7 +11,7 @@ export class LoginService {
   constructor(private jwtService: JwtService, private dbService: DatabaseService) {
   }
 
-  async validateUser(username: string, password: string): Promise<User> {
+  async validateUser(username: string, password: string): Promise<any> {
     //obtener de la base de datos el usuario
     const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
       loginQueries.selectUser,
@@ -35,8 +35,10 @@ export class LoginService {
       return null;
     }
 
-  login(user: User) {
+  login(user: any) {
     const payload = { usuario: user };
+    const accesstoken = this.jwtService.sign(payload)
+    console.log(this.jwtService.decode(accesstoken))
     return {
       accessToken: this.jwtService.sign(payload),
     };

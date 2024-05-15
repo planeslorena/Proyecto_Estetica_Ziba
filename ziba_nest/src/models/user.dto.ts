@@ -6,13 +6,22 @@ class User {
   id_user?: number;
 
   @IsString()
-  username: string;
+  mail: string;
 
   @IsString()
-  role: string;
+  password: string;
 
   @IsString()
   name: string;
+
+  @IsInt()
+  dni: number;
+
+  @IsInt()
+  phone: number;
+
+  @IsString()
+  role: string
 }
 
 export default User;
