@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { login } from "@/app/services/Login";
 import { useState } from "react";
+import "./loginForm.css";
 
 interface data {
     username:string,
@@ -15,25 +16,24 @@ interface loginFormProps {
 
 export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     const [showPassword, setShowPassword] = useState(false);
+    const jwt = require("jsonwebtoken");
     const { register, handleSubmit, formState: { errors, isValid }} = useForm<data>({ mode: "onChange" });
     const jwt = require("jsonwebtoken");
 
     const onSubmit: SubmitHandler<data> = async (data) => {
-
         console.log(data);
         const resp = await login(data);
-        console.log(resp);
-
         alert( jwt.decode(resp.accessToken).usuario.role);
-
     };
 
 
     return (
         <>
             <div className='contenedor-form contenedor'>
+                <div className="image">   
+                </div>
                 <div className='form-registro'>
-                    <h3>Iniciar sesión</h3>
+                    <h3 className="title">Iniciar sesión</h3>
                     <form onSubmit={handleSubmit(onSubmit)} className="form">
                         <div>
                             <label className='form-label'>Email</label>
