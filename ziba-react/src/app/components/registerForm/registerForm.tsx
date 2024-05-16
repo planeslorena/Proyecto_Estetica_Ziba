@@ -22,7 +22,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
-    const { register, handleSubmit, formState: { errors, isValid, dirtyFields }, watch } = useForm<datos>({ mode: 'onChange'});
+    const { register, handleSubmit, formState: { errors, isValid }, watch } = useForm<datos>({ mode: 'onChange'});
 
     const onSubmit: SubmitHandler<datos> = (datos) => {
 
@@ -30,6 +30,9 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
 
         alert('exito');
     };
+
+    const passwordValue = watch("password", "");
+    const repeatPasswordValue = watch("repeatPassword", "");
 
     const checkComplexity = (password: string): boolean => {
         // Define your password complexity rules here
@@ -168,13 +171,15 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                         setPassword(e.target.value)
                                       }
                                 })} />
-                                <div className="visible-invisible">
-                            {
-                                dirtyFields.password && (showPassword === false ?
-                                    <img width="24" height="24" src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowPassword(!showPassword) }} /> : <img width="24" height="24" src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowPassword(!showPassword) }} />
-                                )
-                            }
-                            </div>
+                                {passwordValue && (
+                                    <div className="visible-invisible">
+                                        {showPassword ? (
+                                            <img src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible" onClick={() => setShowPassword(false)} />
+                                        ) : (
+                                            <img src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible" onClick={() => setShowPassword(true)} />
+                                        )}
+                                    </div>
+                                )}
                             </div>
                             {showTooltip && !checkComplexity(password) && (
                                 <p className="text-danger">
@@ -198,13 +203,15 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                         }
                                     }
                                 })} />
+                            {repeatPasswordValue &&  
                             <div className="visible-invisible">
                             {
-                                dirtyFields.repeatPassword && (showRepeatPassword === false ?
+                               (showRepeatPassword === false ?
                                     <img width="24" height="24" src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowRepeatPassword(!showRepeatPassword) }} /> : <img width="24" height="24" src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowRepeatPassword(!showRepeatPassword) }} />
                                 )
                             }
                             </div>
+                            }  
                             </div>
                             <small className='texto-validaciones'>{errors.repeatPassword?.message}</small>
                         </div>
