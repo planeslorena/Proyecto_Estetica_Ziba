@@ -1,10 +1,13 @@
 body{
     background-color: rgb(255, 255, 255);
   }
+  
   .contenedor{
     margin: 60px auto;
     max-width: 1200px;
+    height: 750px;
     width: 85%;
+    box-shadow: -5px 5px 5px #ad9a9a;
   }
   
   .contenedor-form{
@@ -12,24 +15,45 @@ body{
   }
   
   .form-registro{
-    background-color: rgb(206, 212, 167);
-    display: flex;
+    background-color: #ffffff;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-self: center;
     padding: 2rem;
+  }
+
+  /*form-input es form-control de bootsrap copiado y modificado*/
+  .form-input{
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    transition: border-color .15s ease-in-out, box-shadow #AD9A9A .15s ease-in-out;
   }
 
   .title{
     display: flex;
     flex-direction: column;
     text-align: center;
-    color: rgb(8, 41, 11);
+    color: #31123C;
   }
   
   .form-label{
-    color: rgb(8, 41, 11);
+    color: #31123C;
     padding: 5px;
+  }
+
+  .input{
+    width: 100%;
   }
   
   .image{
@@ -37,6 +61,20 @@ body{
     background-position: center center;
     background-size: cover;
     flex: 0 0 calc(60%);
+  }
+
+  .password-input{
+    display: grid;
+    grid-template-columns: repeat(auto-fill,
+      minmax(200px, 1fr));
+  
+  }
+
+  .visible-invisible{
+    align-self: center;
+    position: absolute;
+    justify-self: end;
+    padding-right: 0.7%;
   }
 
   .btn{

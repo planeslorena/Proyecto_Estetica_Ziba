@@ -41,6 +41,9 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
         alert(respuesta);
     };
 
+    const passwordValue = watch("password", "");
+    const repeatPasswordValue = watch("repeatPassword", "");
+
     const checkComplexity = (password: string): boolean => {
         // Define your password complexity rules here
         const minLength = 8;
@@ -61,12 +64,13 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
     return (
         <>
             <div className='contenedor-form contenedor'>
+            <div className="image">   
+                </div>
                 <div className='form-registro'>
-
                     <form onSubmit={handleSubmit(onSubmit)} className="form">
                         <div>
                             <label className='form-label'>Nombre</label>
-                            <input className='form-control'
+                            <input className='form-input'
                                 placeholder="Ingrese su nombre"
                                 {...register("name", {
                                     required: 'Por favor ingrese nombre',
@@ -87,7 +91,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                         </div>
                         <div>
                             <label className='form-label'>Apellido</label>
-                            <input className='form-control'
+                            <input className='form-input'
                                 placeholder="Ingrese su apellido"
                                 {...register("lastname", {
                                     required: 'Por favor ingrese su apellido',
@@ -108,7 +112,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                         </div>
                         <div>
                             <label className='form-label'>DNI</label>
-                            <input className='form-control'
+                            <input className='form-input'
                                 placeholder="Ingrese su dni (Sin puntos)"
                                 {...register("dni", {
                                     required: 'Por favor ingrese su dni',
@@ -126,7 +130,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                         </div>
                         <div>
                             <label className='form-label'>Email</label>
-                            <input className='form-control'
+                            <input className='form-input'
                                 placeholder="Ingrese su email"
                                 {...register("email", {
                                     required: 'Por favor ingrese su dirección de email',
@@ -139,7 +143,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                         </div>
                         <div>
                             <label className='form-label'>Teléfono celular</label>
-                            <input className='form-control'
+                            <input className='form-input'
                                 placeholder="Ingrese su teléfono celular (Ej.: 2284123456)"
                                 {...register("phone", {
                                     required: 'Por favor ingrese su número de celular',
@@ -160,7 +164,8 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                         </div>
                         <div>
                             <label className='form-label'>Contraseña</label>
-                            <input className='form-control'
+                            <div className="password-input">
+                            <input className='form-input'
                                 type={showPassword ? 'text' : 'password'}
                                 placeholder="Ingrese su contraseña"
                                 id="password"
@@ -176,10 +181,16 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                         setPassword(e.target.value)
                                       }
                                 })} />
-                            {
-                                (showPassword === false) ?
-                                    <img width="24" height="24" src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowPassword(!showPassword) }} /> : <img width="24" height="24" src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowPassword(!showPassword) }} />
-                            }
+                                {passwordValue && (
+                                    <div className="visible-invisible">
+                                        {showPassword ? (
+                                            <img src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible" onClick={() => setShowPassword(false)} />
+                                        ) : (
+                                            <img src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible" onClick={() => setShowPassword(true)} />
+                                        )}
+                                    </div>
+                                )}
+                            </div>
                             {showTooltip && !checkComplexity(password) && (
                                 <p className="text-danger">
                                     Contraseña debe contener por lo menos 8 caractéres (máx. 32), mayúscula, minuscula, numeros, y caractéres especiales.
@@ -189,21 +200,29 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                         </div>
                         <div>
                             <label className='form-label'>Confirmar contraseña</label>
-                            <input className='form-control'
+                            <div className="password-input">
+                            <input className='form-input'
                                 type={showRepeatPassword ? 'text' : 'password'}
                                 placeholder="Ingrese su contraseña"
+                                id="repeatPassword"
                                 {...register("repeatPassword", {
                                     required: 'Por favor ingrese una contraseña',
                                     validate: (val: string) => {
                                         if (watch('password') != val) {
                                             return "Las contraseñas no coinciden";
                                         }
-                                    },
+                                    }
                                 })} />
+                            {repeatPasswordValue &&  
+                            <div className="visible-invisible">
                             {
-                                (showRepeatPassword === false) ?
+                               (showRepeatPassword === false ?
                                     <img width="24" height="24" src="https://img.icons8.com/material/24/000000/invisible--v1.png" alt="invisible--v1" onClick={() => { setShowRepeatPassword(!showRepeatPassword) }} /> : <img width="24" height="24" src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible--v1" onClick={() => { setShowRepeatPassword(!showRepeatPassword) }} />
+                                )
                             }
+                            </div>
+                            }  
+                            </div>
                             <small className='texto-validaciones'>{errors.repeatPassword?.message}</small>
                         </div>
                         <input type="submit" disabled={!isValid} className='btn btn-success' value="Registrarse" />
