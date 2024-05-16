@@ -4,7 +4,7 @@ import axios from 'axios';
 const clienteAxios = axios.create({
   baseURL: 'http://localhost:8080/',
 });
-
+/*
 clienteAxios.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -30,6 +30,6 @@ clienteAxios.interceptors.response.use(
     }
     return null;
   }
-);
+);*/
 
 export default clienteAxios;

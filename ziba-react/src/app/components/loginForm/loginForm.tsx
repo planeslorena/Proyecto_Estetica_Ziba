@@ -16,14 +16,16 @@ interface loginFormProps {
 
 export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     const [showPassword, setShowPassword] = useState(false);
-    const jwt = require("jsonwebtoken");
     const { register, handleSubmit, formState: { errors, isValid }} = useForm<data>({ mode: "onChange" });
     const jwt = require("jsonwebtoken");
 
     const onSubmit: SubmitHandler<data> = async (data) => {
         console.log(data);
         const resp = await login(data);
-        alert( jwt.decode(resp.accessToken).usuario.role);
+        if (resp == "No autorizado") {
+            alert("no autorizado")
+        } else {
+        alert( jwt.decode(resp.accessToken).usuario.role);}
     };
 
 

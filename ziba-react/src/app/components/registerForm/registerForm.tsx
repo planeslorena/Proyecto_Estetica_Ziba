@@ -2,6 +2,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
+import { createUser } from "@/app/services/User";
 
 interface datos {
     name: string,
@@ -27,8 +28,17 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
     const onSubmit: SubmitHandler<datos> = (datos) => {
 
         console.log(datos);
+        const user = {
+            mail: datos.email,
+            password: datos.password,
+            name: `${datos.name} ${datos.lastname}`,
+            dni: datos.dni,
+            phone: datos.phone,
+            role: 'client'
+        }
+        const respuesta = createUser(user);
 
-        alert('exito');
+        alert(respuesta);
     };
 
     const checkComplexity = (password: string): boolean => {
@@ -189,10 +199,6 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                             return "Las contraseñas no coinciden";
                                         }
                                     },
-                                    pattern: {
-                                        value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                                        message: 'Numero de telefono invalido'
-                                    }
                                 })} />
                             {
                                 (showRepeatPassword === false) ?
