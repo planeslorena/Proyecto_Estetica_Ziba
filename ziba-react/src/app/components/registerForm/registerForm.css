@@ -1,87 +1,112 @@
 body{
-    background-color: rgb(255, 255, 255);
-  }
+  background-color: rgb(255, 255, 255);
+}
+
+.container-register{
+  margin: 60px auto;
+  max-width: 1200px;
+  width: 85%;
+  box-shadow: 5px 5px 5px #ad9a9a;
+}
+
+.container-form-register{
+  display:flex ;
   
-  .contenedor{
-    margin: 60px auto;
-    max-width: 1200px;
-    width: 85%;
-    box-shadow: -5px 5px 5px #ad9a9a;
-  }
+}
+
+.form-register{
+  background-color: #ffff;
+  width: 690px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: center;
+  padding: 2rem;
   
-  .contenedor-form{
-    display:flex ;
-  }
+}
+
+.fields-name-and-lastname{
+  display: flex;
   
-  .form-registro{
-    background-color: #ffffff;
-    flex-direction: row;
-    justify-content: space-between;
-    align-self: center;
-    padding: 2rem;
-  }
+}
 
-  /*form-input es form-control de bootsrap copiado y modificado*/
-  .form-input{
-    display: block;
-    width: 100%;
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: var(--bs-body-color);
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    background-color: var(--bs-body-bg);
-    background-clip: padding-box;
-    border: var(--bs-border-width) solid var(--bs-border-color);
-    transition: border-color .15s ease-in-out, box-shadow #AD9A9A .15s ease-in-out;
-  }
+.fields-passwords{
+  display: flex;
+}
 
-  .title{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    color: #31123C;
-  }
-  
-  .form-label{
-    color: #31123C;
-    padding: 5px;
-  }
+/*form-input es form-control de bootsrap copiado y modificado*/
+.form-input-register{
+  display: block;
+  width: 100%;
+  padding: .375rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--bs-body-color);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: var(--bs-body-bg);
+  background-clip: padding-box;
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  transition: border-color .15s ease-in-out, box-shadow #AD9A9A .15s ease-in-out;
+}
 
-  .input{
-    width: 100%;
-  }
-  
-  .image{
-    background-image: url('../../../../public/imagenes/image-auth.jpg');
-    background-position: center center;
-    background-size: cover;
-    flex: 0 0 calc(60%);
-  }
+.title-register{
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  color: #31123C;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
 
-  .password-input{
-    display: grid;
-    grid-template-columns: repeat(auto-fill,
-      minmax(200px, 1fr));
-  
-  }
+.form-label-register{
+  color: #31123C;
+  padding: 5px;
+  font-size: 15px;
+}
 
-  .visible-invisible{
-    align-self: center;
-    position: absolute;
-    justify-self: end;
-    padding-right: 0.7%;
-  }
+.input{
+  width: 100%;
+}
 
-  .btn{
-    background-color: rgb(36, 80, 36);
-    margin-top: 10px;
-    margin-left: 160px;
-  }
+.image{
+  background-image: url('../../../../public/imagenes/image-auth.jpg');
+  background-position: center center;
+  background-size: cover;
+  flex: 0 0 calc(60%);
+}
 
-  .texto-validaciones{
-    color:brown;
-  }
+.password-input-register{
+  display: grid;
+  grid-template-columns: repeat(auto-fill,
+    minmax(200px, 1fr));
+
+}
+
+.visible-invisible-register{
+  align-self: center;
+  position: absolute;
+  justify-self: end;
+  padding-right: 0.7%;
+}
+
+.button-register{
+  background-color: #987a9d;
+  margin-top: 15px;
+  width:400px ;
+  color: white;
+
+}
+.a-login{
+  text-decoration: none;
+  color: #31123C;
+}
+.container-question-register{
+  margin-top: 5px;
+  text-align: center;
+}
+
+.text-validation-register{
+  color:brown;
+}

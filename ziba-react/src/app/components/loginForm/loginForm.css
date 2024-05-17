@@ -2,28 +2,32 @@ body{
     background-color: rgb(255, 255, 255);
   }
   
-  .contenedor{
+ 
+  
+  .container-form-login{
     margin: 60px auto;
+    height: 550px;
+    width: 100%;
     max-width: 1200px;
-    height: 750px;
-    width: 85%;
-    box-shadow: -5px 5px 5px #ad9a9a;
-  }
-  
-  .contenedor-form{
+    background-color: #fff;
     display:flex ;
+    box-shadow: 5px 5px 5px #ad9a9a;
   }
   
-  .form-registro{
-    background-color: #ffffff;
+  .form-login{
+    background-color: #fff;
     flex-direction: row;
     justify-content: space-between;
     align-self: center;
     padding: 2rem;
+    width: 400px;
+    height: 540px;
+    margin-left:  50px;
+    margin-top: 5px;
   }
 
   /*form-input es form-control de bootsrap copiado y modificado*/
-  .form-input{
+  .form-input-login{
     display: block;
     width: 100%;
     padding: .375rem .75rem;
@@ -40,49 +44,69 @@ body{
     transition: border-color .15s ease-in-out, box-shadow #AD9A9A .15s ease-in-out;
   }
 
-  .title{
+  .title-login{
     display: flex;
     flex-direction: column;
     text-align: center;
     color: #31123C;
+    font-size: 20px;
+    margin-top: 25px;
   }
   
-  .form-label{
+  .form-label-login{
     color: #31123C;
+    margin-bottom: 2px;
     padding: 5px;
   }
 
-  .input{
+  .input-login{
     width: 100%;
   }
   
-  .image{
+  .image-login{
     background-image: url('../../../../public/imagenes/image-auth.jpg');
     background-position: center center;
     background-size: cover;
     flex: 0 0 calc(60%);
+    margin-top: 5px;
+    
   }
 
-  .password-input{
+  .password-input-login{
     display: grid;
     grid-template-columns: repeat(auto-fill,
-      minmax(200px, 1fr));
+    minmax(200px, 1fr));
   
   }
 
-  .visible-invisible{
+  .visible-invisible-login{
     align-self: center;
     position: absolute;
     justify-self: end;
     padding-right: 0.7%;
   }
 
-  .btn{
-    background-color: rgb(36, 80, 36);
-    margin-top: 10px;
-    margin-left: 160px;
+  .button-login{
+    background-color: #987a9d;
+    margin-top: 15px;
+    width:335px ;
+    color: white;
+
   }
 
-  .texto-validaciones{
+  .texto-validaciones-login{
     color:brown;
+  }
+  
+  .container-question{
+    margin-top: 5px;
+    text-align: center;
+  }
+  
+  .a-registrate{
+    text-decoration: none;
+    color: #31123C;
+  }
+  .img-logoziba-small-login{
+    margin-left:55px ;
   }
