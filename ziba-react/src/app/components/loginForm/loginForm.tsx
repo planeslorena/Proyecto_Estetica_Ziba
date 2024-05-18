@@ -22,10 +22,10 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     const router = useRouter();
 
     const roleRouter = (role:string) => {
+        //dependiendo del rol del usuario redirecciona a la pag correspondiente
         if (role === 'admin') {
             router.push('/admin')
-        }
-        if (role === 'client') {
+        } else if (role === 'client') {
             router.push('/client')
         }
     }
