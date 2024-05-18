@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { login } from "@/app/services/Login";
 import { useState } from "react";
 import "./loginForm.css";
+import { useRouter } from 'next/navigation';
 
 interface data {
     username: string,
@@ -18,20 +19,34 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     const [showPassword, setShowPassword] = useState(false);
     const jwt = require("jsonwebtoken");
     const { register, handleSubmit, watch,setError, formState: { errors, isValid }} = useForm<data>({ mode: "onChange" });
+    const router = useRouter();
+
+    const roleRouter = (role:string) => {
+        if (role === 'admin') {
+            router.push('/admin')
+        }
+        if (role === 'client') {
+            router.push('/client')
+        }
+    }
+
+
     const onSubmit: SubmitHandler<data> = async (data) => {
+        //Llama a el backend para generar el login
         const resp = await login(data);
-        if (resp == "No autorizado") {
+
+        //Si hay un error de usuario no autorizado o usuario inexistente, muestra mensaje en pantalla
+        if (resp == 401 || resp == 403) {
             setError("password", {
                 type: "manual",
                 message: 'El mail o contraseña no son correctos.',
               })
         } else {
-            alert( jwt.decode(resp.accessToken).usuario.role);
-            
+            //Si el login es exitoso llama a la funcion roleRouter mandandole como parametro el rol del usuario logeado.
+            roleRouter(jwt.decode(resp.accessToken).usuario.role)
         }
     };
     const passwordValue = watch("password", "");
-
 
     return (
         <>

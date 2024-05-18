@@ -8,8 +8,6 @@ export const login = async (usuario:any) => {
     console.log(respuesta)
     return respuesta.data;
   } catch (error:any) {
-    return error.response.data.message;
-    console.log(error);
-    throw new Error('Error en el login');
+    return error.response.data.statusCode;
   }
 }
