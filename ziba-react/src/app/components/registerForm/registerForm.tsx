@@ -39,6 +39,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
         const respuesta = createUser(user);
 
         alert(respuesta);
+        onSwitchToLogin();
     };
 
     const passwordValue = watch("password", "");

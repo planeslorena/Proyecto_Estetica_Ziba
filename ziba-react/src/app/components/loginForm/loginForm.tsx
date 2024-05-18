@@ -17,14 +17,18 @@ interface loginFormProps {
 export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     const [showPassword, setShowPassword] = useState(false);
     const jwt = require("jsonwebtoken");
-    const { register, handleSubmit, watch, formState: { errors, isValid }} = useForm<data>({ mode: "onChange" });
+    const { register, handleSubmit, watch,setError, formState: { errors, isValid }} = useForm<data>({ mode: "onChange" });
     const onSubmit: SubmitHandler<data> = async (data) => {
-        console.log(data);
         const resp = await login(data);
         if (resp == "No autorizado") {
-            alert("no autorizado")
+            setError("password", {
+                type: "manual",
+                message: 'El mail o contraseña no son correctos.',
+              })
         } else {
-        alert( jwt.decode(resp.accessToken).usuario.role);}
+            alert( jwt.decode(resp.accessToken).usuario.role);
+            
+        }
     };
     const passwordValue = watch("password", "");
 
@@ -73,6 +77,7 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                         </div>
                         </div>
                         <small className='texto-validaciones'>{errors.password?.message}</small>
+
                         <input type="submit" disabled={!isValid} className='btn btn-success' value="Iniciar sesión" />
                     </form>
                     <small>¿Es tu primera vez en Zibá?{' '} <a href="#" onClick={onSwitchToRegister}>Regístrate</a></small>
