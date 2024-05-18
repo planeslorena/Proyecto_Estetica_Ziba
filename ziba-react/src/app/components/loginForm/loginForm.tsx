@@ -6,8 +6,8 @@ import { useState } from "react";
 import "./loginForm.css";
 
 interface data {
-    username:string,
-    password:string
+    username: string,
+    password: string
 }
 
 interface loginFormProps {
@@ -35,15 +35,15 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
 
     return (
         <>
-            <div className='contenedor-form contenedor'>
-                <div className="image">   
-                </div>
-                <div className='form-registro'>
-                    <h3 className="title">Iniciar sesión</h3>
-                    <form onSubmit={handleSubmit(onSubmit)} className="form">
+            <div className='container-form-login '>
+                <div className="image-login"></div>
+                <div className='form-login'>
+                    <img src="/imagenes/logoziba-small.png" alt="" className="img-logoziba-small-login" />
+                    <h3 className="title-login">Iniciar sesión</h3>
+                    <form onSubmit={handleSubmit(onSubmit)} className="login-form">
                         <div>
-                            <label className='form-label'>Email</label>
-                            <input className='form-input'
+                            <label className='form-label-login'>Email</label>
+                            <input className='input-login'
                                 type="email"
                                 placeholder="Ingrese su email"
                                 {...register("username", {
@@ -53,20 +53,20 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                                         message: 'Email invalido.'
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.username?.message}</small>
+                            <small className='text-validation-login'>{errors.username?.message}</small>
                         </div>
                         <div>
-                            <label className='form-label'>Contraseña</label>
-                        <div className="password-input">
-                            <input id="password" className='form-input'
-                            type={showPassword ? 'text' : 'password'}
-                            placeholder="Ingrese su contraseña"
-                                {...register("password", {
-                                    required: 'Por favor ingrese su contraseña'
-                                })} />
-                            
-                            {passwordValue && (
-                                    <div className="visible-invisible">
+                            <label className='form-label-login'>Contraseña</label>
+                            <div className="password-input-login">
+                                <input id="password" className='form-input-login'
+                                    type={showPassword ? 'text' : 'password'}
+                                    placeholder="Ingrese su contraseña"
+                                    {...register("password", {
+                                        required: 'Por favor ingrese su contraseña'
+                                    })} />
+
+                                {passwordValue && (
+                                    <div className="visible-invisible-login">
                                         {showPassword ? (
                                             <img src="https://img.icons8.com/material/24/000000/visible--v1.png" alt="visible" onClick={() => setShowPassword(false)} />
                                         ) : (
@@ -74,13 +74,15 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                                         )}
                                     </div>
                                 )}
+                            </div>
                         </div>
-                        </div>
-                        <small className='texto-validaciones'>{errors.password?.message}</small>
-
-                        <input type="submit" disabled={!isValid} className='btn btn-success' value="Iniciar sesión" />
+                        <small className='text-validation-login'>{errors.password?.message}</small>
+                        <button type="submit" disabled={!isValid} className='button-login'> Iniciar sesion</button>
                     </form>
-                    <small>¿Es tu primera vez en Zibá?{' '} <a href="#" onClick={onSwitchToRegister}>Regístrate</a></small>
+                    <div className="container-question">
+                        <p >¿Es tu primera vez en Zibá?{' '}</p>
+                        <a href="#" onClick={onSwitchToRegister}className="a-registrate">Regístrate </a>
+                    </div>
                 </div>
             </div>
 

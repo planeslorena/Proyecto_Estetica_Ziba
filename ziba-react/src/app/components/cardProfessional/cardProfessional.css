@@ -1,0 +1,24 @@
+.carousel-background{
+    background: #ddc9dd;
+    padding: 3%;
+}
+
+.title-carousel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 2%;
+}
+
+.cards-carousel{
+    display: flex;
+    justify-content: center;
+}
+
+.card-container{
+    padding: 1%;
+}
+
+.card-content{
+    width: 18rem;
+}

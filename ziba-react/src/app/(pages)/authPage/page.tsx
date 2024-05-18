@@ -7,7 +7,6 @@ export default function AuthPage() {
     <>
       <header>
         <div>
-          <Logo></Logo>
         </div>
 
       </header>
