@@ -6,9 +6,6 @@ export default function AuthPage() {
   return (
     <>
       <header>
-        <div>
-        </div>
-
       </header>
 
       <main>

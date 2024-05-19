@@ -9,7 +9,8 @@ class User {
   mail: string;
 
   @IsString()
-  password: string;
+  @IsOptional()
+  password?: string;
 
   @IsString()
   name: string;

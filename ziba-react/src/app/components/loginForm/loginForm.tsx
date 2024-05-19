@@ -53,12 +53,12 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
             <div className='container-form-login '>
                 <div className="image-login"></div>
                 <div className='form-login'>
-                    <img src="/imagenes/logoziba-small.png" alt="" className="img-logoziba-small-login" />
+                    <img src="/imagenes/logoziba-small.png" alt="" className="img-logoziba-small-login" onClick={() => router.push('/home')} />
                     <h3 className="title-login">Iniciar sesión</h3>
                     <form onSubmit={handleSubmit(onSubmit)} className="login-form">
                         <div>
                             <label className='form-label-login'>Email</label>
-                            <input className='input-login'
+                            <input className='form-input-login'
                                 type="email"
                                 placeholder="Ingrese su email"
                                 {...register("username", {
@@ -95,8 +95,8 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                         <button type="submit" disabled={!isValid} className='button-login'> Iniciar sesion</button>
                     </form>
                     <div className="container-question">
-                        <p >¿Es tu primera vez en Zibá?{' '}</p>
-                        <a href="#" onClick={onSwitchToRegister}className="a-registrate">Regístrate </a>
+                        <p className="question">¿Es tu primera vez en Zibá?{' '}</p>
+                        <a href="#" onClick={onSwitchToRegister}className="a-registrate">Regístrate</a>
                     </div>
                 </div>
             </div>
