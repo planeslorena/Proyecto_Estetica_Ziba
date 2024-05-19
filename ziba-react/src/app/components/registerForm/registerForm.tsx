@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
 import { createUser } from "@/app/services/User";
 import "./registerForm.css";
+import Swal from 'sweetalert2'
 
 
 interface datos {
@@ -25,9 +26,11 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
     const [showTooltip, setShowTooltip] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showRepeatPassword, setShowRepeatPassword] = useState(false);
+    const [errorRegister, setErrorRegister] = useState('');
+
     const { register, handleSubmit, formState: { errors, isValid }, watch } = useForm<datos>({ mode: 'onChange' });
 
-    const onSubmit: SubmitHandler<datos> = (datos) => {
+    const onSubmit: SubmitHandler<datos> = async (datos) => {
 
         console.log(datos);
         const user = {
@@ -38,10 +41,18 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
             phone: datos.phone,
             role: 'client'
         }
-        const respuesta = createUser(user);
+        const resp = await createUser(user);
 
-        alert(respuesta);
-        onSwitchToLogin();
+        if (resp == 409) {
+           setErrorRegister('El mail indicado ya se encuentra registrado.')
+        } else {
+            Swal.fire({
+            title: "Bienvenido",
+            text: "Ya puedes empezar a disfrutar de nuestros servicios!",
+            icon: "success"
+            });
+            onSwitchToLogin();
+        }
     };
 
     const passwordValue = watch("password", "");
@@ -233,15 +244,15 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                                 <small className='text-validation-register'>{errors.repeatPassword?.message}</small>
                             </div>
                         </div>
+                        <small className='text-validation-register'>{errorRegister}</small>
                         <button type="submit" disabled={!isValid} className='button-register'> Registrate </button>
                     </form>
                     <div className="container-question-register">
-                        <p >¿Ya tenés una cuenta en Zibá?{' '}</p>
-                        <a href="#" onClick={onSwitchToLogin}className="a-login">Inicia sesión </a>
+                        <p className="question">¿Ya tenés una cuenta en Zibá?{' '}</p>
+                        <a href="#" onClick={onSwitchToLogin}className="a-login">Inicia sesión</a>
                     </div>
                 </div>
             </div>
         </>
-
     )
 }

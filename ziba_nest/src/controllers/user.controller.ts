@@ -5,11 +5,11 @@ import { UserService } from 'src/services/user.service';
 @Controller('/api')
 export class UserController {
 
-  constructor(private clientService: UserService) {}
+  constructor(private userService: UserService) {}
 
   @Post('/user')
   async createUser(@Body() body: User) {
-   return this.clientService.createUser(body);
+   return this.userService.createUser(body);
   }
 
 

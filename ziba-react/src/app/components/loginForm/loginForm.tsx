@@ -22,10 +22,10 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     const router = useRouter();
 
     const roleRouter = (role:string) => {
+        //dependiendo del rol del usuario redirecciona a la pag correspondiente
         if (role === 'admin') {
             router.push('/admin')
-        }
-        if (role === 'client') {
+        } else if (role === 'client') {
             router.push('/client')
         }
     }
@@ -53,7 +53,7 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
             <div className='container-form-login '>
                 <div className="image-login"></div>
                 <div className='form-login'>
-                    <img src="/imagenes/logoziba-small.png" alt="" className="img-logoziba-small-login" />
+                    <img src="/imagenes/logoziba-small.png" alt="" className="img-logoziba-small-login" onClick={() => router.push('/home')} />
                     <h3 className="title-login">Iniciar sesión</h3>
                     <form onSubmit={handleSubmit(onSubmit)} className="login-form">
                         <div>
@@ -95,8 +95,8 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                         <button type="submit" disabled={!isValid} className='button-login'> Iniciar sesion</button>
                     </form>
                     <div className="container-question">
-                        <p >¿Es tu primera vez en Zibá?{' '}</p>
-                        <a href="#" onClick={onSwitchToRegister}className="a-registrate">Regístrate </a>
+                        <p className="question">¿Es tu primera vez en Zibá?{' '}</p>
+                        <a href="#" onClick={onSwitchToRegister}className="a-registrate">Regístrate</a>
                     </div>
                 </div>
             </div>

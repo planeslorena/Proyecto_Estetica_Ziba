@@ -1,44 +1,40 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
-import { RowDataPacket } from 'mysql2';
-import { DatabaseService } from './db.service';
-import loginQueries from './queries/login.queries';
 import User from 'src/models/user.dto';
+import { UserService } from './user.service';
 
 @Injectable()
 export class LoginService {
-  constructor(private jwtService: JwtService, private dbService: DatabaseService) {
+  constructor(private jwtService: JwtService, private userService: UserService) {
   }
 
   async validateUser(username: string, password: string): Promise<any> {
-    //obtener de la base de datos el usuario
-    const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
-      loginQueries.selectUser,
-      [username],
-    );
 
-    //Si resultQuery esta vacio, es porque no se encontro el usuario o esta deshabilitado
-    if (resultQuery.length == 0) {
+    //obtengo el usuario de la base de datos buscando por mail
+    const user: User = await this.userService.getUserByMail(username);
+
+    if (!user) {
+      //si user no existe es porque el usuario no existe o esta deshabilitado, genero el error
       throw new HttpException('El usuario no existe o esta deshabilitado', HttpStatus.FORBIDDEN)
     }
 
     //Si lo encuentra debo chequear que la contraseña sea la misma
-      if (await bcrypt.compare(password,resultQuery[0].password)) {
-        // retorno el objeto usuario
-        return {
-          username: username, 
-          role: resultQuery[0].role,
-          name: resultQuery[0].name,
-        };
-      }
-      return null;
+    if (await bcrypt.compare(password, user.password)) {
+      // retorno el objeto usuario
+      return {
+        username: username,
+        role: user.role,
+        name: user.name,
+      };
     }
+    return null;
+  }
 
   login(user: any) {
+    //Genero el payload para crear el token
     const payload = { usuario: user };
-    const accesstoken = this.jwtService.sign(payload)
-    console.log(this.jwtService.decode(accesstoken))
+    //Genero el token y lo retorno
     return {
       accessToken: this.jwtService.sign(payload),
     };

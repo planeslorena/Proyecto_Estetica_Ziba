@@ -99,12 +99,16 @@ body{
 
 }
 .a-login{
-  text-decoration: none;
   color: #31123C;
 }
 .container-question-register{
   margin-top: 5px;
   text-align: center;
+}
+
+.question {
+  margin-top: 1rem;
+  margin-bottom: .2rem;
 }
 
 .text-validation-register{
