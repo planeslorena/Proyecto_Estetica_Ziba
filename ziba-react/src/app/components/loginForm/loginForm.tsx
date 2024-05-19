@@ -58,7 +58,7 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
                     <form onSubmit={handleSubmit(onSubmit)} className="login-form">
                         <div>
                             <label className='form-label-login'>Email</label>
-                            <input className='input-login'
+                            <input className='form-input-login'
                                 type="email"
                                 placeholder="Ingrese su email"
                                 {...register("username", {
