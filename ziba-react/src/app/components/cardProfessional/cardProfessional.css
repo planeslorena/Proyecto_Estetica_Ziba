@@ -1,6 +1,11 @@
 .carousel-background{
-    background: #ddc9dd;
-    padding: 3%;
+    background-image: url(../../../../public/imagenes/professionals/background-professionals.jpeg);
+    padding: 5%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 95%;
+    position: relative;
+    margin-top: 15%;
 }
 
 .title-carousel{
@@ -8,17 +13,64 @@
     justify-content: center;
     align-items: center;
     padding-bottom: 2%;
+    color: #423155;
 }
 
 .cards-carousel{
     display: flex;
     justify-content: center;
+    margin-bottom: 35%;
 }
 
 .card-container{
     padding: 1%;
+    margin-top: 2%;
 }
+
+.container-button-reservation{
+   margin-left: 32.5%;
+   position: absolute;
+   padding-top: 31%;
+}
+.button-reservation{
+    background-color: #987a9d;
+    width:340px ;
+    height: 45px;
+    color: white;
+    font-size: 20px;
+    border-color: #987a9d;
+    border-bottom:none ;
+    border-right: none;
+}
+
 
 .card-content{
     width: 18rem;
 }
+
+.title-card{
+    text-align: center;
+    text-transform: uppercase;
+    color: #423155;
+    
+}
+
+.title-text{
+    text-align: center;
+    color: #423155;
+}
+
+
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23423155' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+    margin-bottom:200%;
+
+   }
+
+   .carousel-control-next-icon {
+     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23423155' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+    margin-bottom:200%;
+}
+
+
