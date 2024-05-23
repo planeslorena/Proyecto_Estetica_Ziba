@@ -1,7 +1,8 @@
 .navbar{
     background-color: white;
     padding: 0px !important;
-    margin: 0px !important;
+    margin-top: 1rem !important;
+    
 
 }
 
@@ -16,26 +17,24 @@
     display: flex;
     justify-content: center;
     align-content: center; 
+    
 }
 
 .links{
-    padding: 7px 13px;
+    /*padding: 7px 13px;*/
     text-decoration: none;
     font-size: 18px;
-    justify-content: center;
-    align-content: center; 
-    display: block;
+    display: flex;
+    align-items: center !important;
     color: #423155;
     transition: .3;
 }
 
 .cuenta{
-    padding: 7px 13px;
+    /*padding: 7px 13px;*/
     text-decoration: none;
     font-size: 18px;
-    justify-content: center;
-    align-content: center; 
-    display: block;
+    align-items: center !important;
     color: #423155;
     transition: .3;
 }
@@ -48,6 +47,12 @@
 .links:hover{
     border-bottom: .5px solid #423155;
     color: #a9a2b1 ;
+}
+
+.bi{
+    color:#423155;
+    font-size: 30px;
+
 }
 
 @media screen and (max-width: 376px){

@@ -5,6 +5,7 @@ import './nav.css'
 import { Offcanvas } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/navigation';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export function Menu() {
   const router = useRouter();
@@ -23,14 +24,14 @@ export function Menu() {
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
-                <Nav className="menu justify-content-center flex-grow-1 pe-3">
+                <Nav className="menu justify-content-center  align-items-center flex-grow-1 pe-3">
                   <Nav.Link onClick={() => {router.push('/home')}} className='links'>INICIO</Nav.Link>
                   <Nav.Link href="#services" className='links'>SERVICIOS</Nav.Link>
                   <Nav.Link href="#contactInfo" className='links'>CONTACTO</Nav.Link>
                 </Nav>
                 <Nav className="align-items-center d-flex">
                     <Nav.Link className='cuenta' onClick={() => {router.push('/authPage')}}>CUENTA</Nav.Link>
-                    <img width="38" height="38" src="https://img.icons8.com/material-rounded/24/423155/user-male-circle.png" alt="user-male-circle"/>
+                    <i className="bi bi-person-circle"></i>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>
