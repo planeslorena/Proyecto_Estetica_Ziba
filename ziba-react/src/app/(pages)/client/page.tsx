@@ -1,4 +1,6 @@
 'use client'
+import { AppointmentList } from "@/app/components/appointmentList/appointmentList";
+import { InfoUser } from "@/app/components/infoUser/infoUser";
 import { Logo } from "@/app/components/logo/logo";
 import { Menu } from "@/app/components/nav/nav";
 
@@ -14,7 +16,8 @@ export default function AdminPage() {
       </header>
 
       <main>
-        <h1>client</h1>
+        <InfoUser></InfoUser>
+        <AppointmentList></AppointmentList>
       </main>
     </>
   )
