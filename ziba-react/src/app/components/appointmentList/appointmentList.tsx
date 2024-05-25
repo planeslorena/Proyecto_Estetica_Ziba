@@ -1,48 +1,56 @@
 import React from 'react';
 import './appointmentList.css'
-import { Card } from 'react-bootstrap';
+import { Card, Table } from 'react-bootstrap';
 
-const list = [ {
-    id: 'a',
-    firstname: 'Robin',
-    lastname: 'Wieruch',
-    year: 1988,
-  },
-  {
-    id: 'b',
-    firstname: 'Dave',
-    lastname: 'Davidds',
-    year: 1990,
-  },
-  {
-    id: 'b',
-    firstname: 'Dave',
-    lastname: 'Davidds',
-    year: 1990,
-  } ];
+const list = [{
+  id: 'a',
+  firstname: 'Robin',
+  lastname: 'Wieruch',
+  year: 1988,
+},
+{
+  id: 'b',
+  firstname: 'Dave',
+  lastname: 'Davidds',
+  year: 1990,
+},
+{
+  id: 'b',
+  firstname: 'Dave',
+  lastname: 'Davidds',
+  year: 1990,
+},
+{
+  id: 'b',
+  firstname: 'Dave',
+  lastname: 'Davidds',
+  year: 1990,
+},
+{
+  id: 'b',
+  firstname: 'Dave',
+  lastname: 'Davidds',
+  year: 1990,
+}];
 
 export const AppointmentList = () => {
-
-
-      return(
-          <div >
-            {list.map((item:any) =>{
-                return (
-            <div className='list-container'>
-                
-                <Card className='card-content' style={{ width: "18rem" }}>
-                      <Card.Body>
-                        <Card.Title className='title-card'>{item.firstname}</Card.Title>
-                        <Card.Text className='title-text'>{item.lastname}</Card.Text>
-
-                      </Card.Body>
-                    </Card>
-            </div>
-)
-              })}
-          </div>
-       
-      );
-   
-
-    };
+  return (
+    <div id="div1" className='div1'>
+      <div id="div2" className='div2'>
+        {list.map((item: any) => {
+          return (
+            <Card id="div3" className='div3'>
+              <Card.Img variant="top" src="holder.js/100px180" />
+              <Card.Body>
+                <Card.Title>{item.firstname}</Card.Title>
+                <Card.Text>
+                  {item.lastname}
+                </Card.Text>
+              </Card.Body>
+            </Card>
+          )
+        })}
+      </div>
+    </div>
+  );
+};
