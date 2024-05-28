@@ -1,12 +1,4 @@
-.carousel-background{
-    background-image: url(../../../../public/imagenes/professionals/background-professionals.jpeg);
-    padding: 5%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 100% 95%;
-    position: relative;
-    margin-top: 15%;
-}
+
 
 .title-carousel{
     display: flex;
@@ -16,21 +8,39 @@
     color: #423155;
 }
 
+.img-carousel{
+    margin: auto;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+}
+
+.square-carousel{
+    background-color: rgba(244, 243, 237, 1);
+    height: 150px;
+    width: 255px;
+    margin-top: 10px;
+    box-shadow: 2px 2px 2px 2px #e0d2e2 ;
+}
+
 .cards-carousel{
     display: flex;
     justify-content: center;
     margin-bottom: 35%;
+    margin-top: 70px;
 }
 
 .card-container{
     padding: 1%;
     margin-top: 2%;
+    
 }
 
 .container-button-reservation{
-   margin-left: 32.5%;
+   margin-left: 38%;
    position: absolute;
-   padding-top: 31%;
+   padding-top: 35%;
 }
 .button-reservation{
     background-color: #987a9d;
@@ -46,6 +56,9 @@
 
 .card-content{
     width: 18rem;
+    border-radius: 0%;
+    border-color: #423155;
+    
 }
 
 .title-card{

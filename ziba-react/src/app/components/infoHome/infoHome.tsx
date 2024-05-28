@@ -7,14 +7,14 @@ export const Cafeteria = () => {
 
     return (
         <>
+            <h2 className="title-cafe">¡Mimate,relajate y disfruta de tu infusión favorita!</h2>
             <div className='container-img-infohome'>
-
+                
                 <img className='img-armchairs' src="/imagenes/armchairs.jpg" alt="image armchairs" />
                 <img className='img-cafeteria' src="/imagenes/cafeteria.jpg" alt="image cafeteria" />
                
                 <div className='square-violet'> </div>
-                <div className='border-violet'><p className="text-square">En Zibá, priorizamos tanto tu bienestar interno como externo. Contamos con los mejores profesionales y comodidades para asegurar tu relajación.
-                Además, si no queres contratar nuestros servicios, contamos con una cafetería y área de descanso donde podes vivenciar nuestra estética al paso.</p> </div>
+                <div className='border-violet'><p className="text-square">Zibá te invita a qué conozcas el nuevo espacio pensado para vos, no solo brindamos nuestros servicios para tu cuidado personal, si no tambien para que te relajes sola o en compañia en nuestra nueva cafeteria, donde vas a poder disfrutar de un rico desayuno o merienda.</p> </div>
             </div>
            
         </>

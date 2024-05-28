@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import './logo.css'
+/*import './logo.css'
 
 export const Logo = () => {
 
@@ -8,4 +8,4 @@ export const Logo = () => {
                 <img className='img-logo' src="/imagenes/logoZiba.jpg" alt="logo ziba"/>         
         </div>
     );
-} 
+} */

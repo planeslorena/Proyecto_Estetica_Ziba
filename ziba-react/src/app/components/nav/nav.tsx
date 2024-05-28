@@ -26,8 +26,20 @@ export function Menu() {
   }
 
     return (
-      <Navbar key={'md'} expand={'md'} className="mb-3">
+      <div>
+      
+      <Navbar key={'md'} expand={'md'} className="mb-3 d-flex flex-row justify-content-evenly ">
         <Container fluid>
+        < div>
+           
+
+           <img className='img-logo' src="/imagenes/logoZiba.jpg" alt="logo ziba"   
+           width="200"
+           height="75"
+          
+         />
+       
+       </div>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${'md'}`} />
         <Navbar.Offcanvas
               id={`offcanvasNavbar-expand-${'md'}`}
@@ -40,12 +52,17 @@ export function Menu() {
                 </Offcanvas.Title>
               </Offcanvas.Header>
               <Offcanvas.Body>
+              
                 <Nav className="menu justify-content-center  align-items-center flex-grow-1 pe-3">
                   <Nav.Link onClick={() => {router.push('/home')}} className='links'>INICIO</Nav.Link>
                   <Nav.Link href="#services" className='links'>SERVICIOS</Nav.Link>
                   <Nav.Link href="#contactInfo" className='links'>CONTACTO</Nav.Link>
                 </Nav>
-                <Nav className="align-items-center d-flex">
+               
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+            <div>
+            <Nav className="align-items-center d-flex">
                  { !isActive ? (
                       <Dropdown>
                       <Dropdown.Toggle variant="success" id="dropdown-basic">
@@ -63,10 +80,9 @@ export function Menu() {
                     <i className="bi bi-person-circle"></i>
               
                 </Nav>
-              </Offcanvas.Body>
-            </Navbar.Offcanvas>
+            </div>
         </Container>
       </Navbar>
+      </div>
     );
   }
-  
