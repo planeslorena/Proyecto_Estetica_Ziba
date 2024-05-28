@@ -1,16 +1,43 @@
-.div1{
-    height: 15rem; 
-    width: 500px;
+.appointment-list-container{
+    height: 30rem; 
+    width: 40rem;
     position: relative;
 }
 
-.div2{
+.scroller-container{
     max-height: 100%;
-     overflow:auto;
-     box-shadow: -2px 2px 5px 0px #987A9D;
+    overflow:auto;
+    box-shadow: -2px 2px 5px 0px #987A9D;
 }
 
-.div3{
-    height:1500px;
+.scroller-title{
+    display: flex;
+    justify-content: center;
+    padding-top: 5%;
+    padding-bottom: 1%;
+}
+
+.appointment-cards{
+    height: 100px;
+    width:100%;
     border:5px solid yellow;
+}
+
+.appointment-cards-container{
+    padding: 0% 2% 2% 2%;
+
+}
+
+.card-container{
+    display: flex;
+}
+
+.img-appointment-card{
+    height: fit-content;
+    width: 20%;
+    margin: 2% 2% 0 2%;
+}
+
+.card{
+    border-radius: 0 !important;
 }
