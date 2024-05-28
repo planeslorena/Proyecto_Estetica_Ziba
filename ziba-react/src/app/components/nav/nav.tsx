@@ -6,24 +6,35 @@ import { Dropdown, Offcanvas } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useRouter } from 'next/navigation';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '@/app/context/user.context';
 
 export function Menu() {
   const router = useRouter();
   const [isActive, setIsActive] = useState<boolean>(false);
-  let clientName = 'Lore';
-  const isLoged = () => {
-    const token = sessionStorage.getItem('accessToken')
-    if (token) {
-      setIsActive(true);
+  const { userData, setUserData } = useContext(UserContext);
+
+  const routerRole = () => {
+    if (userData?.role == 'client') {
+      router.push('/client');
+    } else if (userData?.role == 'admin') {
+      router.push('/admin');
     }
-    router.push('/authPage');
   }
 
   const logOut = () => {
     sessionStorage.removeItem('accessToken');
+    setUserData(undefined);
+    setIsActive(false);
     router.push('/home');
   }
+
+  useEffect(() => {
+    const token = sessionStorage.getItem("accessToken");
+    if (token) {
+      setIsActive(true);
+    }
+  }, []);
 
     return (
       <Navbar key={'md'} expand={'md'} className="mb-3">
@@ -46,18 +57,18 @@ export function Menu() {
                   <Nav.Link href="#contactInfo" className='links'>CONTACTO</Nav.Link>
                 </Nav>
                 <Nav className="align-items-center d-flex">
-                 { !isActive ? (
+                 { isActive ? (
                       <Dropdown>
                       <Dropdown.Toggle variant="success" id="dropdown-basic">
-                        Hola, {clientName}!
+                        Hola, {userData?.name}!
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => {router.push('/client')}}>Perfil</Dropdown.Item>
+                        <Dropdown.Item onClick={() => {routerRole()}}>Perfil</Dropdown.Item>
                         <Dropdown.Item onClick={logOut}>Cerrar sesión</Dropdown.Item>
                       </Dropdown.Menu>
                     </Dropdown>
                     ) : (
-                      <Nav.Link className='cuenta' onClick={isLoged}>CUENTA</Nav.Link>
+                      <Nav.Link className='cuenta' onClick={() => router.push('/authPage')}>CUENTA</Nav.Link>
                     )
                   }             
                     <i className="bi bi-person-circle"></i>
