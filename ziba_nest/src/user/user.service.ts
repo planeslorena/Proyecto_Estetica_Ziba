@@ -1,5 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { DatabaseService } from './db.service';
+import { DatabaseService } from '../common/services/db.service';
 import * as bcrypt from 'bcryptjs';
 import { ResultSetHeader, RowDataPacket } from 'mysql2/promise';
 import userQueries from './queries/user.queries';
@@ -12,7 +12,7 @@ export class UserService {
     }
 
     async getUserByMail(mail: string): Promise<User> {
-        //Obtengo el usuario consultado de la base de datos filtrando por mail
+        //Se obtiene el usuario de la base de datos filtrando por mail
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
             userQueries.selectUserByMail,
             [mail],
@@ -25,45 +25,45 @@ export class UserService {
         } else {
             return {
                 mail: resultQuery[0].mail, 
-                password: resultQuery[0].password,
                 role: resultQuery[0].role,
                 name: resultQuery[0].name,
+                lastname: resultQuery[0].lastname, 
                 dni:resultQuery[0].dni,
                 phone: resultQuery[0].phone,
             };
         }
     }
 
-    async createUser(user: User): Promise<User> {
-        //Encripto la contraseña que me llega de la registración
+    async createUser(user: User): Promise<string> {
+        //Se encripta la contraseña que llega de la registración
         const salt = await bcrypt.genSalt(8);
         const passEncryp = await bcrypt.hash(user.password, salt);
 
-        //Acomodo los datos para insertarlos en la DB
+        //Se acomodan los datos para insertarlos en la DB
         user = {
             ...user,
             mail: user.mail.toLocaleLowerCase(), //pongo el mail todo en minuscula
-            password: passEncryp,
+            password: passEncryp, //se carga contraseña encriptada
             name: user.name.toUpperCase(),
+            lastname: user.lastname.toUpperCase(),
+
         }
 
-        //Inserto la info en la DB
+        //Se inserta la info en la DB
         try {
-            const resultQuery: ResultSetHeader = await this.dbService.executeQuery(
+            await this.dbService.executeQuery(
                 userQueries.insertUser,
                 [
                     user.mail,
                     user.password,
                     user.name,
+                    user.lastname,
                     user.dni,
                     user.phone,
                     user.role
                 ],
             );
-            return {
-                ...user,
-                id_user: resultQuery.insertId,
-            };
+            return 'Usuario creado con exito';
         } catch (error) {
             //Si la DB retorna el error 1062 quiere decir que el mail ya existe en la misma
             if (error.errno == 1062) {

@@ -7,6 +7,7 @@ create table if not exists users (
 	mail varchar(100) not null,
 	password varchar(200) not null,
 	name varchar (100) not null,
+	lastname varchar(100) not null,
 	dni int not null,
 	phone bigint not null,
 	role varchar(10) not null,
