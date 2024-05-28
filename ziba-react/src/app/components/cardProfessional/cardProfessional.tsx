@@ -34,7 +34,7 @@ export function CardProfessional() {
 
     <main className='carousel-background'>
 
-      <h3 className='title-carousel'>Profesionales y servicios</h3>
+      
       <div className='container-button-reservation'>
       <button className='button-reservation'>Reserve aquí su turno</button>
       </div>
@@ -47,11 +47,12 @@ export function CardProfessional() {
                 return (
                   <div className='card-container'>
                     <Card key={index} className='card-content' style={{ width: "18rem" }}>
-                      <Card.Img variant="top" src={`imagenes/professionals/${item.profesion}.png`} />
+                    
                       <Card.Body>
                         <Card.Title className='title-card'>{item.profesion}</Card.Title>
                         <Card.Text className='title-text'>{item.nombre}</Card.Text>
-
+                        <Card.Img className="img-carousel" variant="top" src={`imagenes/professionals/${item.profesion}.png`} />
+                        <div className='square-carousel'></div>
                       </Card.Body>
                     </Card>
                   </div>
