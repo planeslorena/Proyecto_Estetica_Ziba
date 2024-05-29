@@ -63,7 +63,7 @@ export function Menu() {
             </Navbar.Offcanvas>
             <div>
             <Nav className="align-items-center d-flex">
-                 { !isActive ? (
+                 { isActive ? (
                       <Dropdown>
                       <Dropdown.Toggle variant="success" id="dropdown-basic">
                         Hola, {clientName}!

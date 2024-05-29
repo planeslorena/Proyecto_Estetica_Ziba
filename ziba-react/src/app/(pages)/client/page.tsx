@@ -1,5 +1,5 @@
 'use client'
-import { Logo } from "@/app/components/logo/logo";
+
 import { Menu } from "@/app/components/nav/nav";
 
 export default function AdminPage() {
@@ -7,7 +7,7 @@ export default function AdminPage() {
     <>
       <header>
         <div>
-            <Logo></Logo>
+      
             <Menu></Menu>
         </div>
 
