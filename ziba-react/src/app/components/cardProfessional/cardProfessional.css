@@ -10,7 +10,7 @@
 
 .img-carousel{
     margin: auto;
-    width: 60px;
+    width: 60px !important;
     height: 60px;
     display: flex;
     justify-content: center;
