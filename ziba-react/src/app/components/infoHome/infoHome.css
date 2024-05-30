@@ -1,28 +1,37 @@
 .square-info-home{
-    background-color: #dcc9dd;
-    width: auto;
-    height: 350px;
+    background-image:url(./../../../../public/imagenes/background-infohome.png);
+    width: 100%;
+    height: 400px;
     margin-top: 10%;
-  
-    
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.border-square-two{
+    border: solid 2px white ;
+    padding: 10px;
+}
+.border-square{
+    border: solid 2px white ;
+    padding: 15px;
 }
 
 .title-info-home{
     text-align: center;
     font-size: 30px;
     color: #423155;
-   
-    
-    
+    padding-top: 20px;
+}
+
+.text-info-home{
+    text-align: center;
+    margin-left: 10px;
+    margin-left: 10px;
+    margin-top: 25px;
 }
 
 .square-two-info{
     background-color: white;
     width: 700px;
     height: 300px;
-    
-    /*margin-left: auto;
-    margin-right: auto;*/
-   
-   
 }
