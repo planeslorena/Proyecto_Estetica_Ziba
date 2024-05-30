@@ -1,7 +1,8 @@
 'use client'
+import { withRoles } from "@/app/components/HOC/whitRoles";
 import { Menu } from "@/app/components/nav/nav";
 
-export default function AuthPage() {
+function AdminPage() {
   return (
     <>
       <header>
@@ -18,3 +19,5 @@ export default function AuthPage() {
     </>
   )
 }
+
+export default withRoles(AdminPage,'admin', '/home')

@@ -31,12 +31,11 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
     const { register, handleSubmit, formState: { errors, isValid }, watch } = useForm<datos>({ mode: 'onChange' });
 
     const onSubmit: SubmitHandler<datos> = async (datos) => {
-
-        console.log(datos);
         const user = {
             mail: datos.email,
             password: datos.password,
-            name: `${datos.name} ${datos.lastname}`,
+            name: datos.name,
+            lastname:datos.lastname,
             dni: datos.dni,
             phone: datos.phone,
             role: 'client'
@@ -47,8 +46,8 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
            setErrorRegister('El mail indicado ya se encuentra registrado.')
         } else {
             Swal.fire({
-            title: "Bienvenido",
-            text: "Ya puedes empezar a disfrutar de nuestros servicios!",
+            title: `Hola ${datos.name}!`,
+            text: "Ya podes empezar a disfrutar de nuestros servicios!",
             icon: "success"
             });
             onSwitchToLogin();
