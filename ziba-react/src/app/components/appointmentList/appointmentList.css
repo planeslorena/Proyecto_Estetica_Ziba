@@ -6,9 +6,8 @@
 }
 
 .scroller-container{
-    max-height: 50rem;
+    height: 40rem;
     overflow:auto;
-    box-shadow: -2px 2px 5px 0px #987A9D;
     margin: 0% 5%;
     padding: 2% 0%;
 }
@@ -53,14 +52,23 @@
 
 }
 
+.card-body{
+    padding: 2% !important;
+}
+
+.card{
+    border: none !important;
+}
+
 .card-container{
     display: flex;
+    padding: 1%;
+    box-shadow: -2px 2px 5px 0px #987A9D;
 }
 
 .img-appointment-card{
-    height: fit-content;
-    width: 20%;
-    margin: 2% 2% 0 2%;
+    width: 22%;
+    margin: 2%;
 }
 
 .prof-text{
@@ -70,8 +78,23 @@
 
 .time-text{
     padding-left: 2%;
+    height: 1%;
+}
+
+.service-text{
+    height: auto;
+    margin-bottom: 0 !important;
+}
+
+.day-text{
+    height: 1%;
+    margin-bottom: 0 !important;
 }
 
 .card{
     border-radius: 0 !important;
+}
+
+.card-title{
+    margin-bottom: 0 !important;
 }

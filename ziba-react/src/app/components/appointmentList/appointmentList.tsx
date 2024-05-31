@@ -115,18 +115,20 @@ export const AppointmentList = () => {
             <Card className='appointment-cards'>
               <div className='card-container'>
               <img className='img-appointment-card' src={`imagenes/professionals/${card.profesion}.png`} />
-              <Card.Body>
+              <Card.Body className='d-flex flex-column justify-content-between'>
                 <div className='d-flex align-items-baseline'>
                   <Card.Title>{card.servicio}</Card.Title>
                   <Card.Text className='prof-text'>
                     {card.nombre}
                   </Card.Text>
                 </div>
-                <Card.Text>
-                  Servicio: {card.especialidad}
-                </Card.Text>
+                <div className='service-text'>
+                  <Card.Text>
+                    Servicio: {card.especialidad}
+                  </Card.Text>
+                </div>
                 <div className='d-flex'>
-                <Card.Text>
+                <Card.Text className='day-text'>
                   Día: {new Date(card.dia).getDate()}{'/'}{new Date(card.dia).getMonth()+1}{'/'}{new Date(card.dia).getFullYear()}
                 </Card.Text>
                 <Card.Text className='time-text'>
