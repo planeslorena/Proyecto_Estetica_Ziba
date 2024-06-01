@@ -3,20 +3,20 @@
 import React from "react";
 import './infoHome.css'
 
-export const Cafeteria = () => {
+export const InfoHome = () => {
 
     return (
         <>
-            <h2 className="title-cafe">¡Mimate,relajate y disfruta de tu infusión favorita!</h2>
-            <div className='container-img-infohome'>
-                
-                <img className='img-armchairs' src="/imagenes/armchairs.jpg" alt="image armchairs" />
-                <img className='img-cafeteria' src="/imagenes/cafeteria.jpg" alt="image cafeteria" />
-               
-                <div className='square-violet'> </div>
-                <div className='border-violet'><p className="text-square">Zibá te invita a qué conozcas el nuevo espacio pensado para vos, no solo brindamos nuestros servicios para tu cuidado personal, si no tambien para que te relajes sola o en compañia en nuestra nueva cafeteria, donde vas a poder disfrutar de un rico desayuno o merienda.</p> </div>
+
+            <div className='square-info-home d-flex justify-content-center align-items-center'>
+                <div className='border-square'>
+                    <div className='border-square-two'>
+                        <div className='square-two-info'> <p className='title-info-home'> ¿Por qué elegir Zibá?</p> <p className="text-info-home">En el centro de estética integral Zibá, ubicado en la ciudad de Olvarría, ofrecemos los mejores servicios con capacitación constante y la última tecnología para que te renueves por dentro y por fuera. Nuestra atención es personalizada, siendo la seguridad y privacidad de cada paciente pilares de nuestro trabajo. La meta principal es ofrecer un tratamiento acorde a las necesidades de cada paciente; para realzar la belleza, sin perder la naturalidad. </p></div>
+                    </div>
+
+                </div>
             </div>
-           
+
         </>
 
 

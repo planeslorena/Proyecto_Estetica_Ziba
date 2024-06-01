@@ -10,8 +10,15 @@ const createClient = () => {
 const clientAxios = createClient();
 export default clientAxios;
 
+//crea un interceptor de la request, cuando se envia una request con el clientAxios chequea si hay token y lo agrega en los headers
+clientAxios.interceptors.request.use((request) => {
+  if (sessionStorage.getItem("accessToken")) {
+    request.headers.Authorization = `Bearer ${sessionStorage.getItem("accessToken")}`;
+  }
+  return request;
+})
 
-export const setAuthToken = (token:any) => {
+/*export const setAuthToken = (token:any) => {
   if (token) {
       // Si hay token vigente lo carga en los headers
       clientAxios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -20,7 +27,7 @@ export const setAuthToken = (token:any) => {
       delete clientAxios.defaults.headers.common['Authorization'];
   }
 };
-
+*/
 
 /*
 clienteAxios.interceptors.response.use(
