@@ -10,9 +10,10 @@ export class ServicesService {
     constructor(private dbService: DatabaseService) {
     }
 
-
-    
+    //Funcion que obtiene todos los servicios brindados por la estetica
     async getAll(): Promise<Services[]> {
+
+        //Primero se obtienen las especialidades
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
             servicesQueries.selectAllSpecialties,
             [],
@@ -26,6 +27,7 @@ export class ServicesService {
             };
         });
 
+        //luego obtengo los servicios para cada especilidad
         const resultQuery2: RowDataPacket[] = await this.dbService.executeSelect(
             servicesQueries.selectAllServices,
             [],

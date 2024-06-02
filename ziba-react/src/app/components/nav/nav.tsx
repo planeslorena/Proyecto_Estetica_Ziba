@@ -68,8 +68,8 @@ export function Menu() {
           <Offcanvas.Body>
             <Nav className="menu justify-content-center  align-items-center flex-grow-1 pe-3">
               <Nav.Link onClick={() => { router.push('/home') }} className='links'>INICIO</Nav.Link>
-              <Nav.Link href="#services" className='links'>SERVICIOS</Nav.Link>
-              <Nav.Link href="#contactInfo" className='links'>CONTACTO</Nav.Link>
+              <Nav.Link onClick={() => { router.push('/home#services') }} className='links'>SERVICIOS</Nav.Link>
+              <Nav.Link onClick={() => { router.push('/services') }} className='links'>CONTACTO</Nav.Link>
             </Nav>
             <Nav className="align-items-center d-flex">
               {isActive ? (

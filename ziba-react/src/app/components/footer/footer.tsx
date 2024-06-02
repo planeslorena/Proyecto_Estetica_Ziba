@@ -4,7 +4,7 @@ import './footer.css'
 export const Footer = () => {
 
     return (
-        <section id='linkcontacto'>
+        <section id='contactInfo'>
             <div className= 'contacto'>
                 <div className='logo'>
                     <img src='imagenes/logoFooter.jpg'/>
