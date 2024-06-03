@@ -13,7 +13,7 @@ export const InfoUser = () => {
                </div>
                {usuario.map((item: any) => {
                    return (
-                       <ul className="info-list">
+                       <ul key={item} className="info-list">
                            <li className='item-list'>
                                <h5 className='item-list-title'>Nombre</h5>
                                <p>{item.nombre}</p>

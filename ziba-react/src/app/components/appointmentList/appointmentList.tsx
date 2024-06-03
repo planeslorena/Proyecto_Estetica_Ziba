@@ -138,7 +138,7 @@ export const AppointmentList = () => {
               <div className='card-container'>
               <img className='img-appointment-card' src={`imagenes/professionals/${card.profesion}.png`} />
               <Card.Body className='d-flex flex-column justify-content-between'>
-                <div className='d-flex align-items-baseline justify-content-between'>
+                <div className='d-flex flex-wrap Salign-items-baseline justify-content-between'>
                   <Card.Title>{card.servicio}</Card.Title>
                   <Card.Text className='prof-text'>
                     {card.nombre}
@@ -149,7 +149,7 @@ export const AppointmentList = () => {
                     Servicio: {' '}{card.especialidad}
                   </Card.Text>
                 </div>
-                <div className='d-flex justify-content-between'>
+                <div className='d-flex flex-wrap justify-content-between'>
                 <Card.Text className='day-text'>
                   Día:{' '}{new Date(card.dia).getDate()}{'/'}{new Date(card.dia).getMonth()+1}{'/'}{new Date(card.dia).getFullYear()}
                 </Card.Text>
@@ -159,16 +159,16 @@ export const AppointmentList = () => {
                 </div>
               </Card.Body>
               <OverlayTrigger
-          key='bottom'
-          placement='bottom'
-          overlay={
-            <Tooltip id='tooltip-bottom'>
-              Cancelar turno
-            </Tooltip>
-          }
-        >
-          <CloseButton onClick={cancelAppointment} className='cancel-appointment-cross' aria-label="Hide" />
-        </OverlayTrigger>
+                key='bottom'
+                placement='bottom'
+                overlay={
+                  <Tooltip id='tooltip-bottom'>
+                    Cancelar turno
+                  </Tooltip>
+                }
+              >
+              <CloseButton onClick={cancelAppointment} className='cancel-appointment-cross' aria-label="Hide" />
+              </OverlayTrigger>
                 
               </div>
             </Card>

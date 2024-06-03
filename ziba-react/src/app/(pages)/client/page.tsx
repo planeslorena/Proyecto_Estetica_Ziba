@@ -19,11 +19,15 @@ export default function AdminPage() {
 
       <main>
         <div className="d-flex">
-        <div>
-          <InfoUser></InfoUser>
-          <NewAppointment></NewAppointment>
-        </div>
-          <AppointmentList></AppointmentList>
+          <div className="d-flex flex-column">
+            <InfoUser></InfoUser>
+            <div className="new-appointment">
+              <NewAppointment></NewAppointment>
+            </div>
+          </div>
+          <div className="appointment-list">
+            <AppointmentList></AppointmentList>
+          </div>
         </div>
       </main>
     </>
