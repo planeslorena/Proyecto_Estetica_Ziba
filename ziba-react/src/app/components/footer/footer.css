@@ -2,6 +2,7 @@
     align-self: center;
     justify-self: center;
     padding: 3%;
+    
 }
 
 .links{
@@ -58,12 +59,7 @@ a {
 }
 
 
-.mapa{
-    display:flex;
-    flex-direction: row;
-    align-items: flex-end;
-    width: 700px;
-}
+
 
 iframe{
     width: 100%;
