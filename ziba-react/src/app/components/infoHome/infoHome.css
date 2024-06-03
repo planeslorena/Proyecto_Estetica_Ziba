@@ -1,5 +1,5 @@
 .square-info-home{
-    background-image:url(./../../../../public/imagenes/background-infohome.png);
+    background-color: #B89898;
     width: 100%;
     height: 400px;
     margin-top: 10%;
@@ -19,7 +19,7 @@
 .title-info-home{
     text-align: center;
     font-size: 30px;
-    color: #423155;
+    color: #594545;
     padding-top: 20px;
 }
 

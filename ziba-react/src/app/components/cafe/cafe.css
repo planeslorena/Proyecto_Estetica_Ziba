@@ -9,7 +9,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    color: #423155;
+    color: #594545;
     margin-top: 10%;
 }
 .img-cafeteria{
@@ -28,7 +28,7 @@
 .square-violet{
     height: 210px;
     width: 370px;
-    background-color: #d0c1cf98;
+    background-color: #b8989871;
     position: absolute;
     margin-top: 270px;
     margin-right: 340px;
@@ -39,12 +39,13 @@
     margin-top: 20px;
     margin-left: 20px;
     margin-right: 20px;
+    color: #594545;
 }
 
 .border-violet{
     height: 210px;
     width: 370px;
-    border: 2px solid rgb(138, 90, 138);
+    border: 2px solid #594545;
     position: absolute;
     margin-top: 285px;
     margin-right: 320px;

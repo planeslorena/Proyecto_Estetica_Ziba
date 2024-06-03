@@ -56,9 +56,9 @@ export const LoginForm: React.FC<loginFormProps> = ({ onSwitchToRegister }) => {
     return (
         <>
             <div className='container-form-login '>
-                <div className="image-login"></div>
+                <div className="image-login d-flex justify-content align-items"></div>
                 <div className='form-login'>
-                    <img src="/imagenes/logoziba-small.png" alt="" className="img-logoziba-small-login" onClick={() => router.push('/home')} />
+                    <img src="/imagenes/logoziba-small.png" alt="" className="img-logoziba-small-login d-flex justify-content align-items" onClick={() => router.push('/home')} />
                     <h3 className="title-login">Iniciar sesión</h3>
                     <form onSubmit={handleSubmit(onSubmit)} className="login-form">
                         <div>
