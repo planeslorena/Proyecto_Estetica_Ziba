@@ -12,8 +12,8 @@
 
 .menu{
     margin-left: 10%;
-    width: 100vw;
-    height: 55px;
+    width: 80%;
+    
     display: flex;
     justify-content: center;
     align-content: center; 
@@ -55,7 +55,21 @@
 
 }
 
-@media screen and (max-width: 376px){
+.dropdown-toggle::after {
+    display: none !important; 
+  }
+
+  .btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active, .btn {
+    color: #000 !important;
+    background-color: transparent !important;
+    border-color: transparent !important;
+  }
+
+  .dropdown-menu{
+    border-radius: 0px !important;
+  }
+
+/*@media screen and (max-width: 376px){
     .menu{
         display: flex;
         justify-content: center;
@@ -81,4 +95,4 @@
         padding: 0 10px;
         font-size: 16px;
     }
-}
+}*/
