@@ -83,7 +83,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                     <h3 className="title-register">Crea una cuenta</h3>
                     <form onSubmit={handleSubmit(onSubmit)} className="form">
                         <div className="fields-name-and-lastname">
-                            <div>
+                            <div className="field-name">
                                 <label className='form-label-register'>Nombre</label>
                                 <input className='form-input-register'
                                     placeholder="Ingrese su nombre"
@@ -179,7 +179,7 @@ export const RegisterForm: React.FC<registerProps> = ({ onSwitchToLogin }) => {
                             <small className='text-validation-register'>{errors.phone?.message}</small>
                         </div>
                         <div className="fields-passwords">
-                            <div>
+                            <div className="field-password">
                                 <label className='form-label-register'>Contraseña</label>
                                 <div className="password-input-register">
                                     <input className='form-input-register'

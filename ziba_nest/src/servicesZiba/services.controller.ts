@@ -9,7 +9,7 @@ export class ServicesController {
   constructor(private servicesService: ServicesService) {}
   
   @Get()
-  async getAllProf() {
+  async getAllServices() {
     return this.servicesService.getAll();
   }
 

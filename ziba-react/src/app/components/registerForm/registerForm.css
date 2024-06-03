@@ -52,6 +52,25 @@ body{
   box-shadow: 2px 2px#594545;
 }
 
+.form-input-register:focus {
+  border-color: #594545 !important;
+  outline: none !important;
+}
+
+
+.form-input-register::-ms-reveal,
+.form-input-register::-ms-clear {
+  display: none;
+}
+
+.field-name {
+  margin-right: 3px;
+}
+
+.field-password {
+  margin-right: 3px;
+}
+
 .title-register{
   display: flex;
   flex-direction: column;
@@ -95,7 +114,7 @@ body{
 .button-register{
   background-color: #9e7676;
   margin-top: 15px;
-  width:400px ;
+  width:100%;
   color: white;
 
 }

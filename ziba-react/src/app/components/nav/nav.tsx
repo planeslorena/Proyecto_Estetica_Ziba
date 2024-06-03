@@ -57,7 +57,7 @@ export function Menu() {
         < div>
           <img className='img-logo' src="/imagenes/logoZiba.jpg" alt="logo ziba"
             width="200"
-            height="75" />
+            height="75" onClick={() => { router.push('/home')}} />
         </div>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${'md'}`} />
         <Navbar.Offcanvas
@@ -73,8 +73,8 @@ export function Menu() {
           <Offcanvas.Body>
             <Nav className="menu justify-content-center  align-items-center flex-grow-1 pe-3">
               <Nav.Link onClick={() => { router.push('/home') }} className='links'>INICIO</Nav.Link>
-              <Nav.Link onClick={() => { router.push('/home#services') }} className='links'>SERVICIOS</Nav.Link>
-              <Nav.Link onClick={() => { router.push('/services') }} className='links'>CONTACTO</Nav.Link>
+              <Nav.Link onClick={() => { router.push('/services') }} className='links'>SERVICIOS</Nav.Link>
+              <Nav.Link onClick={() => { router.push('/home#contactInfo') }} className='links'>CONTACTO</Nav.Link>
             </Nav>
             <Nav className="align-items-center d-flex">
               {isActive ? (

@@ -39,8 +39,18 @@ body{
     background-color: var(--bs-body-bg);
     background-clip: padding-box;
     border: var(--bs-border-width) solid var(--bs-border-color);
-    transition: border-color .15s ease-in-out, box-shadow #9e7676 .15s ease-in-out;
+    transition: border-color .15s ease-in-out;
     box-shadow: 2px 2px  #594545;
+  }
+
+  .form-input-login:focus {
+    border-color: #594545 !important;
+    outline: none !important;
+  }
+
+  .form-input-login::-ms-reveal,
+  .form-input-login::-ms-clear {
+    display: none;
   }
 
   .title-login{
@@ -91,7 +101,7 @@ body{
   .button-login{
     background-color: #9e7676;
     margin-top: 15px;
-    width:335px ;
+    width:100% ;
     color: white;
 
   }
