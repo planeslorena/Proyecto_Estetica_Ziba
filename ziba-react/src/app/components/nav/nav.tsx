@@ -54,6 +54,11 @@ export function Menu() {
   return (
     <Navbar key={'md'} expand={'md'} className="mb-3">
       <Container fluid>
+        < div>
+          <img className='img-logo' src="/imagenes/logoZiba.jpg" alt="logo ziba"
+            width="200"
+            height="75" />
+        </div>
         <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${'md'}`} />
         <Navbar.Offcanvas
           id={`offcanvasNavbar-expand-${'md'}`}
