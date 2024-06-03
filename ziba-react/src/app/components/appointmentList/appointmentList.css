@@ -3,14 +3,31 @@
     width: 40rem;
     position: relative;
     box-shadow: -2px 2px 5px 0px #987A9D;
+    margin-left: 5%
 }
 
 .scroller-container{
     height: 40rem;
     overflow:auto;
     margin: 0% 5%;
-    padding: 2% 0%;
+  
+    
 }
+
+.scroller-container::-webkit-scrollbar {
+    width: 1rem;
+    height:fit-content;
+  }
+
+  .scroller-container::-webkit-scrollbar-track {
+        background-color: #e4e4e4;
+        border-radius: 0 !important;
+      }
+      
+      .scroller-container::-webkit-scrollbar-thumb {
+        background-color: #d4aa70;
+        border-radius: 0 !important;
+      }
 
 .scroller-title{
     display: flex;
@@ -77,7 +94,7 @@
 }
 
 .time-text{
-    padding-left: 2%;
+    
     height: 1%;
 }
 
@@ -97,4 +114,33 @@
 
 .card-title{
     margin-bottom: 0 !important;
+}
+
+.cancel-appointment{
+    align-self: center;
+    margin-right: 2%;
+    padding: 8% 2%;
+}
+
+.cancel-appointment-cross{
+    margin: 2%;
+}
+
+.cancel-appointment-cross:focus{
+    box-shadow: none !important;
+}
+
+.tooltip > div.tooltip-inner {
+    background-color: rgba(0, 0, 0, 0.137) !important;
+    color: black !important;
+    font-family: inherit !important;
+    border-radius: 0 !important;
+  }
+  
+  .tooltip.show {
+    opacity: 1 !important;
+  }
+  
+  .bs-tooltip-bottom > .tooltip-arrow::before {
+    border-bottom-color: transparent !important;  
 }

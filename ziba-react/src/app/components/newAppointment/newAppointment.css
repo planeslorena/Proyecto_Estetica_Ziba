@@ -1,0 +1,13 @@
+.client-appointment-button-container{
+    width:auto;
+    height: auto;
+    border: 5px solid black;
+    margin-left: 5%;
+}
+
+.client-appointment-button{
+    background-color: blueviolet;
+    color: white;
+    border: none;
+    height:auto;
+}

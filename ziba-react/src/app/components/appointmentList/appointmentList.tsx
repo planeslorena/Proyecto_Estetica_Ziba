@@ -1,30 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import './appointmentList.css'
-import { Card, Dropdown } from 'react-bootstrap';
+import { Card, CloseButton, Dropdown, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 
 const cardsData = [{
   profesion: 'depiladora',
   servicio: 'Depilación',
   nombre: 'Prof. Romina Benegas',
   especialidad: 'Depilación brasileña',
-  dia: '2024/05/29',
-  horario: '20:00:00',
+  dia: '2024/06/2',
+  horario: '20:00',
 },
 {
   profesion: 'cosmetóloga',
   servicio: 'Cosmetología',
   nombre: 'Prof. Marisa Ruiz',
   especialidad: 'Peeling',
-  dia: '2024/05/27',
-  horario: '15:00:00',
+  dia: '2024/06/27',
+  horario: '15:00',
 },
 {
   profesion: 'cosmetóloga',
   servicio: 'Cosmetología',
   nombre: 'Prof. Marisa Ruiz',
   especialidad: 'Limpieza Facial',
-  dia: '2024/05/27',
-  horario: '16:00:00',
+  dia: '2024/06/5',
+  horario: '16:00',
 },
 {
   profesion: 'masajista',
@@ -32,19 +33,19 @@ const cardsData = [{
   nombre: 'Prof. Naomi Almeida',
   especialidad: 'Masaje cuerpo entero',
   dia: '2024/06/14',
-  horario: '17:00:00',
+  horario: '17:00',
 },
 {
   profesion: 'manicura',
   servicio: 'Manicuría',
   nombre: 'Prof. Maiten Suarez',
   especialidad: 'Esculpidas',
-  dia: '2024/05/30',
-  horario: '18:00:00',
+  dia: '2024/07/30',
+  horario: '18:00',
 }];
 
 export const AppointmentList = () => {
-  const [filter, setFilter] = useState('Todas');
+  const [filter, setFilter] = useState('Año');
   const [filteredCards, setFilteredCards] = useState<typeof cardsData>(cardsData);
 
 
@@ -94,13 +95,34 @@ export const AppointmentList = () => {
     setFilteredCards(filtered);
   };
 
+  const cancelAppointment = () => {
+      Swal.fire({
+        title: "¿Está seguro?",
+        text: "Una vez cancelado el turno, no se puede revertir.",
+        icon: "warning",
+        background: "#fff",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Aceptar",
+        cancelButtonText: "Cerrar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "¡Cancelado!",
+            text: "El turno ha sido cancelado exitosamente.",
+            icon: "success"
+          });
+        }
+      });
+  }
+
   return (
     <div className='appointment-list-container'>
       <h4 className='scroller-title'>MIS TURNOS</h4>
       <Dropdown className='appointment-dropdown'>
         <Dropdown.Toggle >Filtrar por: {filter}</Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item onClick={() => setFilter('Todas')}>Todas</Dropdown.Item>
             <Dropdown.Item onClick={() => setFilter('Día')}>Día</Dropdown.Item>
             <Dropdown.Item onClick={() => setFilter('Semana')}>Semana</Dropdown.Item>
             <Dropdown.Item onClick={() => setFilter('Mes')}>Mes</Dropdown.Item>
@@ -116,7 +138,7 @@ export const AppointmentList = () => {
               <div className='card-container'>
               <img className='img-appointment-card' src={`imagenes/professionals/${card.profesion}.png`} />
               <Card.Body className='d-flex flex-column justify-content-between'>
-                <div className='d-flex align-items-baseline'>
+                <div className='d-flex align-items-baseline justify-content-between'>
                   <Card.Title>{card.servicio}</Card.Title>
                   <Card.Text className='prof-text'>
                     {card.nombre}
@@ -124,18 +146,30 @@ export const AppointmentList = () => {
                 </div>
                 <div className='service-text'>
                   <Card.Text>
-                    Servicio: {card.especialidad}
+                    Servicio: {' '}{card.especialidad}
                   </Card.Text>
                 </div>
-                <div className='d-flex'>
+                <div className='d-flex justify-content-between'>
                 <Card.Text className='day-text'>
-                  Día: {new Date(card.dia).getDate()}{'/'}{new Date(card.dia).getMonth()+1}{'/'}{new Date(card.dia).getFullYear()}
+                  Día:{' '}{new Date(card.dia).getDate()}{'/'}{new Date(card.dia).getMonth()+1}{'/'}{new Date(card.dia).getFullYear()}
                 </Card.Text>
                 <Card.Text className='time-text'>
-                  Hora: {card.horario}
+                  Hora:{' '}{card.horario}
                 </Card.Text>
                 </div>
               </Card.Body>
+              <OverlayTrigger
+          key='bottom'
+          placement='bottom'
+          overlay={
+            <Tooltip id='tooltip-bottom'>
+              Cancelar turno
+            </Tooltip>
+          }
+        >
+          <CloseButton onClick={cancelAppointment} className='cancel-appointment-cross' aria-label="Hide" />
+        </OverlayTrigger>
+                
               </div>
             </Card>
             </div>
