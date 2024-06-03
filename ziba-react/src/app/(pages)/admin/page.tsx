@@ -7,7 +7,6 @@ function AdminPage() {
     <>
       <header>
         <div>
-          
             <Menu></Menu>
         </div>
 

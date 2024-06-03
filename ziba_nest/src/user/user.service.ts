@@ -39,14 +39,23 @@ export class UserService {
         const salt = await bcrypt.genSalt(8);
         const passEncryp = await bcrypt.hash(user.password, salt);
 
+        //Pasar el nombre y apellido con la primera letra mayuscula
+        const fixNameAndLastname = (text:string): string => {
+            const arrayText = text.split(" ");
+
+            for (let i= 0; i < arrayText.length; i++) {
+                arrayText[i] = arrayText[i].charAt(0).toUpperCase() + arrayText[i].substring(1).toLowerCase();
+            }
+            return arrayText.join(" ");
+        }
+
         //Se acomodan los datos para insertarlos en la DB
         user = {
             ...user,
             mail: user.mail.toLocaleLowerCase(), //pongo el mail todo en minuscula
             password: passEncryp, //se carga contraseña encriptada
-            name: user.name.toUpperCase(),
-            lastname: user.lastname.toUpperCase(),
-
+            name: fixNameAndLastname(user.name),
+            lastname: fixNameAndLastname(user.lastname),
         }
 
         //Se inserta la info en la DB
