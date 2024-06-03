@@ -26,7 +26,7 @@
     font-size: 18px;
     display: flex;
     align-items: center !important;
-    color: #423155;
+    color: #594545;
     transition: .3;
 }
 
@@ -35,7 +35,7 @@
     text-decoration: none;
     font-size: 18px;
     align-items: center !important;
-    color: #423155;
+    color: #594545;
     transition: .3;
 }
 
@@ -45,12 +45,12 @@
 }
 
 .links:hover{
-    border-bottom: .5px solid #423155;
-    color: #a9a2b1 ;
+    border-bottom: .5px solid #594545;
+    color: #b89898 ;
 }
 
 .bi{
-    color:#423155;
+    color:#594545;
     font-size: 30px;
 
 }
