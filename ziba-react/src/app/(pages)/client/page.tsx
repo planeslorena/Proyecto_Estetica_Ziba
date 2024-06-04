@@ -19,7 +19,7 @@ function ClientPage() {
 
       <main>
         <div className="d-flex">
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column info-user-appointment">
             <InfoUser></InfoUser>
             <div className="new-appointment">
               <NewAppointment></NewAppointment>

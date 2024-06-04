@@ -86,7 +86,9 @@
     width: 22%;
     margin: 2%;
     box-shadow: 0px 4px 4px 0px #594545;
-    border: 1px solid #594545
+    border-bottom: 1px solid #594545;
+    border-left: 1px solid #594545;
+    border-right: 1px solid #594545;
 }
 
 .prof-text{
