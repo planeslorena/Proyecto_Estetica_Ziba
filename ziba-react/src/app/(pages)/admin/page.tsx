@@ -1,5 +1,6 @@
 'use client'
 import { withRoles } from "@/app/components/HOC/whitRoles";
+import { AdminTable } from "@/app/components/adminTable/adminTable";
 import { Menu } from "@/app/components/nav/nav";
 
 function AdminPage() {
@@ -13,7 +14,7 @@ function AdminPage() {
       </header>
 
       <main>
-        <h1>admin</h1>
+        <AdminTable/>
       </main>
     </>
   )
