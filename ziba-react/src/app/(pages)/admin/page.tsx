@@ -3,92 +3,247 @@ import { withRoles } from "@/app/components/HOC/whitRoles";
 import { AdminTable } from "@/app/components/adminTable/adminTable";
 import { Menu } from "@/app/components/nav/nav";
 import { createColumnHelper } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
 const dataClient = [
   {
+    id: 1,
     name: 'Guada',
-    lastName: 'Chojo',
+    lastname: 'Chojo',
     dni: 24000000,
     tel: 2284897534,
     email: 'guadachojo@gmail.com',
   },
   {
+    id: 2,
     name: 'Ayelen',
-    lastName: 'Porqueres',
+    lastname: 'Porqueres',
     dni: 24000000,
     tel: 2284897534,
     email: 'ayeporqueres@gmail.com',
   },
   {
+    id: 3,
     name: 'Lorena',
-    lastName: 'Planes',
+    lastname: 'Planes',
     dni: 24000000,
     tel: 2284897534,
     email: 'lolitaplanes@gmail.com',
   },
 ]
 
-const dataProf = [{}]
-const dataService = [{}]
-const dataAppoint = [{}]
+const dataProf = [{
+  id: 1,
+  name: 'Romina',
+  lastname: 'Benegas',
+  dni: 24000000,
+  tel: 2284897534,
+  email: 'romibenegas@gmail.com',
+  specialty: 'Depilación',
+},
+{
+  id: 2,
+  name: 'Marisa',
+  lastname: 'Ruiz',
+  dni: 24000000,
+  tel: 2284897534,
+  email: 'marisaruis@gmail.com',
+  specialty: 'Cosmetología',
+},
+{
+  id: 3,
+  name: 'Maiten',
+  lastname: 'Suarez',
+  dni: 24000000,
+  tel: 2284897534,
+  email: 'maitesuar@gmail.com',
+  specialty: 'Manicuría',
+},]
+
+const dataService = [{
+  id: 1,
+  specialty: 'Depilación',
+  name: 'Romina',
+  lastname: 'Benegas',
+  availability: '',
+},
+{
+  id: 2,
+  specialty: 'Cosmetología',
+  name: 'Marisa',
+  lastname: 'Ruiz',
+  availability: '',
+},
+{
+  id: 3,
+  specialty: 'Manicuría',
+  name: 'Maiten',
+  lastname: 'Suarez',
+  availability: '',
+},]
+
+const dataAppoint = [{
+  id: 1,
+  name: 'Romina',
+  lastname: 'Benegas',
+  dni: 24000000,
+  tel: 2284897534,
+  email: 'romibenegas@gmail.com',
+  specialty: 'Depilación',
+},
+{
+  id: 2,
+  name: 'Marisa',
+  lastname: 'Ruiz',
+  dni: 24000000,
+  tel: 2284897534,
+  email: 'marisaruis@gmail.com',
+  specialty: 'Cosmetología',
+},
+{
+  id: 3,
+  name: 'Maiten',
+  lastname: 'Suarez',
+  dni: 24000000,
+  tel: 2284897534,
+  email: 'maitesuar@gmail.com',
+  specialty: 'Manicuría',
+},]
+
+const columnsClient = [
+  {
+    header: "ID",
+    accessorKey: "id",
+  },
+  {
+    header: "Nombres",
+    accessorKey: "name",
+  },
+  {
+    header: "Apellido",
+    accessorKey: "lastname",
+  },
+  {
+    header: "DNI",
+    accessorKey: "dni",
+  },
+  {
+    header: "Teléfono",
+    accessorKey: "tel"
+  },
+  {
+    header: "Email",
+    accessorKey: "email",
+  },
+];
+
+const columnsProf = [
+  {
+    header: "ID",
+    accessorKey: "id",
+  },
+  {
+    header: "Nombres",
+    accessorKey: "name",
+  },
+  {
+    header: "Apellido",
+    accessorKey: "lastname",
+  },
+  {
+    header: "DNI",
+    accessorKey: "dni",
+  },
+  {
+    header: "Teléfono",
+    accessorKey: "tel"
+  },
+  {
+    header: "Email",
+    accessorKey: "email",
+  },
+  {
+    header: "Especialidad",
+    accessorKey: "specialty",
+  },
+];
+
+const columnsService = [{
+  header: "ID",
+  accessorKey: "id",
+},
+{
+  header: "Especialidad",
+  accessorKey: "specialty",
+},
+
+{
+  header: "Profesional",
+  accessorFn: (row:any) => `Prof. ${row.name} ${row.lastname}`,
+},
+{
+  header: "Horarios",
+  accessorKey: "availability",
+},]
+
+const columnsAppoint = [{
+  header: "ID",
+  accessorKey: "id",
+},
+{
+  header: "Especialidad",
+  accessorKey: "specialty",
+},
+{
+  header: "Profesional",
+  accessorFn: (row:any) => `Prof. ${row.name} ${row.lastname}`,
+},
+{
+  header: "Horarios",
+  accessorKey: "availability",
+},]
 
 function AdminPage() {
-  const [filter, setFilter] = useState('clientes');
-  const [filteredData, setFilteredData] = useState([]);
-  const [columns, setColumns] = useState<any>([]);
+  const [filter, setFilter] = useState('Clientes');
 
-  useEffect(() => {
-    filtered(filter);
-  }, [filter]);
-
-  const filtered = (filter:any) => {
-    let data: any;
+  const data = useMemo(() => {
     switch (filter) {
-      case 'clientes':
-        const filteredColumns = [
-          /* {
-            header: "ID",
-            accessorKey: "id",
-          }, */
-          {
-            header: "Nombres",
-            accessorKey: "name",
-          },
-          {
-            header: "Apellido",
-            accessorKey: "lastname",
-          },
-          {
-            header: "DNI",
-            accessorKey: "dni",
-          },
-          {
-            header: "Teléfono",
-            accessorKey: "tel"
-          },
-          {
-            header: "Email",
-            accessorKey: "email",
-          },
-        ]; 
-        setColumns(filteredColumns);
-        return data = dataClient;
-        break;
-      case 'profesionales':
-        return data = dataProf;
-        break;
-      case 'servicios':
-        return data = dataService;
-        break;
-      case 'turnos':
-        return data = dataAppoint;
-        break;
+      case 'Clientes':
+        return dataClient;
+
+      case 'Profesionales':
+        return dataProf;
+
+      case 'Servicios':
+        return dataService;
+
+      case 'Turnos':
+        return dataAppoint;
+
+      default:
+        return dataClient;
     }
-    setFilteredData(data);
-   
-  }
+  }, [filter])
+
+  const columns = useMemo(() => {
+    switch (filter) {
+      case 'Clientes':
+        return columnsClient;
+
+      case 'Profesionales':
+        return columnsProf;
+
+      case 'Servicios':
+        return columnsService;
+
+      case 'Turnos':
+        return columnsAppoint;
+
+      default:
+        return columnsClient;
+    }
+  }, [filter])
 
   return (
     <>
@@ -101,15 +256,16 @@ function AdminPage() {
 
       <main>
         <Dropdown>
-          <Dropdown.Toggle >{filter.toUpperCase()}</Dropdown.Toggle>
+          <Dropdown.Toggle >{filter}</Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item onClick={() => setFilter('clientes')}>Clientes</Dropdown.Item>
-            <Dropdown.Item onClick={() => setFilter('profesionales')}>Profesionales</Dropdown.Item>
-            <Dropdown.Item onClick={() => setFilter('servicios')}>Servicios</Dropdown.Item>
-            <Dropdown.Item onClick={() => setFilter('turnos')}>Turnos</Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilter('Clientes')}>Clientes</Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilter('Profesionales')}>Profesionales</Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilter('Servicios')}>Servicios</Dropdown.Item>
+            <Dropdown.Item onClick={() => setFilter('Turnos')}>Turnos</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <AdminTable data={filteredData} columns={columns} />
+        <AdminTable data={data} columns={columns} />
+        
       </main>
     </>
   )
