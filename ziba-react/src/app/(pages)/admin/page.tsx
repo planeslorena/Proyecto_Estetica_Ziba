@@ -31,6 +31,14 @@ const dataClient = [
     tel: 2284897534,
     email: 'lolitaplanes@gmail.com',
   },
+  {
+    id: 4,
+    name: 'Carla',
+    lastname: 'Rodriguez',
+    dni: 24000000,
+    tel: 2284897636,
+    email: 'carlitarodriguez@gmail.com',
+  },
 ]
 
 const dataProf = [{
@@ -254,7 +262,7 @@ function AdminPage() {
 
       </header>
 
-      <main>
+      <main className="dropdown-admin">
         <Dropdown>
           <Dropdown.Toggle >{filter}</Dropdown.Toggle>
           <Dropdown.Menu>
