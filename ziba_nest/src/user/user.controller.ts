@@ -8,6 +8,13 @@ export class UserController {
   
   constructor(private userService: UserService) {}
   
+  
+  @UseGuards(JwtMiddlewareGuard)
+  @Get('/clients')
+  async getAllClients() {
+    return this.userService.getAllClients();
+  }
+
   @UseGuards(JwtMiddlewareGuard)
   @Get('/info')
   async getUserInfo(@Req() request:any) {
