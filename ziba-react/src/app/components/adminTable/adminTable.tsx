@@ -13,9 +13,10 @@ import './adminTable.css'
 interface tableProps {
     data: any[];
     columns: any[];
+    filter: string; 
 }
 
-export const AdminTable: React.FC<tableProps> = ({ data, columns }) => {
+export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [filtering, setFiltering] = useState("");
@@ -43,7 +44,7 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns }) => {
                     value={filtering}
                     onChange={e => setFiltering(e.target.value)}
                 />
-                <button className='button-agregar'>Agregar cliente </button>
+                <button className='button-agregar'>Agregar {filter}</button>
             </div>
             <table className='table-admin-container'>
                 <thead className='table-admin-thead'>
@@ -74,7 +75,7 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns }) => {
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                             ))}
-                            <td table-admin-td><i className='bi bi-pencil' /> <i className='bi bi-trash3' /></td>
+                            <td table-admin-td><i className='bi bi-pencil icon-pencil' /> <i className='bi bi-trash3 icon-trash' /></td>
                         </tr>
                     ))}
                 </tbody>

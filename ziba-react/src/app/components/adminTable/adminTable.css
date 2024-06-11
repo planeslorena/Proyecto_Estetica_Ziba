@@ -52,17 +52,29 @@ tr:nth-child(even) {
 
 .icon-double-arrow{
     padding-left: 7px;
+    font-size: 20px !important;
 }
 
 .icon-down{
     padding-left: 7px;
+    font-size: 20px !important;
 }
 
 .icon-up{
     padding-left: 7px;
+    font-size: 20px !important;
 }
 
 .body-ajustes{
-    text-align: left;  
+    text-align: center;  
     padding: 16px;
+}
+
+.icon-pencil{
+    font-size: 24px !important;
+
+}
+
+.icon-trash{
+    font-size: 24px !important;
 }

@@ -272,7 +272,7 @@ function AdminPage() {
             <Dropdown.Item onClick={() => setFilter('Turnos')}>Turnos</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <AdminTable data={data} columns={columns} />
+        <AdminTable data={data} columns={columns} filter= {filter}/>
         
       </main>
     </>
