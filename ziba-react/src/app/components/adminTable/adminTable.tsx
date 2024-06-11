@@ -9,6 +9,7 @@ import {
 } from '@tanstack/react-table'
 import { useState } from 'react'
 import './adminTable.css'
+import { AddClient } from '../modalsAdmin/clientes';
 
 interface tableProps {
     data: any[];
@@ -17,6 +18,10 @@ interface tableProps {
 }
 
 export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
+
+    const [show,setShow] = useState(false);
+    const handleClose = ()=> setShow(false);
+    const handleShow =()=> setShow (true);
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [filtering, setFiltering] = useState("");
@@ -44,7 +49,12 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                     value={filtering}
                     onChange={e => setFiltering(e.target.value)}
                 />
-                <button className='button-agregar'>Agregar {filter}</button>
+                <button onClick={handleShow} className='button-agregar'>Agregar {filter}</button>
+                {(filter= "Clientes")?(
+                    <AddClient show={show} handleClose={handleClose}/>
+                ):("placeholder")
+            
+            }
             </div>
             <table className='table-admin-container'>
                 <thead className='table-admin-thead'>
