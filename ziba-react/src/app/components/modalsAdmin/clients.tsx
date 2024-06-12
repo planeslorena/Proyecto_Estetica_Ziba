@@ -1,7 +1,8 @@
+import './clients.css';
 import { Modal } from 'react-bootstrap';
-import './clientes.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Interface } from 'readline';
+
+
 
 interface data {
     name: string;
@@ -29,13 +30,13 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title className='titulo-modal-cv'>Agregar cliente</Modal.Title>
+                    <Modal.Title>Agregar cliente</Modal.Title>
                 </Modal.Header>
-                <Modal.Body className='cuerpo-modal'>
+                <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
-                            <label className='form-label label-cv'>Nombre</label>
-                            <input className='form-control input-cv'
+                            <label className='form-label-admin'>Nombre</label>
+                            <input className='form-input-admin'
                                 {...register("name", {
                                     required: "Por favor ingrese un nombre",
                                     minLength: {
@@ -58,8 +59,8 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
                             <small className='texto-validaciones'>{errors.name?.message}</small>
                         </div>
                         <div>
-                            <label className='form-label label-cv'>Apellido</label>
-                            <input className='form-control input-cv'
+                            <label className='form-label-admin'>Apellido</label>
+                            <input className='form-input-admin'
                                 {...register("lastname", {
                                     required: "Por favor ingrese un apellido",
                                     minLength: {
@@ -82,8 +83,8 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
                             <small className='texto-validaciones'>{errors.lastname?.message}</small>
                         </div>
                         <div>
-                            <label className='form-label label-cv'>Dni</label>
-                            <input className='form-control input-cv'
+                            <label className='form-label-admin'>Dni</label>
+                            <input className='form-input-admin'
                                 {
                                 ...register("dni", {
                                     required: "Por favor ingrese su dni",
@@ -103,8 +104,8 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
                             <small className='texto-validaciones'>{errors.dni?.message}</small>
                         </div>
                         <div>
-                            <label className='form-label label-cv'>Teléfono celular</label>
-                            <input className='form-control input-cv'
+                            <label className='form-label-admin'>Teléfono celular</label>
+                            <input className='form-input-admin'
                                 {...register("phone",
                                     {
                                         required: "Por favor ingrese su nombre de teléfono",
@@ -127,8 +128,8 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
                         </div>
 
                         <div>
-                            <label className='form-label-register'>Email</label>
-                            <input className='form-input-register'
+                            <label className='form-label-admin'>Email</label>
+                            <input className='form-input-admin'
                                 placeholder="Ingrese su email"
                                 {...register("email", {
                                     required: 'Por favor ingrese su dirección de email',
@@ -137,11 +138,11 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
                                         message: 'Dirección de email invalida'
                                     },
                                 })} />
-                            <small className='text-validation-register'>{errors.email?.message}</small>
+                            <small className='text-validation-admin'>{errors.email?.message}</small>
                         </div>
 
 
-                        <button type='submit' disabled={!isValid}>Agregar cliente</button>
+                        <button type='submit' disabled={!isValid} className='button-agregarcliente'>Agregar cliente</button>
                      
                      
                     </form>

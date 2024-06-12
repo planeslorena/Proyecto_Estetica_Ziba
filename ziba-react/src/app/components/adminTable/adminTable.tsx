@@ -9,7 +9,8 @@ import {
 } from '@tanstack/react-table'
 import { useState } from 'react'
 import './adminTable.css'
-import { AddClient } from '../modalsAdmin/clientes';
+import { AddClient } from '../modalsAdmin/clients';
+import { AddProfessional } from '../modalsAdmin/professional';
 
 interface tableProps {
     data: any[];
@@ -52,6 +53,8 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                 <button onClick={handleShow} className='button-agregar'>Agregar {filter}</button>
                 {(filter= "Clientes")?(
                     <AddClient show={show} handleClose={handleClose}/>
+                ):(filter= "Profesionales")?(
+                    <AddProfessional show= {show} handleClose={handleClose}/>
                 ):("placeholder")
             
             }
