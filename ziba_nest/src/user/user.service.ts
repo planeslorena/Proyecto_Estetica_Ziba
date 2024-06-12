@@ -10,7 +10,25 @@ import User from 'src/models/user.dto';
 export class UserService {
     constructor(private dbService: DatabaseService) {
     }
-
+    
+    async getAllClients(): Promise<any> {
+       const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            userQueries.selectAllClients,
+            [],
+          );
+          const result = resultQuery.map((rs: RowDataPacket) => {
+            return {
+              id_user: rs['id_user'],
+              name: rs['name'],
+              lastname: rs['lastname'],
+              dni: rs['dni'],
+              phone: rs['phone'],
+              mail: rs['mail'],
+            };
+          });
+          return result;
+        }
+    
     async getUserByMail(mail: string): Promise<User> {
         //Se obtiene el usuario de la base de datos filtrando por mail
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(

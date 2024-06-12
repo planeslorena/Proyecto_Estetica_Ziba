@@ -2,38 +2,39 @@
 import { withRoles } from "@/app/components/HOC/whitRoles";
 import { AdminTable } from "@/app/components/adminTable/adminTable";
 import { Menu } from "@/app/components/nav/nav";
+import { getAllClients } from "@/app/services/User";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
-const dataClient = [
+const dataClient2 = [
   {
-    id: 1,
+    id_user: 1,
     name: 'Guada',
     lastname: 'Chojo',
     dni: 24000000,
-    tel: 2284897534,
-    email: 'guadachojo@gmail.com',
+    phone: 2284897534,
+    mail: 'guadachojo@gmail.com',
   },
   {
-    id: 2,
+    id_user: 2,
     name: 'Ayelen',
     lastname: 'Porqueres',
     dni: 24000000,
-    tel: 2284897534,
-    email: 'ayeporqueres@gmail.com',
+    phone: 2284897534,
+    mail: 'ayeporqueres@gmail.com',
   },
   {
-    id: 3,
+    id_user: 3,
     name: 'Lorena',
     lastname: 'Planes',
     dni: 24000000,
-    tel: 2284897534,
-    email: 'lolitaplanes@gmail.com',
+    phone: 2284897534,
+    mail: 'lolitaplanes@gmail.com',
   },
 ]
 
-const dataProf = [{
+/*const dataProf = [{
   id: 1,
   name: 'Romina',
   lastname: 'Benegas',
@@ -61,7 +62,7 @@ const dataProf = [{
   specialty: 'Manicuría',
 },]
 
-const dataService = [{
+/*const dataService = [{
   id: 1,
   specialty: 'Depilación',
   name: 'Romina',
@@ -109,12 +110,12 @@ const dataAppoint = [{
   tel: 2284897534,
   email: 'maitesuar@gmail.com',
   specialty: 'Manicuría',
-},]
+},]*/
 
 const columnsClient = [
   {
     header: "ID",
-    accessorKey: "id",
+    accessorKey: "id_user",
   },
   {
     header: "Nombres",
@@ -130,11 +131,11 @@ const columnsClient = [
   },
   {
     header: "Teléfono",
-    accessorKey: "tel"
+    accessorKey: "phone"
   },
   {
     header: "Email",
-    accessorKey: "email",
+    accessorKey: "mail",
   },
 ];
 
@@ -206,13 +207,19 @@ const columnsAppoint = [{
 
 function AdminPage() {
   const [filter, setFilter] = useState('Clientes');
+  const [data,setData] = useState<any[]>([])
 
-  const data = useMemo(() => {
+  const loadClients = async () => {
+    const resp = await getAllClients();
+    setData(resp);
+    }
+
+  useEffect(() => {
     switch (filter) {
       case 'Clientes':
-        return dataClient;
+        loadClients();
 
-      case 'Profesionales':
+      /*case 'Profesionales':
         return dataProf;
 
       case 'Servicios':
@@ -220,9 +227,9 @@ function AdminPage() {
 
       case 'Turnos':
         return dataAppoint;
-
+*/
       default:
-        return dataClient;
+        loadClients();
     }
   }, [filter])
 
@@ -231,7 +238,7 @@ function AdminPage() {
       case 'Clientes':
         return columnsClient;
 
-      case 'Profesionales':
+      /*case 'Profesionales':
         return columnsProf;
 
       case 'Servicios':
@@ -239,7 +246,7 @@ function AdminPage() {
 
       case 'Turnos':
         return columnsAppoint;
-
+*/
       default:
         return columnsClient;
     }

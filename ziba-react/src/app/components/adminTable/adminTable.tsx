@@ -10,7 +10,7 @@ import {
 import { useState } from 'react'
 
 interface tableProps {
-    data: any[];
+    data:any;
     columns: any[];
 }
 

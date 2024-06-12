@@ -13,6 +13,4 @@ export class ServicesController {
     return this.servicesService.getAll();
   }
 
- 
-
 } 
