@@ -35,3 +35,8 @@
 .form-label-admin{
     width: 100%;
 }
+
+.form-select:focus{
+    border-color: #594545 !important;
+    outline: none !important;
+}

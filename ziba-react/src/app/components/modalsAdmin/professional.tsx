@@ -11,6 +11,7 @@ interface data {
     dni: number;
     phone: number;
     email: string;
+    speciality: string;
 }
 
 interface professionalProps {
@@ -141,11 +142,19 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                 })} />
                             <small className='text-validation-register'>{errors.email?.message}</small>
                         </div>
+                        <div>
+                            <label className='form-label-admin'>Especialidad</label>
+                            
+                            <select className="form-select form-input-admin" aria-label="Default select example" {...register(
+                                "speciality")}>
+                                <option value="si">Masajes</option>
+                                <option value="no">Peluqueria</option> </select>
+                        </div>
 
 
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
-                     
-                     
+
+
                     </form>
                 </Modal.Body>
             </Modal>

@@ -2,7 +2,6 @@
 import { withRoles } from "@/app/components/HOC/whitRoles";
 import { AdminTable } from "@/app/components/adminTable/adminTable";
 import { Menu } from "@/app/components/nav/nav";
-import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
@@ -71,6 +70,7 @@ const dataProf = [{
 
 const dataService = [{
   id: 1,
+  service: 'Bozo', 
   specialty: 'Depilación',
   name: 'Romina',
   lastname: 'Benegas',
@@ -78,6 +78,7 @@ const dataService = [{
 },
 {
   id: 2,
+  service: 'Peeling', 
   specialty: 'Cosmetología',
   name: 'Marisa',
   lastname: 'Ruiz',
@@ -85,6 +86,7 @@ const dataService = [{
 },
 {
   id: 3,
+  service: 'Soft gel', 
   specialty: 'Manicuría',
   name: 'Maiten',
   lastname: 'Suarez',
@@ -180,6 +182,10 @@ const columnsProf = [
 const columnsService = [{
   header: "ID",
   accessorKey: "id",
+},
+{
+  header: "Servicio",
+  accessorKey: "service",
 },
 {
   header: "Especialidad",

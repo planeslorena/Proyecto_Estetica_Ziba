@@ -11,18 +11,61 @@ import { useState } from 'react'
 import './adminTable.css'
 import { AddClient } from '../modalsAdmin/clients';
 import { AddProfessional } from '../modalsAdmin/professional';
+import { AddServices } from '../modalsAdmin/services';
+import { AddAppoinments } from '../modalsAdmin/appointments';
 
 interface tableProps {
     data: any[];
     columns: any[];
-    filter: string; 
+    filter: string;
 }
 
 export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
 
-    const [show,setShow] = useState(false);
-    const handleClose = ()=> setShow(false);
-    const handleShow =()=> setShow (true);
+    const [showClient, setShowClient] = useState(false);
+    const [showProfessional, setShowProfessional] = useState(false);
+    const [showAppointments, setShowAppointments] = useState(false);
+    const [showServices, setShowServices] = useState(false);
+
+
+
+
+    const handleClose = () => {
+        switch (filter) {
+            case "Clientes":
+                setShowClient(false)
+                break;
+            case "Profesionales":
+                setShowProfessional(false)
+                break;
+            case "Turnos":
+                setShowAppointments(false)
+                break;
+            case "Servicios":
+                setShowServices(false)
+                break;
+
+
+        }
+    };
+    const handleShow = () => {
+        switch (filter) {
+            case "Clientes":
+                setShowClient(true)
+                break;
+            case "Profesionales":
+                setShowProfessional(true)
+                break;
+            case "Turnos":
+                setShowAppointments(true)
+                break;
+            case "Servicios":
+                setShowServices(true)
+                break;
+
+
+        }
+    };
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [filtering, setFiltering] = useState("");
@@ -51,13 +94,15 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                     onChange={e => setFiltering(e.target.value)}
                 />
                 <button onClick={handleShow} className='button-agregar'>Agregar {filter}</button>
-                {(filter= "Clientes")?(
-                    <AddClient show={show} handleClose={handleClose}/>
-                ):(filter= "Profesionales")?(
-                    <AddProfessional show= {show} handleClose={handleClose}/>
-                ):("placeholder")
-            
-            }
+                
+                    <AddClient show={showClient} handleClose={handleClose} />
+             
+                    <AddProfessional show={showProfessional} handleClose={handleClose} />
+                    <AddServices show={showServices} handleClose={handleClose} />
+                    <AddAppoinments show= {showAppointments} handleClose={handleClose}/>
+                
+
+                
             </div>
             <table className='table-admin-container'>
                 <thead className='table-admin-thead'>
