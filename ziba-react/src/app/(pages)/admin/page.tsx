@@ -74,6 +74,7 @@ const dataService = [{
   specialty: 'Depilación',
   name: 'Romina',
   lastname: 'Benegas',
+  price: 10000,
   availability: '',
 },
 {
@@ -82,6 +83,7 @@ const dataService = [{
   specialty: 'Cosmetología',
   name: 'Marisa',
   lastname: 'Ruiz',
+  price: 10000,
   availability: '',
 },
 {
@@ -90,6 +92,7 @@ const dataService = [{
   specialty: 'Manicuría',
   name: 'Maiten',
   lastname: 'Suarez',
+  price: 10000,
   availability: '',
 },]
 
@@ -195,6 +198,10 @@ const columnsService = [{
 {
   header: "Profesional",
   accessorFn: (row:any) => `Prof. ${row.name} ${row.lastname}`,
+},
+{
+  header: "Precio",
+  accessorKey: "price",
 },
 {
   header: "Horarios",
