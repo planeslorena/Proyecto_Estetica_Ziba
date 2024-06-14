@@ -10,23 +10,29 @@ import { Dropdown } from "react-bootstrap";
 
 const dataService = [{
   id: 1,
+  service: 'Bozo', 
   specialty: 'Depilación',
   name: 'Romina',
   lastname: 'Benegas',
+  price: 10000,
   availability: '',
 },
 {
   id: 2,
+  service: 'Peeling', 
   specialty: 'Cosmetología',
   name: 'Marisa',
   lastname: 'Ruiz',
+  price: 10000,
   availability: '',
 },
 {
   id: 3,
+  service: 'Soft gel', 
   specialty: 'Manicuría',
   name: 'Maiten',
   lastname: 'Suarez',
+  price: 10000,
   availability: '',
 },]
 
@@ -131,7 +137,15 @@ const columnsService = [{
 
 {
   header: "Profesional",
-  accessorFn: (row: any) => `Prof. ${row.name} ${row.lastname}`,
+  accessorFn: (row:any) => `Prof. ${row.name} ${row.lastname}`,
+},
+{
+  header: "Precio",
+  accessorKey: "price",
+},
+{
+  header: "Precio",
+  accessorKey: "price",
 },
 {
   header: "Horarios",
@@ -220,7 +234,7 @@ function AdminPage() {
 
       </header>
 
-      <main>
+      <main className="dropdown-admin">
         <Dropdown>
           <Dropdown.Toggle >{filter}</Dropdown.Toggle>
           <Dropdown.Menu>
@@ -230,8 +244,9 @@ function AdminPage() {
             <Dropdown.Item onClick={() => setFilter('Turnos')}>Turnos</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <AdminTable data={data} columns={columns} />
-
+        <AdminTable data={data} columns={columns} filter= {filter}/>
+      
+        
       </main>
     </>
   )

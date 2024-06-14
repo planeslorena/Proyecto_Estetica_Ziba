@@ -8,13 +8,64 @@ import {
     useReactTable,
 } from '@tanstack/react-table'
 import { useState } from 'react'
+import './adminTable.css'
+import { AddClient } from '../modalsAdmin/clients';
+import { AddProfessional } from '../modalsAdmin/professional';
+import { AddServices } from '../modalsAdmin/services';
+import { AddAppoinments } from '../modalsAdmin/appointments';
 
 interface tableProps {
     data:any;
     columns: any[];
+    filter: string;
 }
 
-export const AdminTable: React.FC<tableProps> = ({ data, columns }) => {
+export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
+
+    const [showClient, setShowClient] = useState(false);
+    const [showProfessional, setShowProfessional] = useState(false);
+    const [showAppointments, setShowAppointments] = useState(false);
+    const [showServices, setShowServices] = useState(false);
+
+
+
+
+    const handleClose = () => {
+        switch (filter) {
+            case "Clientes":
+                setShowClient(false)
+                break;
+            case "Profesionales":
+                setShowProfessional(false)
+                break;
+            case "Turnos":
+                setShowAppointments(false)
+                break;
+            case "Servicios":
+                setShowServices(false)
+                break;
+
+
+        }
+    };
+    const handleShow = () => {
+        switch (filter) {
+            case "Clientes":
+                setShowClient(true)
+                break;
+            case "Profesionales":
+                setShowProfessional(true)
+                break;
+            case "Turnos":
+                setShowAppointments(true)
+                break;
+            case "Servicios":
+                setShowServices(true)
+                break;
+
+
+        }
+    };
 
     const [sorting, setSorting] = useState<SortingState>([]);
     const [filtering, setFiltering] = useState("");
@@ -32,45 +83,57 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns }) => {
         },
         onSortingChange: setSorting,
         onGlobalFilterChange: setFiltering,
-      });
+    });
 
     return (
         <div className="p-2">
-            <input
-                type='text'
-                value={filtering}
-                onChange={e => setFiltering(e.target.value)}
-            />
-            <table>
-                <thead>
+            <div className='d-flex flex-row justify-content-between'>
+                <input className='inputbuscador-admin' placeholder="Buscar "
+                    type='text'
+                    value={filtering}
+                    onChange={e => setFiltering(e.target.value)}
+                />
+                <button onClick={handleShow} className='button-agregar'>Agregar {filter}</button>
+                
+                    <AddClient show={showClient} handleClose={handleClose} />
+             
+                    <AddProfessional show={showProfessional} handleClose={handleClose} />
+                    <AddServices show={showServices} handleClose={handleClose} />
+                    <AddAppoinments show= {showAppointments} handleClose={handleClose}/>
+                
+
+                
+            </div>
+            <table className='table-admin-container'>
+                <thead className='table-admin-thead'>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <tr key={headerGroup.id}>
                             {headerGroup.headers.map((header) => (
-                                <th key={header.id}
+                                <th className='table-admin-th' key={header.id}
                                     onClick={header.column.getToggleSortingHandler()}
                                 >
-                                        {flexRender(
-                                            header.column.columnDef.header,
-                                            header.getContext()
-                                        )}
-                                {
-                                    {'asc': <i className="bi bi-sort-down-alt"/>, 'desc': <i className="bi bi-sort-up"/>}[header.column.getIsSorted() as string] ?? <i className="bi bi-arrow-down-up"/>
-                                }
+                                    {flexRender(
+                                        header.column.columnDef.header,
+                                        header.getContext()
+                                    )}
+                                    {
+                                        { 'asc': <i className="bi bi-sort-down-alt icon-down" />, 'desc': <i className="bi bi-sort-up icon-up" /> }[header.column.getIsSorted() as string] ?? <i className="bi bi-arrow-down-up icon-double-arrow" />
+                                    }
                                 </th>
                             ))}
-                            <th>Ajustes</th>
+                            <th className='table-admin-th'>Ajustes</th>
                         </tr>
                     ))}
                 </thead>
-                <tbody>
+                <tbody className='body-ajustes'>
                     {table.getRowModel().rows.map(row => (
                         <tr key={row.id}>
                             {row.getVisibleCells().map(cell => (
-                                <td key={cell.id}>
+                                <td className='table-admin-td' key={cell.id}>
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                             ))}
-                            <td><i className='bi bi-pencil'/> <i className='bi bi-trash3'/></td>
+                            <td table-admin-td><i className='bi bi-pencil icon-pencil' /> <i className='bi bi-trash3 icon-trash' /></td>
                         </tr>
                     ))}
                 </tbody>
