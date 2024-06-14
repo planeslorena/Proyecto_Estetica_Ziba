@@ -2,67 +2,13 @@
 import { withRoles } from "@/app/components/HOC/whitRoles";
 import { AdminTable } from "@/app/components/adminTable/adminTable";
 import { Menu } from "@/app/components/nav/nav";
-import { getAllClients } from "@/app/services/User";
+import { getAllClients, getAllProf } from "@/app/services/User";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
-const dataClient2 = [
-  {
-    id_user: 1,
-    name: 'Guada',
-    lastname: 'Chojo',
-    dni: 24000000,
-    phone: 2284897534,
-    mail: 'guadachojo@gmail.com',
-  },
-  {
-    id_user: 2,
-    name: 'Ayelen',
-    lastname: 'Porqueres',
-    dni: 24000000,
-    phone: 2284897534,
-    mail: 'ayeporqueres@gmail.com',
-  },
-  {
-    id_user: 3,
-    name: 'Lorena',
-    lastname: 'Planes',
-    dni: 24000000,
-    phone: 2284897534,
-    mail: 'lolitaplanes@gmail.com',
-  },
-]
 
-/*const dataProf = [{
-  id: 1,
-  name: 'Romina',
-  lastname: 'Benegas',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'romibenegas@gmail.com',
-  specialty: 'Depilación',
-},
-{
-  id: 2,
-  name: 'Marisa',
-  lastname: 'Ruiz',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'marisaruis@gmail.com',
-  specialty: 'Cosmetología',
-},
-{
-  id: 3,
-  name: 'Maiten',
-  lastname: 'Suarez',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'maitesuar@gmail.com',
-  specialty: 'Manicuría',
-},]
-
-/*const dataService = [{
+const dataService = [{
   id: 1,
   specialty: 'Depilación',
   name: 'Romina',
@@ -110,7 +56,7 @@ const dataAppoint = [{
   tel: 2284897534,
   email: 'maitesuar@gmail.com',
   specialty: 'Manicuría',
-},]*/
+},]
 
 const columnsClient = [
   {
@@ -142,7 +88,7 @@ const columnsClient = [
 const columnsProf = [
   {
     header: "ID",
-    accessorKey: "id",
+    accessorKey: "id_user",
   },
   {
     header: "Nombres",
@@ -158,30 +104,34 @@ const columnsProf = [
   },
   {
     header: "Teléfono",
-    accessorKey: "tel"
+    accessorKey: "phone"
   },
   {
     header: "Email",
-    accessorKey: "email",
+    accessorKey: "mail",
   },
   {
     header: "Especialidad",
-    accessorKey: "specialty",
+    accessorKey: "speciality",
   },
 ];
 
 const columnsService = [{
   header: "ID",
-  accessorKey: "id",
+  accessorKey: "id_service",
+},
+{
+  header: "Servicio",
+  accessorKey: "name",
 },
 {
   header: "Especialidad",
-  accessorKey: "specialty",
+  accessorKey: "speciality",
 },
 
 {
   header: "Profesional",
-  accessorFn: (row:any) => `Prof. ${row.name} ${row.lastname}`,
+  accessorFn: (row: any) => `Prof. ${row.name} ${row.lastname}`,
 },
 {
   header: "Horarios",
@@ -198,7 +148,7 @@ const columnsAppoint = [{
 },
 {
   header: "Profesional",
-  accessorFn: (row:any) => `Prof. ${row.name} ${row.lastname}`,
+  accessorFn: (row: any) => `Prof. ${row.name} ${row.lastname}`,
 },
 {
   header: "Horarios",
@@ -207,27 +157,36 @@ const columnsAppoint = [{
 
 function AdminPage() {
   const [filter, setFilter] = useState('Clientes');
-  const [data,setData] = useState<any[]>([])
+  const [data, setData] = useState<any[]>([])
 
   const loadClients = async () => {
     const resp = await getAllClients();
     setData(resp);
-    }
+  }
+
+  const loadProf = async () => {
+    const resp = await getAllProf();
+    setData(resp);
+  }
 
   useEffect(() => {
     switch (filter) {
       case 'Clientes':
         loadClients();
+        break;
 
-      /*case 'Profesionales':
-        return dataProf;
+      case 'Profesionales':
+        loadProf();
+        break;
 
       case 'Servicios':
-        return dataService;
+        setData(dataService);
+        break;
 
       case 'Turnos':
-        return dataAppoint;
-*/
+        setData(dataAppoint);
+        break;
+
       default:
         loadClients();
     }
@@ -238,7 +197,7 @@ function AdminPage() {
       case 'Clientes':
         return columnsClient;
 
-      /*case 'Profesionales':
+      case 'Profesionales':
         return columnsProf;
 
       case 'Servicios':
@@ -246,7 +205,7 @@ function AdminPage() {
 
       case 'Turnos':
         return columnsAppoint;
-*/
+
       default:
         return columnsClient;
     }
@@ -272,7 +231,7 @@ function AdminPage() {
           </Dropdown.Menu>
         </Dropdown>
         <AdminTable data={data} columns={columns} />
-        
+
       </main>
     </>
   )

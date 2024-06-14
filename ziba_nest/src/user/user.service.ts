@@ -10,25 +10,47 @@ import User from 'src/models/user.dto';
 export class UserService {
     constructor(private dbService: DatabaseService) {
     }
-    
+
     async getAllClients(): Promise<any> {
-       const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+        //Se obtienen todos los usuarios con rol Client
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
             userQueries.selectAllClients,
             [],
-          );
-          const result = resultQuery.map((rs: RowDataPacket) => {
+        );
+        const result = resultQuery.map((rs: RowDataPacket) => {
             return {
-              id_user: rs['id_user'],
-              name: rs['name'],
-              lastname: rs['lastname'],
-              dni: rs['dni'],
-              phone: rs['phone'],
-              mail: rs['mail'],
+                id_user: rs['id_user'],
+                name: rs['name'],
+                lastname: rs['lastname'],
+                dni: rs['dni'],
+                phone: rs['phone'],
+                mail: rs['mail'],
             };
-          });
-          return result;
-        }
-    
+        });
+        return result;
+    }
+
+    async getAllProf(): Promise<any> {
+        //Se obtienen todos los profesionales
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            userQueries.selectAllProf,
+            [],
+        );
+        const result = resultQuery.map((rs: RowDataPacket) => {
+            return {
+                id_user: rs['id_user'],
+                name: rs['name'],
+                lastname: rs['lastname'],
+                dni: rs['dni'],
+                phone: rs['phone'],
+                mail: rs['mail'],
+                speciality: rs['speciality']
+            };
+        });
+        return result;
+    }
+
+
     async getUserByMail(mail: string): Promise<User> {
         //Se obtiene el usuario de la base de datos filtrando por mail
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
@@ -39,14 +61,14 @@ export class UserService {
         //Si no encuentro el usuario retorno null
         if (resultQuery.length == 0) {
             return null;
-        //sino retorno el User
+            //sino retorno el User
         } else {
             return {
-                mail: resultQuery[0].mail, 
+                mail: resultQuery[0].mail,
                 role: resultQuery[0].role,
                 name: resultQuery[0].name,
-                lastname: resultQuery[0].lastname, 
-                dni:resultQuery[0].dni,
+                lastname: resultQuery[0].lastname,
+                dni: resultQuery[0].dni,
                 phone: resultQuery[0].phone,
             };
         }
@@ -58,10 +80,10 @@ export class UserService {
         const passEncryp = await bcrypt.hash(user.password, salt);
 
         //Pasar el nombre y apellido con la primera letra mayuscula
-        const fixNameAndLastname = (text:string): string => {
+        const fixNameAndLastname = (text: string): string => {
             const arrayText = text.split(" ");
 
-            for (let i= 0; i < arrayText.length; i++) {
+            for (let i = 0; i < arrayText.length; i++) {
                 arrayText[i] = arrayText[i].charAt(0).toUpperCase() + arrayText[i].substring(1).toLowerCase();
             }
             return arrayText.join(" ");

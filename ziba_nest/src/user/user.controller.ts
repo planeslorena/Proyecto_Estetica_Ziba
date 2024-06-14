@@ -16,6 +16,12 @@ export class UserController {
   }
 
   @UseGuards(JwtMiddlewareGuard)
+  @Get('/prof')
+  async getAllProf() {
+    return this.userService.getAllProf();
+  }
+
+  @UseGuards(JwtMiddlewareGuard)
   @Get('/info')
   async getUserInfo(@Req() request:any) {
     return request.user;

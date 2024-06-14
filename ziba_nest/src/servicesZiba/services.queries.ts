@@ -8,9 +8,7 @@ const servicesQueries = {
     selectAllServices:`select  s.name speciality , se.name service
                         from specialties s 
                         join services se
-                        join professional_service ps 
-                        on s.id_speciality = se.id_speciality 
-                        and se.id_service = ps.id_service; `
+                        on s.id_speciality = se.id_speciality;`
 }
 
 export default servicesQueries;

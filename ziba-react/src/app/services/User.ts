@@ -20,3 +20,8 @@ export const getAllClients = async (): Promise<any[]> => {
   const response: AxiosResponse<any, any> = await clientAxios.get('user/clients');
   return response.data;
 }
+
+export const getAllProf = async (): Promise<any[]> => {
+  const response: AxiosResponse<any, any> = await clientAxios.get('user/prof');
+  return response.data;
+}
