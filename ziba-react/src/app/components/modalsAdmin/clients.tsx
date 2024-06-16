@@ -15,9 +15,10 @@ interface data {
 interface clientProps {
     show: boolean;
     handleClose: () => void;
+    data?: any;
 }
 
-export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
+export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) => {
 
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
@@ -37,6 +38,7 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
                         <div>
                             <label className='form-label-admin'>Nombre</label>
                             <input className='form-input-admin'
+                                defaultValue={data?.name}
                                 {...register("name", {
                                     required: "Por favor ingrese un nombre",
                                     minLength: {

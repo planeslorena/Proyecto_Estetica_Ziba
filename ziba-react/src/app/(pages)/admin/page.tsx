@@ -48,6 +48,7 @@ const dataProf = [{
   tel: 2284897534,
   email: 'romibenegas@gmail.com',
   specialty: 'Depilación',
+  availability: '',
 },
 {
   id: 2,
@@ -57,6 +58,7 @@ const dataProf = [{
   tel: 2284897534,
   email: 'marisaruis@gmail.com',
   specialty: 'Cosmetología',
+  availability: '',
 },
 {
   id: 3,
@@ -66,6 +68,7 @@ const dataProf = [{
   tel: 2284897534,
   email: 'maitesuar@gmail.com',
   specialty: 'Manicuría',
+  availability: '',
 },]
 
 const dataService = [{
@@ -75,7 +78,6 @@ const dataService = [{
   name: 'Romina',
   lastname: 'Benegas',
   price: 10000,
-  availability: '',
 },
 {
   id: 2,
@@ -84,7 +86,6 @@ const dataService = [{
   name: 'Marisa',
   lastname: 'Ruiz',
   price: 10000,
-  availability: '',
 },
 {
   id: 3,
@@ -93,7 +94,6 @@ const dataService = [{
   name: 'Maiten',
   lastname: 'Suarez',
   price: 10000,
-  availability: '',
 },]
 
 const dataAppoint = [{
@@ -180,6 +180,10 @@ const columnsProf = [
     header: "Especialidad",
     accessorKey: "specialty",
   },
+  {
+    header: "Horarios",
+    accessorKey: "availability",
+  },
 ];
 
 const columnsService = [{
@@ -203,10 +207,7 @@ const columnsService = [{
   header: "Precio",
   accessorKey: "price",
 },
-{
-  header: "Horarios",
-  accessorKey: "availability",
-},]
+]
 
 const columnsAppoint = [{
   header: "ID",

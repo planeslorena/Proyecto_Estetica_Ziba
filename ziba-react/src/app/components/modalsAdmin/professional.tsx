@@ -1,9 +1,7 @@
+import { useEffect, useState } from 'react';
 import './professional.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-
-
 
 interface data {
     name: string;
@@ -12,20 +10,63 @@ interface data {
     phone: number;
     email: string;
     speciality: string;
+    hour1: string;
+    hour2: string;
 }
+
+const schedules = [
+    { day: 'Lunes', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
+    { day: 'Martes', times: ['01:00 PM', '02:00 PM', '03:00 PM'] },
+    { day: 'Miercoles', times: ['09:00 AM', '10:00 AM'] },
+    { day: 'Jueves', times: ['01:00 PM', '02:00 PM'] },
+    { day: 'Viernes', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
+    { day: 'Sábado', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
+];
 
 interface professionalProps {
     show: boolean;
     handleClose: () => void;
+    data?: any;
 }
 
-export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose }) => {
+export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data }) => {
 
-    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
+    const [selectedDays, setSelectedDays] = useState<string[]>([]);
+    const [availableTimes, setAvailableTimes] = useState<string[]>([]);
+    const { handleSubmit, register, formState: { errors, isValid }, watch } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log();
-
     }
+
+    let days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'];
+    const handleCheckboxChange = (day: string) => {
+        const index = selectedDays.indexOf(day);
+        if (index === -1) {
+            setSelectedDays([...selectedDays, day]);
+        } else {
+            setSelectedDays(selectedDays.filter(d => d !== day));
+        }
+    };
+
+    const watchHour1 = watch('hour1', '');
+    const watchHour2 = watch('hour2', '');
+    const validateTimeOrder = () => {
+        if (watchHour1 && watchHour2) {
+            return watchHour1 < watchHour2 || 'La primera hora debe ser anterior a la segunda';
+        }
+        return true;
+    };
+
+    useEffect(() => {
+        let times: string[] = [];
+        selectedDays.forEach(day => {
+            const schedule = schedules.find(s => s.day === day);
+            if (schedule) {
+                times = [...times, ...schedule.times];
+            }
+        });
+        setAvailableTimes(times);
+    }, [selectedDays]);
 
     return (
         <>
@@ -54,9 +95,6 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         value: /^([a-zA-Z]+\s?)+$/,
                                         message: "Nombre inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.name?.message}</small>
                         </div>
@@ -78,9 +116,6 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         value: /^([a-zA-Z]+\s?)+$/,
                                         message: "Apellido inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.lastname?.message}</small>
                         </div>
@@ -99,9 +134,6 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         value: /^(0|[1-9]\d*)(\.\d+)?$/,
                                         message: "Dni inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.dni?.message}</small>
                         </div>
@@ -150,11 +182,52 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                 <option value="si">Masajes</option>
                                 <option value="no">Peluqueria</option> </select>
                         </div>
+                        <div>
+                            <label className='form-label-admin'>Día/s</label>
+                            {days.map(day => (
+                                <label key={day}>
+                                    <input
+                                        type='checkbox'
+                                        onChange={() => handleCheckboxChange(day)}
+                                        checked={selectedDays.includes(day)}
+                                    />
+                                    <span>{day}</span>
+                                </label>
+                            ))}
+                        </div>
+                        <div>
+                            <label id='select' className='form-label-admin'>Horarios</label>
+                            <input type="time" id="appt" name="appt" list="time-list"/>
+                            <datalist id="time-list" >
+                                    <option id="08" value="08:30" datatype="time"/>
+                                    <option id="09" value="09:30" datatype="time" />
+                                    <option id="10" value="10:30" datatype="time"/>
+                                    <option id="11" value="11:30" datatype="time" />
+                                    <option id="13" value="13:30" datatype="time" />
+                                    <option id="20" value="20:30" datatype="time"/>
+                                </datalist>
+                            <select id='select' className="form-select form-input-admin" aria-label="Default select example"
+                                {...register("hour1", {
+                                    required: "Por favor ingrese una hora",
+                                })}>
+                                {availableTimes.map((time, index) => (
+                                    <option key={index}>{time}</option>
+                                ))}
+                            </select>
+                            <span>-</span>
+                            <select id='select' className="form-select form-input-admin" aria-label="Default select example"
+                                {...register("hour2", {
+                                    required: "Por favor ingrese una hora",
+                                    validate: validateTimeOrder,
+                                })}>
+                                {availableTimes.map((time, index) => (
+                                    <option key={index}>{time}</option>
+                                ))}
+                            </select>
 
-
+                            <small className='texto-validaciones'>{errors.hour2?.message}</small>
+                        </div>
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
-
-
                     </form>
                 </Modal.Body>
             </Modal>

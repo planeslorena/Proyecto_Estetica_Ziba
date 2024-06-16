@@ -27,8 +27,10 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
     const [showAppointments, setShowAppointments] = useState(false);
     const [showServices, setShowServices] = useState(false);
 
-
-
+    const [showEditClient, setShowEditClient] = useState<number>();
+    const [showEditProfessional, setShowEditProfessional] = useState<number>();
+    const [showEditAppointments, setShowEditAppointments] = useState<number>();
+    const [showEditServices, setShowEditServices] = useState<number>();
 
     const handleClose = () => {
         switch (filter) {
@@ -44,10 +46,9 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
             case "Servicios":
                 setShowServices(false)
                 break;
-
-
         }
     };
+
     const handleShow = () => {
         switch (filter) {
             case "Clientes":
@@ -62,8 +63,23 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
             case "Servicios":
                 setShowServices(true)
                 break;
+        }
+    };
 
-
+    const handleShowEdit = (id: any) => {
+        switch (filter) {
+            case "Clientes":
+                setShowEditClient(id)
+                break;
+            case "Profesionales":
+                setShowEditProfessional(id)
+                break;
+            case "Turnos":
+                setShowEditAppointments(id)
+                break;
+            case "Servicios":
+                setShowEditServices(id)
+                break;
         }
     };
 
@@ -96,13 +112,10 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                 <button onClick={handleShow} className='button-agregar'>Agregar {filter}</button>
                 
                     <AddClient show={showClient} handleClose={handleClose} />
-             
                     <AddProfessional show={showProfessional} handleClose={handleClose} />
                     <AddServices show={showServices} handleClose={handleClose} />
                     <AddAppoinments show= {showAppointments} handleClose={handleClose}/>
-                
 
-                
             </div>
             <table className='table-admin-container'>
                 <thead className='table-admin-thead'>
@@ -133,7 +146,14 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                 </td>
                             ))}
-                            <td table-admin-td><i className='bi bi-pencil icon-pencil' /> <i className='bi bi-trash3 icon-trash' /></td>
+                            <td table-admin-td>
+                                <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
+                                <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} />
+                                <AddProfessional show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} />
+                                <AddServices show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} />
+                                <AddAppoinments show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments}/>
+                                <i className='bi bi-trash3 icon-trash'/>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
@@ -145,5 +165,4 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
             <div className="h-4" />
         </div>
     );
-
 }
