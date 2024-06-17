@@ -66,9 +66,7 @@ const columnsProf = [
   },
   {
     header: "Horarios",
-    accessorFn: (row:any) => {row.calendar.map((element:any) => {
-      return element.day + element.hour_begin + element.hour_end
-    });},
+    accessorKey: "calendar"
   },
 ];
 

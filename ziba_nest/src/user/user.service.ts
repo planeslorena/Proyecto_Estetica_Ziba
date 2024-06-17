@@ -45,7 +45,7 @@ export class UserService {
                 phone: rs['phone'],
                 mail: rs['mail'],
                 speciality: rs['speciality'],
-                calendar: []
+                calendar: ''
             };
         });
 
@@ -58,12 +58,8 @@ export class UserService {
         resultQuery2.map((rs: RowDataPacket) => {
             result.map((se) => {
                 if (rs['id_professional'] == se.id_professional) {
-                    se.calendar.push(
-                        {
-                            day: rs['week_day'],
-                            hour_begin: rs['hour_begin'],
-                            hour_end: rs['hour_end'],
-                        })
+                    se.calendar = `${se.calendar}
+                     ${rs['week_day']} de ${rs['hour_begin'].substring(0,5)} a ${rs['hour_end'].substring(0,5)}`
                 }
             })
         });
