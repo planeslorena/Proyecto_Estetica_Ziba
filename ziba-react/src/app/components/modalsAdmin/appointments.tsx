@@ -9,6 +9,7 @@ interface data {
     dni: number,
     speciality: string,
     service: string,
+    availability: string,
 }
 
 type Schedule = {
@@ -84,29 +85,27 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div>
-                            <label className='form-label-admin'>Dni</label>
-                            <input className='form-input-admin'
-                                {
-                                ...register("dni", {
-                                    required: "Por favor ingrese su dni",
+                            <label className='form-label-admin'>DNI</label>
+                            <input className='form-input-admin' 
+                                defaultValue={data?.dni} 
+                                {...register("dni", {
+                                    required: "Por favor ingrese su DNI",
                                     validate: (value: number) => {
                                         if (value < 1000000 || value > 100000000) {
-                                            return "Debe ingresar un dni válido";
+                                            return "Debe ingresar un DNI válido";
                                         }
                                     },
                                     pattern: {
                                         value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                                        message: "Dni inválido",
+                                        message: "DNI inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.dni?.message}</small>
                         </div>
                         <div>
                             <label id='select' className='form-label-admin'>Especialidad</label>
                             <select id='select' className="form-select form-input-admin" aria-label="Default select example"
+                                defaultValue={data?.speciality}
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
                                 })}>
@@ -121,6 +120,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                         <div>
                             <label id='select' className='form-label-admin'>Servicio</label>
                             <select id='select' className="form-select form-input-admin" aria-label="Default select example"
+                                defaultValue={data?.service}
                                 {...register("service", {
                                     required: "Por favor ingrese un servicio",
                                 })}>
@@ -129,7 +129,6 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                 <option>Soft gel</option>
                                 <option>Piedras calientes</option>
                             </select>
-
                             <small className='texto-validaciones'>{errors.service?.message}</small>
                         </div>
                         <div>
@@ -147,6 +146,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                 next2Label={null}
                                 showNeighboringMonth={false}
                                 locale='es-419'
+                                defaultValue={data?.availability}
                             />
                             <p>
                                 Turno: {formatDate(value)}
@@ -154,7 +154,10 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                         </div>
                         <div>
                             <label id='select' className='form-label-admin'>Hora</label>
-                            <select>
+                            <select defaultValue={data?.availability}
+                                {...register("speciality", {
+                                    required: "Por favor ingrese una hora",
+                                })}>
                                 {availableTimes.length > 0 ? (
                                 availableTimes.map((time, index) => (
                                     <option key={index} value={time}>
@@ -165,6 +168,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                 <option>No hay horarios disponibles</option>
                                 )}
                             </select>
+                            <small className='texto-validaciones'>{errors.availability?.message}</small>
                         </div>
                         <button type='submit' disabled={!isValid} className='button-agregarcliente'>Agregar turno</button>
                     </form>

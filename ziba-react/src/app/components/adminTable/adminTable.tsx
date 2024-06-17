@@ -109,7 +109,7 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                     value={filtering}
                     onChange={e => setFiltering(e.target.value)}
                 />
-                <button onClick={handleShow} className='button-agregar'>Agregar {filter}</button>
+                <button onClick={handleShow} className='button-agregar'>Agregar {filter} +</button>
                 
                     <AddClient show={showClient} handleClose={handleClose} />
                     <AddProfessional show={showProfessional} handleClose={handleClose} />
@@ -149,9 +149,9 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                             <td table-admin-td>
                                 <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
                                 <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} />
-                                <AddProfessional show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} />
-                                <AddServices show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} />
-                                <AddAppoinments show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments}/>
+                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} />
+                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} />
+                                <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments}/>
                                 <i className='bi bi-trash3 icon-trash'/>
                             </td>
                         </tr>

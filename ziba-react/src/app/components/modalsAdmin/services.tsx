@@ -20,7 +20,6 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log(data);
-
     }
 
     return (
@@ -34,6 +33,8 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                         <div>
                             <label className='form-label-admin'>Servicios</label>
                             <input className='form-input-admin'
+                                defaultValue={data?.service}
+                                placeholder='Ingrese el nombre del servicio'
                                 {...register("service", {
                                     required: "Por favor ingrese un servicio",
                                     minLength: {
@@ -55,6 +56,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                         <div>
                             <label id='select' className='form-label-admin'>Especialidad</label>
                             <select id='select' className="form-select form-input-admin" aria-label="Default select example"
+                                defaultValue={data?.speciality}
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
                                 })}>
@@ -63,18 +65,18 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                 <option>Manicura</option>
                                 <option>Depilación</option>
                             </select>
-
                             <small className='texto-validaciones'>{errors.speciality?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Descripción</label>
                             <input className='form-input-admin'
+                                defaultValue={data?.description}
+                                placeholder='Ingrese la descripción del servicio'
                                 {...register("description", {
                                     required: "Por favor ingrese una descripción",
                                     minLength: {
                                         value: 50,
                                         message: "La descripción no puede contener menos de 50 caracteres",
-
                                     },
                                     maxLength: {
                                         value: 280,
@@ -85,11 +87,13 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                         message: "Servicio inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.service?.message}</small>
+                            <small className='texto-validaciones'>{errors.description?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Precio</label>
                             <input className='form-input-admin'
+                                defaultValue={data?.price}
+                                placeholder='Ingrese un precio'
                                 {...register("price", {
                                     required: "Por favor ingrese el precio",
                                     validate: (value: number) => {
@@ -111,6 +115,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                         <div>
                             <label id='select' className='form-label-admin'>Duración del turno</label>
                             <select id='select' className="form-select form-input-admin" aria-label="Default select example"
+                                defaultValue={data?.duration}
                                 {...register("duration", {
                                     required: "Por favor ingrese una opción",
                                 })}>
@@ -119,8 +124,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                 <option>1:30 hs</option>
                                 <option>2:00 hs</option>
                             </select>
-
-                            <small className='texto-validaciones'>{errors.speciality?.message}</small>
+                            <small className='texto-validaciones'>{errors.duration?.message}</small>
                         </div>
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar servicio</button>
                     </form>

@@ -8,7 +8,7 @@ interface data {
     name: string;
     lastname: string;
     dni: number;
-    phone: number;
+    tel: number;
     email: string;
 }
 
@@ -23,12 +23,10 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log();
-
     }
 
     return (
         <>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Agregar cliente</Modal.Title>
@@ -39,6 +37,7 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                             <label className='form-label-admin'>Nombre</label>
                             <input className='form-input-admin'
                                 defaultValue={data?.name}
+                                placeholder='Ingrese su/s nombre/s'
                                 {...register("name", {
                                     required: "Por favor ingrese un nombre",
                                     minLength: {
@@ -54,15 +53,14 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                         value: /^([a-zA-Z]+\s?)+$/,
                                         message: "Nombre inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.name?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Apellido</label>
                             <input className='form-input-admin'
+                                defaultValue={data?.lastname}
+                                placeholder='Ingrese su/s apellido/s'
                                 {...register("lastname", {
                                     required: "Por favor ingrese un apellido",
                                     minLength: {
@@ -78,39 +76,35 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                         value: /^([a-zA-Z]+\s?)+$/,
                                         message: "Apellido inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.lastname?.message}</small>
                         </div>
                         <div>
-                            <label className='form-label-admin'>Dni</label>
+                            <label className='form-label-admin'>DNI</label>
                             <input className='form-input-admin'
-                                {
-                                ...register("dni", {
-                                    required: "Por favor ingrese su dni",
+                                defaultValue={data?.dni}
+                                placeholder='Ingrese su DNI'
+                                {...register("dni", {
+                                    required: "Por favor ingrese su DNI",
                                     validate: (value: number) => {
                                         if (value < 1000000 || value > 100000000) {
-                                            return "Debe ingresar un dni válido";
+                                            return "Debe ingresar un DNI válido";
                                         }
                                     },
                                     pattern: {
                                         value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                                        message: "Dni inválido",
+                                        message: "DNI inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.dni?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Teléfono celular</label>
                             <input className='form-input-admin'
-                                {...register("phone",
-                                    {
-                                        required: "Por favor ingrese su nombre de teléfono",
+                                defaultValue={data?.tel}
+                                placeholder='Ingrese su número de teléfono'
+                                {...register("tel", {
+                                        required: "Por favor ingrese su número de teléfono",
                                         minLength: {
                                             value: 10,
                                             message: "El número de teléfono no puede tener menos de 10 caracteres",
@@ -124,14 +118,13 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                             value: /^(0|[1-9]\d*)(\.\d+)?$/,
                                             message: "Número de teléfono inválido",
                                         }
-
                                     })} />
-                            <small className='texto-validaciones'>{errors.phone?.message}</small>
+                            <small className='texto-validaciones'>{errors.tel?.message}</small>
                         </div>
-
                         <div>
                             <label className='form-label-admin'>Email</label>
                             <input className='form-input-admin'
+                                defaultValue={data?.email}
                                 placeholder="Ingrese su email"
                                 {...register("email", {
                                     required: 'Por favor ingrese su dirección de email',
@@ -142,11 +135,7 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                 })} />
                             <small className='text-validation-admin'>{errors.email?.message}</small>
                         </div>
-
-
-                        <button type='submit' disabled={!isValid} className='button-agregarcliente'>Agregar cliente</button>
-                     
-                     
+                        <button type='submit' disabled={!isValid} className='button-agregarcliente'>Agregar cliente</button>        
                     </form>
                 </Modal.Body>
             </Modal>

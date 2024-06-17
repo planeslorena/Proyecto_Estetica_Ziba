@@ -74,26 +74,29 @@ const dataProf = [{
 const dataService = [{
   id: 1,
   service: 'Bozo', 
-  specialty: 'Depilación',
+  speciality: 'Depilación',
   name: 'Romina',
   lastname: 'Benegas',
   price: 10000,
+  duration:'',
 },
 {
   id: 2,
   service: 'Peeling', 
-  specialty: 'Cosmetología',
+  speciality: 'Cosmetología',
   name: 'Marisa',
   lastname: 'Ruiz',
   price: 10000,
+  duration:'',
 },
 {
   id: 3,
   service: 'Soft gel', 
-  specialty: 'Manicuría',
+  speciality: 'Manicuría',
   name: 'Maiten',
   lastname: 'Suarez',
   price: 10000,
+  duration:'',
 },]
 
 const dataAppoint = [{
@@ -104,6 +107,7 @@ const dataAppoint = [{
   tel: 2284897534,
   email: 'romibenegas@gmail.com',
   specialty: 'Depilación',
+  availability: '',
 },
 {
   id: 2,
@@ -113,6 +117,7 @@ const dataAppoint = [{
   tel: 2284897534,
   email: 'marisaruis@gmail.com',
   specialty: 'Cosmetología',
+  availability: '',
 },
 {
   id: 3,
@@ -122,6 +127,7 @@ const dataAppoint = [{
   tel: 2284897534,
   email: 'maitesuar@gmail.com',
   specialty: 'Manicuría',
+  availability: '',
 },]
 
 const columnsClient = [
