@@ -56,7 +56,7 @@ export class ServicesService {
     
             let resultServices: any[] = resultQuery.map((rs: RowDataPacket) => {
                 return {
-                    id_service: rs['id_service'],
+                    id: rs['id_service'],
                     service: rs['service'],
                     description: rs['description'],
                     speciality: rs['speciality'],
@@ -79,7 +79,7 @@ export class ServicesService {
     
             let resultApponitments: any[] = resultQuery.map((rs: RowDataPacket) => {
                 return {
-                    id_appointment: rs['id_appointment'],
+                    id: rs['id_appointment'],
                     date: rs['date'],
                     hour: rs['hour'],
                     service: rs['service'],

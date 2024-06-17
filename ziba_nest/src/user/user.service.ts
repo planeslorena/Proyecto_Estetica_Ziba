@@ -19,7 +19,7 @@ export class UserService {
         );
         const result = resultQuery.map((rs: RowDataPacket) => {
             return {
-                id_user: rs['id_user'],
+                id: rs['id_user'],
                 name: rs['name'],
                 lastname: rs['lastname'],
                 dni: rs['dni'],
@@ -38,7 +38,7 @@ export class UserService {
         );
         const result = resultQuery.map((rs: RowDataPacket) => {
             return {
-                id_professional: rs['id_professional'],
+                id: rs['id_professional'],
                 name: rs['name'],
                 lastname: rs['lastname'],
                 dni: rs['dni'],
@@ -57,7 +57,7 @@ export class UserService {
 
         resultQuery2.map((rs: RowDataPacket) => {
             result.map((se) => {
-                if (rs['id_professional'] == se.id_professional) {
+                if (rs['id_professional'] == se.id) {
                     se.calendar = `${se.calendar}
                      ${rs['week_day']} de ${rs['hour_begin'].substring(0,5)} a ${rs['hour_end'].substring(0,5)}`
                 }

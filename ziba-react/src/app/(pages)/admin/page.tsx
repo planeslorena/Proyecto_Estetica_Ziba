@@ -11,7 +11,7 @@ import { Dropdown } from "react-bootstrap";
 const columnsClient = [
   {
     header: "ID",
-    accessorKey: "id_user",
+    accessorKey: "id",
   },
   {
     header: "Nombres",
@@ -38,7 +38,7 @@ const columnsClient = [
 const columnsProf = [
   {
     header: "ID",
-    accessorKey: "id_professional",
+    accessorKey: "id",
   },
   {
     header: "Nombres",
@@ -72,7 +72,7 @@ const columnsProf = [
 
 const columnsService = [{
   header: "ID",
-  accessorKey: "id_service",
+  accessorKey: "id",
 },
 {
   header: "Servicio",
@@ -98,7 +98,7 @@ const columnsService = [{
 
 const columnsAppoint = [{
   header: "ID",
-  accessorKey: "id_appointment",
+  accessorKey: "id",
 },
 {
   header: "Día",
