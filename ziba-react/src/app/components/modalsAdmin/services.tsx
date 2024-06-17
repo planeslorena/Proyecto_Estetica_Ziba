@@ -3,6 +3,7 @@ import './services.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 interface data {
+    id: number,
     service: string,
     speciality: string,
     description: string,
@@ -30,6 +31,8 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
+                        <input defaultValue={data?.id} disabled hidden
+                        {...register('id')}/>
                         <div>
                             <label className='form-label-admin'>Servicios</label>
                             <input className='form-input-admin'

@@ -4,14 +4,15 @@ import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface data {
-    name: string;
-    lastname: string;
-    dni: number;
-    tel: number;
-    email: string;
-    speciality: string;
-    hour1: string;
-    hour2: string;
+    id: number,
+    name: string,
+    lastname: string,
+    dni: number,
+    tel: number,
+    email: string,
+    speciality: string,
+    hour1: string,
+    hour2: string,
 }
 
 const schedules = [
@@ -43,7 +44,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
     const [checkedSábado, setCheckedSábado] = useState<boolean>(false);
     const { handleSubmit, register, formState: { errors, isValid }, watch } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
-        console.log();
+        console.log(data);
     }
 
     let days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -98,6 +99,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                     break;
             }
         }  
+        selectedDays.length > 0 || "Debe seleccionar al menos un día"
     };
 
     const checked = (day:any) => {
@@ -135,13 +137,14 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
 
     return (
         <>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title >Agregar profesional</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
+                        <input defaultValue={data?.id} disabled hidden
+                        {...register('id')}/>
                         <div>
                             <label className='form-label-admin'>Nombre</label>
                             <input className='form-input-admin'
@@ -285,14 +288,13 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                      disabled={checked(day)}
                                         {...register("hour2", {
                                             required: "Por favor ingrese una hora",
-                                            validate: () => {
-                                                if (watchHour1 && watchHour2) {
-                                                    return watchHour1 < watchHour2 || 'La primera hora debe ser anterior a la segunda';
-                                                }
-                                                return true;
+                                            validate: (value) => {
+                                               if (watchHour1 && value > watchHour1) {
+                                                return true
+                                            } else {
+                                                return 'Max time must be later than min time'}  
                                             },
-                                        })}
-                                    />
+                                        })}/>
                                     <datalist id="time-list">
                                         {open.map((value: any) => (
                                             <option id="08" value={value} datatype="time" />

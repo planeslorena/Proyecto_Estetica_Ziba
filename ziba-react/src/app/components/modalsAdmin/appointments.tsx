@@ -6,6 +6,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
 interface data {
+    id: number,
     dni: number,
     speciality: string,
     service: string,
@@ -77,13 +78,14 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
 
     return (
         <>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Agregar turno</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
+                        <input defaultValue={data?.id} disabled hidden
+                        {...register('id')}/>
                         <div>
                             <label className='form-label-admin'>DNI</label>
                             <input className='form-input-admin' 

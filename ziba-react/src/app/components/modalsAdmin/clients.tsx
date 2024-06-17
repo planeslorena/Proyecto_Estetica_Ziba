@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 
 
 interface data {
+    id:number,
     name: string;
     lastname: string;
     dni: number;
@@ -22,7 +23,7 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
 
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
-        console.log();
+        console.log(data);
     }
 
     return (
@@ -33,6 +34,8 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
+                        <input defaultValue={data?.id} disabled hidden
+                        {...register('id')}/>
                         <div>
                             <label className='form-label-admin'>Nombre</label>
                             <input className='form-input-admin'
