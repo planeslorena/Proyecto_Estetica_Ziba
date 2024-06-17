@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
-import User from 'src/models/user.dto';
 import { JwtMiddlewareGuard } from 'src/common/services/jwtGuard.service';
 import { ServicesService } from './services.service';
 
@@ -13,4 +12,21 @@ export class ServicesController {
     return this.servicesService.getAll();
   }
 
+  @UseGuards(JwtMiddlewareGuard)
+  @Get('/admin')
+  async getAllForAdmin() {
+    return this.servicesService.getAllForAdmin();
+  }
+
+  @UseGuards(JwtMiddlewareGuard)
+  @Get('/appointments')
+  async getAllAppointments() {
+    return this.servicesService.getAllApponintments();
+  }
+
+  @UseGuards(JwtMiddlewareGuard)
+  @Get('/specialties')
+  async getSpecialties() {
+    return this.servicesService.getAllSpecialties();
+  }
 } 

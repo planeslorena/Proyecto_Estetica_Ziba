@@ -44,5 +44,65 @@ export class ServicesService {
 
         return resultServices;
     }
+
+        //Funcion que obtiene todos los servicios brindados por la estetica con especialidad, profesional y horarios
+        async getAllForAdmin(): Promise<any[]> {
+
+            //Primero se obtengo los servicio con especialidad y profesional
+            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+                servicesQueries.selectServiceWithSpeciality,
+                [],
+            );
     
+            let resultServices: any[] = resultQuery.map((rs: RowDataPacket) => {
+                return {
+                    id_service: rs['id_service'],
+                    service: rs['service'],
+                    description: rs['description'],
+                    speciality: rs['speciality'],
+                    professional: `${rs['name']} ${rs['lastname']}`,
+                    price: rs['price'],
+                };
+            });
+        
+            return resultServices;
+        }
+    
+
+        async getAllApponintments(): Promise<any[]> {
+
+            //Primero se obtengo los servicio con especialidad y profesional
+            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+                servicesQueries.selectAllAppointments,
+                [],
+            );
+    
+            let resultApponitments: any[] = resultQuery.map((rs: RowDataPacket) => {
+                return {
+                    id_appointment: rs['id_appointment'],
+                    date: rs['date'],
+                    hour: rs['hour'],
+                    service: rs['service'],
+                    user: `${rs['name']} ${rs['lastname']}`,
+                };
+            });
+            return resultApponitments;
+        }
+
+        async getAllSpecialties(): Promise<any[]> {
+
+            //Primero se obtengo los servicio con especialidad y profesional
+            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+                servicesQueries.selectAllSpecialties,
+                [],
+            );
+    
+            let resultSpecialties: any[] = resultQuery.map((rs: RowDataPacket) => {
+                return {
+                    id: rs['id_speciality'],
+                    speciality: rs['name']
+                };
+            });
+            return resultSpecialties;
+        }
 }

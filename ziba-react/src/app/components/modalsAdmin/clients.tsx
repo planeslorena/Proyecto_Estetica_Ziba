@@ -1,7 +1,8 @@
+import { createUser } from '@/app/services/User';
 import './clients.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
+import Swal from 'sweetalert2'
 
 
 interface data {
@@ -20,9 +21,28 @@ interface clientProps {
 export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
 
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
-    const onSubmit: SubmitHandler<data> = (data) => {
-        console.log();
+    const onSubmit: SubmitHandler<data> = async (data) => {
+        const user = {
+            mail: data.email,
+            password: 'cliente1234',
+            name: data.name,
+            lastname:data.lastname,
+            dni: data.dni,
+            phone: data.phone,
+            role: 'client'
+        }
+        const resp = await createUser(user);
 
+        if (resp == 409) {
+           setErrorRegister('El mail indicado ya se encuentra registrado.')
+        } else {
+            Swal.fire({
+            title: `Alta Cliente`,
+            text: "Cliente registrado con exito!",
+            icon: "success"
+            });
+            handleClose();
+        }
     }
 
     return (
@@ -154,4 +174,8 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose }) => {
 
 
 
+
+function setErrorRegister(arg0: string) {
+    throw new Error('Function not implemented.');
+}
 

@@ -1,9 +1,8 @@
+import { getAllSpecialties } from '@/app/services/Services';
 import './professional.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-
-
+import { useState } from 'react';
 
 interface data {
     name: string;
@@ -21,15 +20,20 @@ interface professionalProps {
 
 export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose }) => {
 
+    const [specialities, setSpecialities] = useState();
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log();
 
     }
 
+    const loadSpecialties = async () => {
+        const resp = await getAllSpecialties();
+        setSpecialities(resp);
+    }
+    
     return (
         <>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title >Agregar profesional</Modal.Title>
@@ -54,9 +58,6 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         value: /^([a-zA-Z]+\s?)+$/,
                                         message: "Nombre inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.name?.message}</small>
                         </div>
@@ -78,9 +79,6 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         value: /^([a-zA-Z]+\s?)+$/,
                                         message: "Apellido inválido",
                                     }
-
-
-
                                 })} />
                             <small className='texto-validaciones'>{errors.lastname?.message}</small>
                         </div>
@@ -146,7 +144,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                             <label className='form-label-admin'>Especialidad</label>
                             
                             <select className="form-select form-input-admin" aria-label="Default select example" {...register(
-                                "speciality")}>
+                                "speciality")} onClick= {() =>loadSpecialties()}>
                                 <option value="si">Masajes</option>
                                 <option value="no">Peluqueria</option> </select>
                         </div>

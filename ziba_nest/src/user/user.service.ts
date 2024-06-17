@@ -38,14 +38,34 @@ export class UserService {
         );
         const result = resultQuery.map((rs: RowDataPacket) => {
             return {
-                id_user: rs['id_user'],
+                id_professional: rs['id_professional'],
                 name: rs['name'],
                 lastname: rs['lastname'],
                 dni: rs['dni'],
                 phone: rs['phone'],
                 mail: rs['mail'],
-                speciality: rs['speciality']
+                speciality: rs['speciality'],
+                calendar: []
             };
+        });
+
+        //luego obtengo la agenda para cada profesional
+        const resultQuery2: RowDataPacket[] = await this.dbService.executeSelect(
+            userQueries.selectProfessionalCalendar,
+            [],
+        );
+
+        resultQuery2.map((rs: RowDataPacket) => {
+            result.map((se) => {
+                if (rs['id_professional'] == se.id_professional) {
+                    se.calendar.push(
+                        {
+                            day: rs['week_day'],
+                            hour_begin: rs['hour_begin'],
+                            hour_end: rs['hour_end'],
+                        })
+                }
+            })
         });
         return result;
     }

@@ -27,9 +27,6 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
     const [showAppointments, setShowAppointments] = useState(false);
     const [showServices, setShowServices] = useState(false);
 
-
-
-
     const handleClose = () => {
         switch (filter) {
             case "Clientes":
@@ -44,8 +41,6 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
             case "Servicios":
                 setShowServices(false)
                 break;
-
-
         }
     };
     const handleShow = () => {
@@ -96,13 +91,9 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                 <button onClick={handleShow} className='button-agregar'>Agregar {filter}</button>
                 
                     <AddClient show={showClient} handleClose={handleClose} />
-             
                     <AddProfessional show={showProfessional} handleClose={handleClose} />
                     <AddServices show={showServices} handleClose={handleClose} />
                     <AddAppoinments show= {showAppointments} handleClose={handleClose}/>
-                
-
-                
             </div>
             <table className='table-admin-container'>
                 <thead className='table-admin-thead'>
@@ -139,8 +130,8 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                 </tbody>
             </table>
             <i onClick={() => table.setPageIndex(0)} className="bi bi-chevron-double-left"></i>
-            <i onClick={() => table.previousPage} className="bi bi-chevron-left"></i>
-            <i onClick={() => table.nextPage} className="bi bi-chevron-right"></i>
+            <i onClick={() => table.previousPage()} className="bi bi-chevron-left"></i>
+            <i onClick={() => table.nextPage()} className="bi bi-chevron-right"></i>
             <i onClick={() => table.setPageIndex(table.getPageCount() - 1)} className="bi bi-chevron-double-right"></i>
             <div className="h-4" />
         </div>
