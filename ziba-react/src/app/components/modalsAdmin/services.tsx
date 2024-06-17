@@ -1,24 +1,22 @@
+import { useEffect, useState } from 'react';
 import './services.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 interface data {
     service: string,
     speciality: string,
-    description:string,
+    description: string,
     price: number,
-    day: string,
-    hour1: string,
-    hour2: string,
     duration: string,
 }
 
 interface servicesProps {
     show: boolean;
     handleClose: () => void;
+    data?: any;
 }
 
-export const AddServices: React.FC<servicesProps> = ({ show, handleClose }) => {
-
+export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }) => {
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log(data);
@@ -27,7 +25,6 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose }) => {
 
     return (
         <>
-
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title >Agregar servicio</Modal.Title>
@@ -56,17 +53,17 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose }) => {
                             <small className='texto-validaciones'>{errors.service?.message}</small>
                         </div>
                         <div>
-                            <label id='select' className='form-label-admin'>Especialidad</label>     
-                                <select id='select' className="form-select form-input-admin" aria-label="Default select example"     
+                            <label id='select' className='form-label-admin'>Especialidad</label>
+                            <select id='select' className="form-select form-input-admin" aria-label="Default select example"
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
-                                })}> 
+                                })}>
                                 <option>Masajes</option>
-                                <option>Peluqueria</option> 
+                                <option>Peluqueria</option>
                                 <option>Manicura</option>
-                                <option>Depilación</option> 
-                                </select>
-                                
+                                <option>Depilación</option>
+                            </select>
+
                             <small className='texto-validaciones'>{errors.speciality?.message}</small>
                         </div>
                         <div>
@@ -98,11 +95,12 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose }) => {
                                     validate: (value: number) => {
                                         if (value <= 1000) {
                                             return 'El precio no puede ser menos de $1000';
-                                        } else { if (value >= 999999) {
-                                            return 'El precio no puede exceder los $999999';
-                                        }
+                                        } else {
+                                            if (value >= 999999) {
+                                                return 'El precio no puede exceder los $999999';
                                             }
-                                        }, 
+                                        }
+                                    },
                                     pattern: {
                                         value: /^(0|[1-9]\d*)(\.\d+)?$/,
                                         message: "Servicio inválido",
@@ -111,65 +109,17 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose }) => {
                             <small className='texto-validaciones'>{errors.price?.message}</small>
                         </div>
                         <div>
-                            <label className='form-label-admin'>Día/s</label>
-                            <label>
-                                <input className='form-input-admin' type='checkbox'/>                         
-                                <span>Lunes</span>
-                            </label>
-                            <label>
-                                <input className='form-input-admin' type='checkbox'/>
-                                <span>Martes</span>
-                            </label>
-                            <label>
-                                <input className='form-input-admin' type='checkbox'/>
-                                <span>Miercoles</span>
-                            </label>
-                            <label>
-                                <input className='form-input-admin' type='checkbox'/>
-                                <span>Jueves</span>
-                            </label>
-                            <label>
-                                <input className='form-input-admin' type='checkbox'/>
-                                <span>Viernes</span>
-                            </label>
-                           {/*  <small className='texto-validaciones'>{errors.price?.message}</small> */}
-                        </div>
-                        <div>
-                            <label id='select' className='form-label-admin'>Horarios</label>     
-                                <select id='select' className="form-select form-input-admin" aria-label="Default select example"     
-                                {...register("hour1", {
-                                    required: "Por favor ingrese una hora",
-                                })}> 
-                                <option>15:00</option>
-                                <option>16:00</option> 
-                                <option>17:00</option>
-                                <option>18:00</option> 
-                                </select>
-                                <span>-</span>
-                                <select id='select' className="form-select form-input-admin" aria-label="Default select example"     
-                                {...register("hour2", {
-                                    required: "Por favor ingrese una hora",
-                                })}> 
-                                <option>15:00</option>
-                                <option>16:00</option> 
-                                <option>17:00</option>
-                                <option>18:00</option> 
-                                </select>
-                                
-                            <small className='texto-validaciones'>{errors.speciality?.message}</small>
-                        </div>
-                        <div>
-                            <label id='select' className='form-label-admin'>Duración del turno</label>     
-                                <select id='select' className="form-select form-input-admin" aria-label="Default select example"     
+                            <label id='select' className='form-label-admin'>Duración del turno</label>
+                            <select id='select' className="form-select form-input-admin" aria-label="Default select example"
                                 {...register("duration", {
                                     required: "Por favor ingrese una opción",
-                                })}> 
+                                })}>
                                 <option>30 mins</option>
-                                <option>1:00 hs</option> 
+                                <option>1:00 hs</option>
                                 <option>1:30 hs</option>
-                                <option>2:00 hs</option> 
-                                </select>
-                                
+                                <option>2:00 hs</option>
+                            </select>
+
                             <small className='texto-validaciones'>{errors.speciality?.message}</small>
                         </div>
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar servicio</button>
@@ -179,7 +129,3 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose }) => {
         </>
     )
 }
-
-
-
-
