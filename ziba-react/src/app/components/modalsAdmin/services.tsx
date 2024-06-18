@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { createService, getSpecialtiesWhitProf } from '@/app/services/Services';
 import Swal from 'sweetalert2';
 interface data {
+    id: number,
     name: string,
     speciality: number,
     description: string,
@@ -60,9 +61,13 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
+                        <input defaultValue={data?.id} disabled hidden
+                        {...register('id')}/>
                         <div>
                             <label className='form-label-admin'>Servicios</label>
                             <input className='form-input-admin'
+                                defaultValue={data?.service}
+                                placeholder='Ingrese el nombre del servicio'
                                 {...register("name", {
                                     required: "Por favor ingrese un servicio",
                                     minLength: {
@@ -84,6 +89,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                         <div>
                             <label id='select' className='form-label-admin'>Especialidad</label>
                             <select id='select' className="form-select form-input-admin" aria-label="Default select example"
+                                defaultValue={data?.speciality}
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
                                 })} onClick= {() =>loadSpecialties()}>
@@ -96,12 +102,13 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                         <div>
                             <label className='form-label-admin'>Descripción</label>
                             <input className='form-input-admin'
+                                defaultValue={data?.description}
+                                placeholder='Ingrese la descripción del servicio'
                                 {...register("description", {
                                     required: "Por favor ingrese una descripción",
                                     minLength: {
                                         value: 50,
                                         message: "La descripción no puede contener menos de 50 caracteres",
-
                                     },
                                     maxLength: {
                                         value: 1000,
@@ -117,6 +124,8 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                         <div>
                             <label className='form-label-admin'>Precio</label>
                             <input type='number' className='form-input-admin'
+                                defaultValue={data?.price}
+                                placeholder='Ingrese un precio'
                                 {...register("price", {
                                     required: "Por favor ingrese el precio",
                                     validate: (value: number) => {
@@ -138,6 +147,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                         <div>
                             <label id='select' className='form-label-admin'>Duración del turno</label>
                             <select id='select' className="form-select form-input-admin" aria-label="Default select example"
+                                defaultValue={data?.duration}
                                 {...register("duration", {
                                     required: "Por favor ingrese una opción",
                                 })}>
