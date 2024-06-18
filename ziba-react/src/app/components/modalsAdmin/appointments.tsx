@@ -31,13 +31,14 @@ interface appointmentsProps {
     show: boolean;
     handleClose: () => void;
     data?: any;
+    action:string;
 }
 
-export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose, data }) => {
+export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose, data ,action}) => {
 
     const [value, setValue] = useState<any>(new Date());
     const [availableTimes, setAvailableTimes] = useState<string[]>([]);
-    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
+    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>({ mode: 'onChange' });
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log(data);
     }
@@ -80,7 +81,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Agregar turno</Modal.Title>
+                    <Modal.Title>{action} turno</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>

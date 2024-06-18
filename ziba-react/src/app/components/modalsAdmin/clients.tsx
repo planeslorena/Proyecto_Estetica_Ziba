@@ -19,12 +19,13 @@ interface clientProps {
     show: boolean;
     handleClose: () => void;
     data?: any;
+    action: string;
 }
 
-export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) => {
+export const AddClient: React.FC<clientProps> = ({ show, handleClose, data,action }) => {
 
     const [errorRegister, setErrorRegister] = useState('');
-    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
+    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>({ mode: 'onChange' });
     const onSubmit: SubmitHandler<data> = async (data) => {
         const user = {
             mail: data.email,
@@ -53,7 +54,7 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Agregar cliente</Modal.Title>
+                    <Modal.Title>{action} cliente</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>

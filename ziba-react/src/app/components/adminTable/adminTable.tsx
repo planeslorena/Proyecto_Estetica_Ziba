@@ -111,10 +111,10 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                 />
                 <button onClick={handleShow} className='button-agregar'>Agregar {filter} +</button>
                 
-                    <AddClient show={showClient} handleClose={handleClose} />
-                    <AddProfessional show={showProfessional} handleClose={handleClose} />
-                    <AddServices show={showServices} handleClose={handleClose} />
-                    <AddAppoinments show= {showAppointments} handleClose={handleClose}/>
+                    <AddClient show={showClient} handleClose={handleClose}  action= 'Agregar'/>
+                    <AddProfessional show={showProfessional} handleClose={handleClose} action= 'Agregar'/>
+                    <AddServices show={showServices} handleClose={handleClose} action= 'Agregar'/>
+                    <AddAppoinments show= {showAppointments} handleClose={handleClose} action= 'Agregar'/>
             </div>
             <table className='table-admin-container'>
                 <thead className='table-admin-thead'>
@@ -147,10 +147,10 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                             ))}
                             <td table-admin-td>
                                 <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
-                                <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} />
-                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} />
-                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} />
-                                <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments}/>
+                                <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} action= 'Modificar' />
+                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} action= 'Agregar'/>
+                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} action= 'Agregar'/>
+                                <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments} action= 'Agregar'/>
                                 <i className='bi bi-trash3 icon-trash'/>
                             </td>
                         </tr>

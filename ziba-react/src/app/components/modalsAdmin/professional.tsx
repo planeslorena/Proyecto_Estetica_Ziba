@@ -14,7 +14,7 @@ interface data {
     dni: number,
     tel: number,
     email: string,
-    speciality: string,
+    speciality: number,
     hour1: string,
     hour2: string,
 }
@@ -34,9 +34,10 @@ interface professionalProps {
     show: boolean;
     handleClose: () => void;
     data?: any;
+    action: string;
 }
 
-export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data }) => {
+export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data, action }) => {
 
     const [specialties, setSpecialties] = useState([{id:'',speciality:''}]);
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
@@ -47,7 +48,9 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
     const [checkedJueves, setCheckedJueves] = useState<boolean>(false);
     const [checkedViernes, setCheckedViernes] = useState<boolean>(false);
     const [checkedSábado, setCheckedSábado] = useState<boolean>(false);
-    const { handleSubmit, register, formState: { errors, isValid }, watch } = useForm<data>();
+    const [errorRegister, setErrorRegister] = useState('');
+    const { handleSubmit, register, formState: { errors, isValid }, watch } = useForm<data>({ mode: 'onChange' });
+
     const onSubmit: SubmitHandler<data> = async (data) => {
         const prof = {
             mail: data.email,
@@ -172,7 +175,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title >Agregar profesional</Modal.Title>
+                    <Modal.Title >{action} profesional</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -336,6 +339,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                 </div>
                             ))}
                         </div>
+                        <small className='text-validation-register'>{errorRegister}</small>
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
                     </form>
                 </Modal.Body>

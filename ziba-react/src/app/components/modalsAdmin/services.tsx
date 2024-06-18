@@ -17,11 +17,12 @@ interface servicesProps {
     show: boolean;
     handleClose: () => void;
     data?: any;
+    action:string;
 }
 
-export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }) => {
+export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, action }) => {
     const [specialties, setSpecialties] = useState([{id:'',speciality:''}]);
-    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
+    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>({ mode: 'onChange' });
     const onSubmit: SubmitHandler<data> = async (data) => {
         const service = {
             name:data.name,
@@ -57,7 +58,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title >Agregar servicio</Modal.Title>
+                    <Modal.Title >{action} servicio</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
