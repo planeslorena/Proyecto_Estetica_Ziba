@@ -12,8 +12,8 @@ const userQueries = {
                                 join calendar c
                                 on p.id_professional  = c.id_professional `,
     selectUserByMail: 'select * from users where mail = ? and active = 1',
-    selectSpecialties:`select id_speciality, name from specialties;`,
     insertUser: `insert into users (mail,password,name,lastname,dni,phone,role,active) values (?,?,?,?,?,?,?,1);`,
+    insertProf:`insert into professional (id_user,id_speciality) values(?,?)`
 }
 
 export default userQueries;

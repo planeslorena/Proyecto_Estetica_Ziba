@@ -3,6 +3,7 @@ import './clients.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Swal from 'sweetalert2'
+import { useState } from 'react';
 
 
 interface data {
@@ -21,6 +22,7 @@ interface clientProps {
 
 export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) => {
 
+    const [errorRegister, setErrorRegister] = useState('');
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
     const onSubmit: SubmitHandler<data> = async (data) => {
         const user = {
@@ -162,22 +164,12 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                 })} />
                             <small className='text-validation-admin'>{errors.email?.message}</small>
                         </div>
-
-
+                        <small className='text-validation-register'>{errorRegister}</small>
                         <button type='submit' disabled={!isValid} className='button-agregarcliente'>Agregar cliente</button>
-                     
-                     
                     </form>
                 </Modal.Body>
             </Modal>
         </>
     )
-}
-
-
-
-
-function setErrorRegister(arg0: string) {
-    throw new Error('Function not implemented.');
 }
 

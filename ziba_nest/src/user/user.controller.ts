@@ -32,5 +32,10 @@ export class UserController {
    return this.userService.createUser(body);
   }
 
+  @UseGuards(JwtMiddlewareGuard)
+  @Post('/prof')
+  async createProf(@Body() body: any) {
+   return this.userService.createProf(body);
+  }
 
 } 

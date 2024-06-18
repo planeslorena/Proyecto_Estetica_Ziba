@@ -17,7 +17,21 @@ export const getAllAppointments = async (): Promise<any> => {
   return response.data;
 }
 
-export const getAllSpecialties = async (): Promise<any> => {
+export const getSpecialtiesWhitoutProf = async (): Promise<any> => {
   const response: AxiosResponse<any, any> = await clientAxios.get('services/specialties');
   return response.data;
+}
+
+export const getSpecialtiesWhitProf = async (): Promise<any> => {
+  const response: AxiosResponse<any, any> = await clientAxios.get('services/specialtieswhitprof');
+  return response.data;
+}
+
+export const createService = async (data:any) => {
+  try {
+    const response: AxiosResponse<any, any> = await clientAxios.post('services',data);
+    return response.status;
+  } catch (error:any) {
+    return error.response.data.statusCode;
+  }
 }

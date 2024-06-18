@@ -59,7 +59,7 @@ export class UserService {
             result.map((se) => {
                 if (rs['id_professional'] == se.id) {
                     se.calendar = `${se.calendar}
-                     ${rs['week_day']} de ${rs['hour_begin'].substring(0,5)} a ${rs['hour_end'].substring(0,5)}`
+                     ${rs['week_day']} de ${rs['hour_begin'].substring(0, 5)} a ${rs['hour_end'].substring(0, 5)}`
                 }
             })
         });
@@ -90,7 +90,7 @@ export class UserService {
         }
     }
 
-    async createUser(user: User): Promise<string> {
+    async createUser(user: User): Promise<number> {
         //Se encripta la contraseña que llega de la registración
         const salt = await bcrypt.genSalt(8);
         const passEncryp = await bcrypt.hash(user.password, salt);
@@ -116,7 +116,7 @@ export class UserService {
 
         //Se inserta la info en la DB
         try {
-            await this.dbService.executeQuery(
+            const resultQuery = await this.dbService.executeQuery(
                 userQueries.insertUser,
                 [
                     user.mail,
@@ -128,7 +128,8 @@ export class UserService {
                     user.role
                 ],
             );
-            return 'Usuario creado con exito';
+            return resultQuery.insertId
+                ;
         } catch (error) {
             //Si la DB retorna el error 1062 quiere decir que el mail ya existe en la misma
             if (error.errno == 1062) {
@@ -142,5 +143,51 @@ export class UserService {
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
         }
+    }
+
+    async createProf(data: any): Promise<string> {
+
+        //Primero se manda a crear el usuario del profesional
+        const user = {
+            mail: data.mail,
+            password: data.password,
+            name: data.name,
+            lastname: data.lastname,
+            dni: data.dni,
+            phone: data.phone,
+            role: data.role
+        }
+
+        const id_user = this.createUser(user);
+
+        //Luego se crea el profesional
+        const prof = {
+            id_user: id_user,
+            id_speciality: data.id_speciality
+        }
+
+        //Se inserta el profesional en la tabla de profesionales
+        try {
+            const resultQuery = await this.dbService.executeQuery(
+                userQueries.insertProf,
+                [
+                    prof.id_user,
+                    prof.id_speciality
+                ],
+            );
+
+            const id_professional = resultQuery.insertId;
+                
+        } catch (error) {
+            throw new HttpException(
+                `Error insertando profesional: ${error.sqlMessage}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+
+        //Por ultimo se crea la agenda del profesional
+        
+
+        return 'Profesional creado con exito'
     }
 }

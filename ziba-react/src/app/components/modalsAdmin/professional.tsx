@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import './professional.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { getAllSpecialties } from '@/app/services/Services';
+import { getSpecialtiesWhitoutProf } from '@/app/services/Services';
+import { createProf } from '@/app/services/User';
+import Swal from 'sweetalert2';
 
 
 interface data {
@@ -33,17 +35,40 @@ interface professionalProps {
 
 export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data }) => {
 
-    const [specialities, setSpecialities] = useState();
+    const [specialties, setSpecialties] = useState([{id:'',speciality:''}]);
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const [availableTimes, setAvailableTimes] = useState<string[]>([]);
     const { handleSubmit, register, formState: { errors, isValid }, watch } = useForm<data>();
-    const onSubmit: SubmitHandler<data> = (data) => {
-        console.log();
+    const onSubmit: SubmitHandler<data> = async (data) => {
+        const prof = {
+            mail: data.email,
+            password: 'prof1234',
+            name: data.name,
+            lastname:data.lastname,
+            dni: data.dni,
+            phone: data.phone,
+            role: 'prof',
+            speciality: data.speciality,
+            hour_begin: data.hour1,
+            hour_end: data.hour2
+        }
+        const resp = await createProf(prof);
+
+        if (resp == 409) {
+           setErrorRegister('El mail indicado ya se encuentra registrado.')
+        } else {
+            Swal.fire({
+            title: `Agregar Profesional`,
+            text: "Profesional registrado con exito!",
+            icon: "success"
+            });
+            handleClose();
+        } 
     }
 
     const loadSpecialties = async () => {
-        const resp = await getAllSpecialties();
-        setSpecialities(resp);
+        const resp = await getSpecialtiesWhitoutProf();
+        setSpecialties(resp);
     }
     
     let days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -183,11 +208,12 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                         </div>
                         <div>
                             <label className='form-label-admin'>Especialidad</label>
-                            
                             <select className="form-select form-input-admin" aria-label="Default select example" {...register(
                                 "speciality")} onClick= {() =>loadSpecialties()}>
-                                <option value="si">Masajes</option>
-                                <option value="no">Peluqueria</option> </select>
+                                {specialties.map(sp => (
+                                    <option key= {sp.id+sp.speciality} value={sp.id}>{sp.speciality}</option>
+                                ))}
+                            </select>
                         </div>
                         <div>
                             <label className='form-label-admin'>Día/s</label>
@@ -244,4 +270,8 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
 
 
 
+
+    function setErrorRegister(arg0: string) {
+        throw new Error('Function not implemented.');
+    }
 

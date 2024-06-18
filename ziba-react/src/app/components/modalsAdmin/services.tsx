@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import './services.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { createService, getSpecialtiesWhitProf } from '@/app/services/Services';
+import Swal from 'sweetalert2';
 interface data {
-    service: string,
-    speciality: string,
+    name: string,
+    speciality: number,
     description: string,
     price: number,
-    duration: string,
+    duration: number,
 }
 
 interface servicesProps {
@@ -17,12 +19,39 @@ interface servicesProps {
 }
 
 export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }) => {
+    const [specialties, setSpecialties] = useState([{id:'',speciality:''}]);
     const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
-    const onSubmit: SubmitHandler<data> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<data> = async (data) => {
+        const service = {
+            name:data.name,
+            id_speciality: data.speciality,
+            description: data.description,
+            price:data.price,
+            duration: data.duration
+        }
+        console.log(service)
+        const resp = await createService(service);
 
+        if (resp == 201) {
+            Swal.fire({
+            title: `Agregar Servicio`,
+            text: "Servicio registrado con exito!",
+            icon: "success"
+            });
+            handleClose();
+        } else {
+            Swal.fire({
+                title: `${resp}`,
+                text: "No se pudo registrar el servicio ",
+                icon: "error"
+                });
+        }
     }
 
+    const loadSpecialties = async () => {
+        const resp = await getSpecialtiesWhitProf();
+        setSpecialties(resp);
+    }
     return (
         <>
             <Modal show={show} onHide={handleClose}>
@@ -34,7 +63,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                         <div>
                             <label className='form-label-admin'>Servicios</label>
                             <input className='form-input-admin'
-                                {...register("service", {
+                                {...register("name", {
                                     required: "Por favor ingrese un servicio",
                                     minLength: {
                                         value: 2,
@@ -50,20 +79,18 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                         message: "Servicio inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.service?.message}</small>
+                            <small className='texto-validaciones'>{errors.name?.message}</small>
                         </div>
                         <div>
                             <label id='select' className='form-label-admin'>Especialidad</label>
                             <select id='select' className="form-select form-input-admin" aria-label="Default select example"
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
-                                })}>
-                                <option>Masajes</option>
-                                <option>Peluqueria</option>
-                                <option>Manicura</option>
-                                <option>Depilación</option>
+                                })} onClick= {() =>loadSpecialties()}>
+                                {specialties.map(sp => (
+                                    <option key= {sp.id+sp.speciality} value={sp.id}>{sp.speciality}</option>
+                                ))}
                             </select>
-
                             <small className='texto-validaciones'>{errors.speciality?.message}</small>
                         </div>
                         <div>
@@ -77,7 +104,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
 
                                     },
                                     maxLength: {
-                                        value: 280,
+                                        value: 1000,
                                         message: "La descripción no puede contener más de 280 caracteres",
                                     },
                                     pattern: {
@@ -85,11 +112,11 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                         message: "Servicio inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.service?.message}</small>
+                            <small className='texto-validaciones'>{errors.description?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Precio</label>
-                            <input className='form-input-admin'
+                            <input type='number' className='form-input-admin'
                                 {...register("price", {
                                     required: "Por favor ingrese el precio",
                                     validate: (value: number) => {
@@ -114,13 +141,12 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                 {...register("duration", {
                                     required: "Por favor ingrese una opción",
                                 })}>
-                                <option>30 mins</option>
-                                <option>1:00 hs</option>
-                                <option>1:30 hs</option>
-                                <option>2:00 hs</option>
+                                <option value= {30} >30 mins</option>
+                                <option value= {60}>1:00 hs</option>
+                                <option value= {90}>1:30 hs</option>
+                                <option value= {120}>2:00 hs</option>
                             </select>
-
-                            <small className='texto-validaciones'>{errors.speciality?.message}</small>
+                            <small className='texto-validaciones'>{errors.duration?.message}</small>
                         </div>
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar servicio</button>
                     </form>

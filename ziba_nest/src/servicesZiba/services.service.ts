@@ -89,11 +89,11 @@ export class ServicesService {
             return resultApponitments;
         }
 
-        async getAllSpecialties(): Promise<any[]> {
+        async getSpecialtiesWhitoutProf(): Promise<any[]> {
 
             //Primero se obtengo los servicio con especialidad y profesional
             const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
-                servicesQueries.selectAllSpecialties,
+                servicesQueries.selectSpecialtiesWhitoutProf,
                 [],
             );
     
@@ -104,5 +104,44 @@ export class ServicesService {
                 };
             });
             return resultSpecialties;
+        }
+
+        async getAllSpecialtiesWithProf(): Promise<any[]> {
+
+            //Obtengo las especialidades que tienen profesionales activos
+            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+                servicesQueries.selectAllSpecialties,
+                [],
+            );
+    
+            let resultSpecialties= resultQuery.map((rs: RowDataPacket) => {
+                return {
+                    id: rs['id_speciality'],
+                    speciality: rs['speciality'],
+                };
+            });
+
+            return resultSpecialties;
+        }
+
+        async createService(data:any):Promise<string> {
+            try {
+                await this.dbService.executeQuery(
+                    servicesQueries.insertService,
+                    [
+                        data.name,
+                        data.id_speciality,
+                        data.description,
+                        data.price,
+                        data.duration
+                    ],
+                );
+                return 'Servicio creado con exito'
+            } catch (error) {
+                throw new HttpException(
+                    `Error insertando servicio: ${error.sqlMessage}`,
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                );
+            }
         }
 }

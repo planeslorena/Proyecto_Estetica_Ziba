@@ -15,7 +15,7 @@ import { AddServices } from '../modalsAdmin/services';
 import { AddAppoinments } from '../modalsAdmin/appointments';
 
 interface tableProps {
-    data:any;
+    data:any[];
     columns: any[];
     filter: string;
 }

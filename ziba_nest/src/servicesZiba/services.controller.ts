@@ -26,7 +26,21 @@ export class ServicesController {
 
   @UseGuards(JwtMiddlewareGuard)
   @Get('/specialties')
-  async getSpecialties() {
-    return this.servicesService.getAllSpecialties();
+  async getSpecialtiesWhitoutProf() {
+    return this.servicesService.getSpecialtiesWhitoutProf();
   }
+
+  @UseGuards(JwtMiddlewareGuard)
+  @Get('/specialtieswhitprof')
+  async getAllSpecialtiesWithProf() {
+    return this.servicesService.getAllSpecialtiesWithProf();
+  }
+
+  @UseGuards(JwtMiddlewareGuard)
+  @Post()
+  async createProf(@Body() body: any) {
+   return this.servicesService.createService(body);
+  }
+
+  
 } 
