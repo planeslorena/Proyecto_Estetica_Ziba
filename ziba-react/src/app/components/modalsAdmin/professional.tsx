@@ -11,20 +11,19 @@ interface data {
     tel: number,
     email: string,
     speciality: string,
+    days: string[],
     hour1: string,
     hour2: string,
 }
 
 const schedules = [
-    { day: 'Lunes', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
-    { day: 'Martes', times: ['01:00 PM', '02:00 PM', '03:00 PM'] },
-    { day: 'Miercoles', times: ['09:00 AM', '10:00 AM'] },
-    { day: 'Jueves', times: ['01:00 PM', '02:00 PM'] },
-    { day: 'Viernes', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
-    { day: 'Sábado', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
+    { day: 'Lunes', times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Martes', times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Miercoles', times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Jueves', times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Viernes', times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Sábado', times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
 ];
-
-const open = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'];
 
 interface professionalProps {
     show: boolean;
@@ -42,9 +41,16 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
     const [checkedJueves, setCheckedJueves] = useState<boolean>(false);
     const [checkedViernes, setCheckedViernes] = useState<boolean>(false);
     const [checkedSábado, setCheckedSábado] = useState<boolean>(false);
-    const { handleSubmit, register, formState: { errors, isValid }, watch } = useForm<data>();
+    const { handleSubmit, register, formState: { errors, isValid }, watch, setError } = useForm<data>();
+
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log(data);
+        if (data.days.length == 0) {
+            setError('days', {
+                type: "manual",
+                message: "Elija por lo menos un día",
+            })
+        }
     }
 
     let days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'];
@@ -261,31 +267,33 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                         </div>
                         <div>
                             <label className='form-label-admin'>Día/s</label>
-                            {days.map(day => (
+                            {schedules.map(item => (
                                 <div>
-                                    <label key={day}>
+                                    <label key={item.day}>
                                         <input
                                             type='checkbox'
-                                            onChange={() => handleCheckboxChange(day)}
-                                            checked={selectedDays.includes(day)}
+                                            {...register('days')}
+                                            onChange={() => handleCheckboxChange(item.day)}
+                                            checked={selectedDays.includes(item.day)}
+                                            value={item.day}
                                         />
-                                        <span>{day}</span>
+                                        <span>{item.day}</span>
                                     </label>
                                     <label id='select' className='form-label-admin'>Horarios</label>
                                     <input type="time" id="appt" list="time-list"
-                                        disabled={checked(day)}
+                                        disabled={checked(item.day)}
                                         {...register("hour1", {
                                             required: "Por favor ingrese una hora",
                                         })}
                                     />
                                     <datalist id="time-list">
-                                        {open.map((value: any) => (
-                                            <option id="08" value={value} datatype="time" />
+                                        {item.times.map((time: any) => (
+                                               <option id="08" value={time} datatype="time" />                                      
                                         ))}
                                     </datalist>
                                     <span>-</span>
                                     <input type="time" id="appt" list="time-list"
-                                     disabled={checked(day)}
+                                     disabled={checked(item.day)}
                                         {...register("hour2", {
                                             required: "Por favor ingrese una hora",
                                             validate: (value) => {
@@ -296,15 +304,16 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                             },
                                         })}/>
                                     <datalist id="time-list">
-                                        {open.map((value: any) => (
-                                            <option id="08" value={value} datatype="time" />
+                                        {item.times.map((time: any) => (
+                                            <option id="08" value={time} datatype="time" />
                                         ))}
                                     </datalist>
                                     <small className='texto-validaciones'>{errors.hour2?.message}</small>
-                                </div>
+                                </div> 
                             ))}
+                            <small className='text-validation-register'>{errors.days?.message}</small>
                         </div>
-                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
+                        <button type='submit' /* disabled={!isValid} */ className='button-agregarprofesional'>Agregar Profesional</button>
                     </form>
                 </Modal.Body>
             </Modal>
