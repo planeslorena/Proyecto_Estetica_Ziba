@@ -7,6 +7,7 @@ import { getAllClients, getAllProf } from "@/app/services/User";
 import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { Dropdown } from "react-bootstrap";
+import './page.css';
 
 const columnsClient = [
   {
@@ -192,7 +193,7 @@ function AdminPage() {
 
       </header>
 
-      <main className="dropdown-admin">
+      <main className="page-admin">
         <Dropdown>
           <Dropdown.Toggle >{filter}</Dropdown.Toggle>
           <Dropdown.Menu>
@@ -203,8 +204,6 @@ function AdminPage() {
           </Dropdown.Menu>
         </Dropdown>
         <AdminTable data={data} columns={columns} filter={filter} />
-
-
       </main>
     </>
   )

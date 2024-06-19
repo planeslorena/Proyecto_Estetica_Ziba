@@ -88,7 +88,7 @@ export function Menu() {
                   </Dropdown.Menu>
                 </Dropdown>
               ) : (
-                <Nav.Link className='cuenta' onClick={() => router.push('/authPage')}>CUENTA</Nav.Link>
+                <Nav.Link className='cuenta' onClick={() => router.push('/authPage')}>ACCEDER</Nav.Link>
               )
               }
               <i className="bi bi-person-circle"></i>

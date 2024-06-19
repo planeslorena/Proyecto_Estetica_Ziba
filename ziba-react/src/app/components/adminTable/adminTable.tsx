@@ -102,7 +102,7 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
     });
 
     return (
-        <div className="p-2">
+        <div className="p-2 container-principal">
             <div className='d-flex flex-row justify-content-between'>
                 <input className='inputbuscador-admin' placeholder="Buscar "
                     type='text'
