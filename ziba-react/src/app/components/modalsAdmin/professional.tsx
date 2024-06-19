@@ -11,20 +11,19 @@ interface data {
     tel: number,
     email: string,
     speciality: string,
-    hour1: string,
-    hour2: string,
+    days: string[],
+    hour1: string[],
+    hour2: string[],
 }
 
 const schedules = [
-    { day: 'Lunes', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
-    { day: 'Martes', times: ['01:00 PM', '02:00 PM', '03:00 PM'] },
-    { day: 'Miercoles', times: ['09:00 AM', '10:00 AM'] },
-    { day: 'Jueves', times: ['01:00 PM', '02:00 PM'] },
-    { day: 'Viernes', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
-    { day: 'Sábado', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
+    { day: 'Lunes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Martes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Miercoles', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Jueves', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Viernes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
+    { day: 'Sábado', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
 ];
-
-const open = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'];
 
 interface professionalProps {
     show: boolean;
@@ -33,107 +32,29 @@ interface professionalProps {
 }
 
 export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data }) => {
+    const [checkedDay, setCheckedDay] = useState(schedules)
+    const { handleSubmit, register, formState: { errors, isValid }, watch, setError } = useForm<data>();
 
-    const [selectedDays, setSelectedDays] = useState<string[]>([]);
-    const [availableTimes, setAvailableTimes] = useState<string[]>([]);
-    const [checkedLunes, setCheckedLunes] = useState<boolean>(false);
-    const [checkedMartes, setCheckedMartes] = useState<boolean>(false);
-    const [checkedMiercoles, setCheckedMiercoles] = useState<boolean>(false);
-    const [checkedJueves, setCheckedJueves] = useState<boolean>(false);
-    const [checkedViernes, setCheckedViernes] = useState<boolean>(false);
-    const [checkedSábado, setCheckedSábado] = useState<boolean>(false);
-    const { handleSubmit, register, formState: { errors, isValid }, watch } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log(data);
-    }
-
-    let days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'];
-    const handleCheckboxChange = (day: string) => {
-        const index = selectedDays.indexOf(day);
-        if (index === -1) {
-            setSelectedDays([...selectedDays, day]);
-            switch (day) {
-                case 'Lunes':
-                    setCheckedLunes(true);
-                    break;
-                    case 'Martes':
-                    setCheckedMartes(true);
-                    break;
-                    case 'Miercoles':
-                    setCheckedMiercoles(true);
-                    break;
-                    case 'Jueves':
-                    setCheckedJueves(true);
-                    break;
-                    case 'Viernes':
-                    setCheckedViernes(true);
-                    break;
-                    case 'Sábado':
-                    setCheckedSábado(true);
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            setSelectedDays(selectedDays.filter(d => d !== day));
-            switch (day) {
-                case 'Lunes':
-                    setCheckedLunes(false);
-                    break;
-                    case 'Martes':
-                    setCheckedMartes(false);
-                    break;
-                    case 'Miercoles':
-                    setCheckedMiercoles(false);
-                    break;
-                    case 'Jueves':
-                    setCheckedJueves(false);
-                    break;
-                    case 'Viernes':
-                    setCheckedViernes(false);
-                    break;
-                    case 'Sábado':
-                    setCheckedSábado(false);
-                    break;
-                default:
-                    break;
-            }
-        }  
-        selectedDays.length > 0 || "Debe seleccionar al menos un día"
-    };
-
-    const checked = (day:any) => {
-        switch (day) {
-            case 'Lunes':
-                return checkedLunes == false;
-                case 'Martes':
-                    return checkedMartes == false;
-                case 'Miercoles':
-                    return checkedMiercoles == false;
-                case 'Jueves':
-                    return checkedJueves == false;
-                case 'Viernes':
-                    return checkedViernes == false;
-                case 'Sábado':
-                    return checkedSábado == false;
-            default:
-                break;
+        if (data.days.length == 0) {
+            setError('days', {
+                type: "manual",
+                message: "Elija por lo menos un día",
+            })
         }
     }
 
-    const watchHour1 = watch('hour1', '');
-    const watchHour2 = watch('hour2', '');
+    const handleCheckboxChange = (day: string) => {
+        const newSchedule = checkedDay.map((item) => ({
+            ...item,
+            checked: (item.day == day) ? !item.checked : item.checked,
+        }));
+        setCheckedDay(newSchedule);
+    };
 
-    useEffect(() => {
-        let times: string[] = [];
-        selectedDays.forEach(day => {
-            const schedule = schedules.find(s => s.day === day);
-            if (schedule) {
-                times = [...times, ...schedule.times];
-            }
-        });
-        setAvailableTimes(times);
-    }, [selectedDays]);
+    /* const watchHour1 = watch('hour1', '');
+    const watchHour2 = watch('hour2', ''); */
 
     return (
         <>
@@ -261,50 +182,48 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                         </div>
                         <div>
                             <label className='form-label-admin'>Día/s</label>
-                            {days.map(day => (
+                            {checkedDay.map(item => (
                                 <div>
-                                    <label key={day}>
+                                    <label key={item.day}>
                                         <input
                                             type='checkbox'
-                                            onChange={() => handleCheckboxChange(day)}
-                                            checked={selectedDays.includes(day)}
+                                            {...register('days')}
+                                            onChange={() => handleCheckboxChange(item.day)} 
+                                            checked={item.checked}
+                                            value={item.day}
                                         />
-                                        <span>{day}</span>
+                                        <span>{item.day}</span>
                                     </label>
                                     <label id='select' className='form-label-admin'>Horarios</label>
                                     <input type="time" id="appt" list="time-list"
-                                        disabled={checked(day)}
-                                        {...register("hour1", {
+                                        disabled={!item.checked}
+                                        {...register("hour1"/* , {
                                             required: "Por favor ingrese una hora",
-                                        })}
+                                        } */)}
                                     />
-                                    <datalist id="time-list">
-                                        {open.map((value: any) => (
-                                            <option id="08" value={value} datatype="time" />
-                                        ))}
-                                    </datalist>
                                     <span>-</span>
                                     <input type="time" id="appt" list="time-list"
-                                     disabled={checked(day)}
-                                        {...register("hour2", {
+                                     disabled={!item.checked}
+                                        {...register("hour2",/*  {
                                             required: "Por favor ingrese una hora",
-                                            validate: (value) => {
+                                             validate: (value) => {
                                                if (watchHour1 && value > watchHour1) {
                                                 return true
                                             } else {
                                                 return 'Max time must be later than min time'}  
                                             },
-                                        })}/>
+                                        }*/) }/>
                                     <datalist id="time-list">
-                                        {open.map((value: any) => (
-                                            <option id="08" value={value} datatype="time" />
+                                        {item.times.map((time: any) => (
+                                            <option value={time} datatype="time" />
                                         ))}
                                     </datalist>
                                     <small className='texto-validaciones'>{errors.hour2?.message}</small>
-                                </div>
+                                </div> 
                             ))}
+                            <small className='text-validation-register'>{errors.days?.message}</small>
                         </div>
-                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
+                        <button type='submit' /* disabled={!isValid} */ className='button-agregarprofesional'>Agregar Profesional</button>
                     </form>
                 </Modal.Body>
             </Modal>
