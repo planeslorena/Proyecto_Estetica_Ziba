@@ -173,7 +173,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                             </select>
                             <small className='texto-validaciones'>{errors.availability?.message}</small>
                         </div>
-                        <button type='submit' disabled={!isValid} className='button-agregarcliente'>Agregar turno</button>
+                        <button type='submit' disabled={!isValid} className='button-agregarcliente'>{action} turno</button>
                     </form>
                 </Modal.Body>
             </Modal>

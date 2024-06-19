@@ -34,3 +34,12 @@ export const getAllProf = async (): Promise<any[]> => {
   const response: AxiosResponse<any, any> = await clientAxios.get('user/prof');
   return response.data;
 }
+
+export const updateClient = async (data:any) => {
+  try {
+    const response: AxiosResponse<any, any> = await clientAxios.put('user/client',data);
+    return response.data;
+  } catch (error:any) {
+    return error.response.data.statusCode;
+  }
+}

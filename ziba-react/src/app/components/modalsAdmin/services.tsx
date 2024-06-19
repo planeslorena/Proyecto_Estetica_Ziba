@@ -22,7 +22,7 @@ interface servicesProps {
 
 export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, action }) => {
     const [specialties, setSpecialties] = useState([{id:'',speciality:''}]);
-    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>({ mode: 'onChange' });
+    const { handleSubmit, register, formState: { errors, isValid }, reset } = useForm<data>({ mode: 'onChange' });
     const onSubmit: SubmitHandler<data> = async (data) => {
         const service = {
             name:data.name,
@@ -31,7 +31,6 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
             price:data.price,
             duration: data.duration
         }
-        console.log(service)
         const resp = await createService(service);
 
         if (resp == 201) {
@@ -40,6 +39,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
             text: "Servicio registrado con exito!",
             icon: "success"
             });
+            reset();
             handleClose();
         } else {
             Swal.fire({
@@ -102,7 +102,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
                         </div>
                         <div>
                             <label className='form-label-admin'>Descripción</label>
-                            <input className='form-input-admin'
+                            <textarea className='form-input-admin'
                                 defaultValue={data?.description}
                                 placeholder='Ingrese la descripción del servicio'
                                 {...register("description", {
@@ -113,12 +113,12 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
                                     },
                                     maxLength: {
                                         value: 1000,
-                                        message: "La descripción no puede contener más de 280 caracteres",
+                                        message: "La descripción no puede contener más de 1000 caracteres",
                                     },
-                                    pattern: {
+                                   /* pattern: {
                                         value: /^([a-zA-Z]+\s?)+$/,
                                         message: "Servicio inválido",
-                                    }
+                                    }*/
                                 })} />
                             <small className='texto-validaciones'>{errors.description?.message}</small>
                         </div>
@@ -159,7 +159,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
                             </select>
                             <small className='texto-validaciones'>{errors.duration?.message}</small>
                         </div>
-                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar servicio</button>
+                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>{action} servicio</button>
                     </form>
                 </Modal.Body>
             </Modal>

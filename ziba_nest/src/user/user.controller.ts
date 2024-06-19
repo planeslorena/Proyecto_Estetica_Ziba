@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Req, UseGuards } from '@nestjs/common';
 import User from 'src/models/user.dto';
 import { UserService } from './user.service';
 import { JwtMiddlewareGuard } from 'src/common/services/jwtGuard.service';
@@ -38,4 +38,9 @@ export class UserController {
    return this.userService.createProf(body);
   }
 
+  @UseGuards(JwtMiddlewareGuard)
+  @Put('/client')
+  async updateClient(@Body() body: any) {
+   return this.userService.updateUser(body);
+  }
 } 

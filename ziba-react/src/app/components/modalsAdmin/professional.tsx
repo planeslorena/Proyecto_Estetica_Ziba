@@ -38,7 +38,7 @@ interface professionalProps {
 
 export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data, action }) => {
 
-    const [specialties, setSpecialties] = useState([{id:'',speciality:''}]);
+    const [specialties, setSpecialties] = useState([{ id: '', speciality: '' }]);
     const [selectedDays, setSelectedDays] = useState<string[]>([]);
     const [availableTimes, setAvailableTimes] = useState<string[]>([]);
     const [checkedLunes, setCheckedLunes] = useState<boolean>(false);
@@ -57,38 +57,40 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                 type: "manual",
                 message: "Elija por lo menos un día",
             })
-        }
-        const prof = {
-            mail: data.email,
-            password: 'prof1234',
-            name: data.name,
-            lastname:data.lastname,
-            dni: data.dni,
-            phone: data.tel,
-            role: 'prof',
-            speciality: data.speciality,
-            hour_begin: data.hour1,
-            hour_end: data.hour2
-        }
-        const resp = await createProf(prof);
-
-        if (resp == 409) {
-           setErrorRegister('El mail indicado ya se encuentra registrado.')
         } else {
-            Swal.fire({
-            title: `Agregar Profesional`,
-            text: "Profesional registrado con exito!",
-            icon: "success"
-            });
-            handleClose();
-        } 
+
+            const prof = {
+                mail: data.email,
+                password: 'prof1234',
+                name: data.name,
+                lastname: data.lastname,
+                dni: data.dni,
+                phone: data.tel,
+                role: 'prof',
+                speciality: data.speciality,
+                hour_begin: data.hour1,
+                hour_end: data.hour2
+            }
+            const resp = await createProf(prof);
+
+            if (resp == 409) {
+                setErrorRegister('El mail indicado ya se encuentra registrado.')
+            } else {
+                Swal.fire({
+                    title: `Agregar Profesional`,
+                    text: "Profesional registrado con exito!",
+                    icon: "success"
+                });
+                handleClose();
+            }
+        }
     }
 
     const loadSpecialties = async () => {
         const resp = await getSpecialtiesWhitoutProf();
         setSpecialties(resp);
     }
-    
+
     let days = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sábado'];
     const handleCheckboxChange = (day: string) => {
         const index = selectedDays.indexOf(day);
@@ -98,19 +100,19 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                 case 'Lunes':
                     setCheckedLunes(true);
                     break;
-                    case 'Martes':
+                case 'Martes':
                     setCheckedMartes(true);
                     break;
-                    case 'Miercoles':
+                case 'Miercoles':
                     setCheckedMiercoles(true);
                     break;
-                    case 'Jueves':
+                case 'Jueves':
                     setCheckedJueves(true);
                     break;
-                    case 'Viernes':
+                case 'Viernes':
                     setCheckedViernes(true);
                     break;
-                    case 'Sábado':
+                case 'Sábado':
                     setCheckedSábado(true);
                     break;
                 default:
@@ -122,42 +124,42 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                 case 'Lunes':
                     setCheckedLunes(false);
                     break;
-                    case 'Martes':
+                case 'Martes':
                     setCheckedMartes(false);
                     break;
-                    case 'Miercoles':
+                case 'Miercoles':
                     setCheckedMiercoles(false);
                     break;
-                    case 'Jueves':
+                case 'Jueves':
                     setCheckedJueves(false);
                     break;
-                    case 'Viernes':
+                case 'Viernes':
                     setCheckedViernes(false);
                     break;
-                    case 'Sábado':
+                case 'Sábado':
                     setCheckedSábado(false);
                     break;
                 default:
                     break;
             }
-        }  
+        }
         selectedDays.length > 0 || "Debe seleccionar al menos un día"
     };
 
-    const checked = (day:any) => {
+    const checked = (day: any) => {
         switch (day) {
             case 'Lunes':
                 return checkedLunes == false;
-                case 'Martes':
-                    return checkedMartes == false;
-                case 'Miercoles':
-                    return checkedMiercoles == false;
-                case 'Jueves':
-                    return checkedJueves == false;
-                case 'Viernes':
-                    return checkedViernes == false;
-                case 'Sábado':
-                    return checkedSábado == false;
+            case 'Martes':
+                return checkedMartes == false;
+            case 'Miercoles':
+                return checkedMiercoles == false;
+            case 'Jueves':
+                return checkedJueves == false;
+            case 'Viernes':
+                return checkedViernes == false;
+            case 'Sábado':
+                return checkedSábado == false;
             default:
                 break;
         }
@@ -186,7 +188,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input defaultValue={data?.id} disabled hidden
-                        {...register('id')}/>
+                            {...register('id')} />
                         <div>
                             <label className='form-label-admin'>Nombre</label>
                             <input className='form-input-admin'
@@ -294,9 +296,9 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                         <div>
                             <label className='form-label-admin'>Especialidad</label>
                             <select className="form-select form-input-admin" aria-label="Default select example" defaultValue={data?.speciality} {...register(
-                                "speciality")} onClick= {() =>loadSpecialties()}>
+                                "speciality")} onClick={() => loadSpecialties()}>
                                 {specialties.map(sp => (
-                                    <option key= {sp.id+sp.speciality} value={sp.id}>{sp.speciality}</option>
+                                    <option key={sp.id + sp.speciality} value={sp.id}>{sp.speciality}</option>
                                 ))}
                             </select>
                         </div>
@@ -315,7 +317,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         <span>{item.day}</span>
                                     </label>
                                     <label id='select' className='form-label-admin'>Horarios</label>
-                                    <input type="time" id="appt" list="time-list"
+                                    /*<input type="time" id="appt" list="time-list"
                                         disabled={checked(item.day)}
                                         {...register("hour1", {
                                             required: "Por favor ingrese una hora",
@@ -323,33 +325,34 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                     />
                                     <datalist id="time-list">
                                         {item.times.map((time: any) => (
-                                               <option id="08" value={time} datatype="time" />                                      
+                                            <option id="08" value={time} datatype="time" />
                                         ))}
                                     </datalist>
                                     <span>-</span>
                                     <input type="time" id="appt" list="time-list"
-                                     disabled={checked(item.day)}
+                                        disabled={checked(item.day)}
                                         {...register("hour2", {
                                             required: "Por favor ingrese una hora",
                                             validate: (value) => {
-                                               if (watchHour1 && value > watchHour1) {
-                                                return true
-                                            } else {
-                                                return 'Max time must be later than min time'}  
+                                                if (watchHour1 && value > watchHour1) {
+                                                    return true
+                                                } else {
+                                                    return 'Max time must be later than min time'
+                                                }
                                             },
-                                        })}/>
+                                        })} />
                                     <datalist id="time-list">
                                         {item.times.map((time: any) => (
                                             <option id="08" value={time} datatype="time" />
                                         ))}
                                     </datalist>
                                     <small className='texto-validaciones'>{errors.hour2?.message}</small>
-                                </div> 
+                                </div>
                             ))}
                             <small className='text-validation-register'>{errors.days?.message}</small>
                         </div>
                         <small className='text-validation-register'>{errorRegister}</small>
-                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
+                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>{action} Profesional</button>
                     </form>
                 </Modal.Body>
             </Modal>

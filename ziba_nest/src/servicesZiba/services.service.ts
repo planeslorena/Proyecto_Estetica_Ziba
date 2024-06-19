@@ -10,7 +10,7 @@ export class ServicesService {
     constructor(private dbService: DatabaseService) {
     }
 
-    //Funcion que obtiene todos los servicios brindados por la estetica
+    //Funcion que obtiene todos los servicios brindados por la estetica agrupados por especialidad
     async getAll(): Promise<Services[]> {
 
         //Primero se obtienen las especialidades
@@ -34,7 +34,7 @@ export class ServicesService {
         );
 
         resultQuery2.map((rs: RowDataPacket) => {
-             resultServices.map((se) => {
+            resultServices.map((se) => {
                 if (rs['speciality'] == se.speciality) {
                     se.services.push(rs['service'])
                 }
@@ -45,103 +45,103 @@ export class ServicesService {
         return resultServices;
     }
 
-        //Funcion que obtiene todos los servicios brindados por la estetica con especialidad, profesional y horarios
-        async getAllForAdmin(): Promise<any[]> {
+    //Funcion que obtiene todos los servicios brindados por la estetica con especialidad, profesional y horarios
+    async getAllForAdmin(): Promise<any[]> {
 
-            //Primero se obtengo los servicio con especialidad y profesional
-            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
-                servicesQueries.selectServiceWithSpeciality,
-                [],
+        //Primero se obtengo los servicio con especialidad y profesional
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            servicesQueries.selectServiceWithSpeciality,
+            [],
+        );
+
+        let resultServices: any[] = resultQuery.map((rs: RowDataPacket) => {
+            return {
+                id: rs['id_service'],
+                service: rs['service'],
+                description: rs['description'],
+                speciality: rs['speciality'],
+                professional: `${rs['name']} ${rs['lastname']}`,
+                price: rs['price'],
+            };
+        });
+
+        return resultServices;
+    }
+
+    //Funcion que obtiene todos los turnos reservados de hoy en adelante
+    async getAllApponintments(): Promise<any[]> {
+
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            servicesQueries.selectAllAppointments,
+            [],
+        );
+
+        let resultApponitments: any[] = resultQuery.map((rs: RowDataPacket) => {
+            return {
+                id: rs['id_appointment'],
+                date: `${rs['date'].getDate()}-${rs['date'].getMonth()+1}-${rs['date'].getFullYear()}`,
+                hour: rs['hour'],
+                service: rs['service'],
+                user: `${rs['name']} ${rs['lastname']}`,
+            };
+        });
+        return resultApponitments;
+    }
+
+    //Función que obtiene las especialidades que no tienen un profesional asignado
+    async getSpecialtiesWhitoutProf(): Promise<any[]> {
+
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            servicesQueries.selectSpecialtiesWhitoutProf,
+            [],
+        );
+
+        let resultSpecialties: any[] = resultQuery.map((rs: RowDataPacket) => {
+            return {
+                id: rs['id_speciality'],
+                speciality: rs['name']
+            };
+        });
+        return resultSpecialties;
+    }
+
+    //Funcion que obtiene las especialidades que tienen profesionales activos
+    async getAllSpecialtiesWithProf(): Promise<any[]> {
+
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            servicesQueries.selectAllSpecialties,
+            [],
+        );
+
+        let resultSpecialties = resultQuery.map((rs: RowDataPacket) => {
+            return {
+                id: rs['id_speciality'],
+                speciality: rs['speciality'],
+            };
+        });
+
+        return resultSpecialties;
+    }
+
+    //Funcion para crear nuevos servicios
+    async createService(data: any): Promise<string> {
+        try {
+            await this.dbService.executeQuery(
+                servicesQueries.insertService,
+                [
+                    data.name,
+                    data.id_speciality,
+                    data.description,
+                    data.price,
+                    data.duration
+                ],
             );
-    
-            let resultServices: any[] = resultQuery.map((rs: RowDataPacket) => {
-                return {
-                    id: rs['id_service'],
-                    service: rs['service'],
-                    description: rs['description'],
-                    speciality: rs['speciality'],
-                    professional: `${rs['name']} ${rs['lastname']}`,
-                    price: rs['price'],
-                };
-            });
-        
-            return resultServices;
-        }
-    
-
-        async getAllApponintments(): Promise<any[]> {
-
-            //Primero se obtengo los servicio con especialidad y profesional
-            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
-                servicesQueries.selectAllAppointments,
-                [],
+            return 'Servicio creado con exito'
+        } catch (error) {
+            throw new HttpException(
+                `Error insertando servicio: ${error.sqlMessage}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
             );
-    
-            let resultApponitments: any[] = resultQuery.map((rs: RowDataPacket) => {
-                return {
-                    id: rs['id_appointment'],
-                    date: rs['date'],
-                    hour: rs['hour'],
-                    service: rs['service'],
-                    user: `${rs['name']} ${rs['lastname']}`,
-                };
-            });
-            return resultApponitments;
         }
-
-        async getSpecialtiesWhitoutProf(): Promise<any[]> {
-
-            //Primero se obtengo los servicio con especialidad y profesional
-            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
-                servicesQueries.selectSpecialtiesWhitoutProf,
-                [],
-            );
-    
-            let resultSpecialties: any[] = resultQuery.map((rs: RowDataPacket) => {
-                return {
-                    id: rs['id_speciality'],
-                    speciality: rs['name']
-                };
-            });
-            return resultSpecialties;
-        }
-
-        async getAllSpecialtiesWithProf(): Promise<any[]> {
-
-            //Obtengo las especialidades que tienen profesionales activos
-            const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
-                servicesQueries.selectAllSpecialties,
-                [],
-            );
-    
-            let resultSpecialties= resultQuery.map((rs: RowDataPacket) => {
-                return {
-                    id: rs['id_speciality'],
-                    speciality: rs['speciality'],
-                };
-            });
-
-            return resultSpecialties;
-        }
-
-        async createService(data:any):Promise<string> {
-            try {
-                await this.dbService.executeQuery(
-                    servicesQueries.insertService,
-                    [
-                        data.name,
-                        data.id_speciality,
-                        data.description,
-                        data.price,
-                        data.duration
-                    ],
-                );
-                return 'Servicio creado con exito'
-            } catch (error) {
-                throw new HttpException(
-                    `Error insertando servicio: ${error.sqlMessage}`,
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                );
-            }
-        }
+    }
 }

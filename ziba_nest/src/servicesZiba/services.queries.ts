@@ -26,7 +26,8 @@ const servicesQueries = {
                             join users u 
                             join services s 
                             on a.id_user = u.id_user 
-                            and a.id_service = s.id_service ;`,
+                            and a.id_service = s.id_service 
+                            where date > sysdate();`,
     selectSpecialtiesWhitoutProf:`select s.id_speciality, s.name
                             from specialties s 
                             left join (select p.* from professional p inner join users u on p.id_user = u.id_user where u.active = 1) p

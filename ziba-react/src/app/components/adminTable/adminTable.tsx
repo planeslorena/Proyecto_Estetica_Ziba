@@ -148,9 +148,9 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                             <td table-admin-td>
                                 <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
                                 <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} action= 'Modificar' />
-                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} action= 'Agregar'/>
-                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} action= 'Agregar'/>
-                                <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments} action= 'Agregar'/>
+                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} action= 'Modificar'/>
+                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} action= 'Modificar'/>
+                                <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments(0)} action= 'Modificar'/>
                                 <i className='bi bi-trash3 icon-trash'/>
                             </td>
                         </tr>
