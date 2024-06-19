@@ -1,7 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './professional.css';
 import { Modal } from 'react-bootstrap';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+
+interface TimeRange {
+    hour1: string;
+    hour2: string;
+  }
 
 interface data {
     id: number,
@@ -33,7 +38,7 @@ interface professionalProps {
 
 export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data }) => {
     const [checkedDay, setCheckedDay] = useState(schedules)
-    const { handleSubmit, register, formState: { errors, isValid }, watch, setError } = useForm<data>();
+    const { handleSubmit, register, formState: { errors, isValid }, watch, setError, control } = useForm<data>();
 
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log(data);
@@ -53,8 +58,13 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
         setCheckedDay(newSchedule);
     };
 
-    /* const watchHour1 = watch('hour1', '');
-    const watchHour2 = watch('hour2', ''); */
+    const startTime  = watch('hour1');
+
+    const getEndTimeOptions = (item:any) => {
+        if (!startTime) return item.times;
+        const startTimeIndex = item.times.indexOf(startTime);
+        return item.times.slice(startTimeIndex + 1);
+      };
 
     return (
         <>
@@ -194,17 +204,32 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         />
                                         <span>{item.day}</span>
                                     </label>
-                                    <label id='select' className='form-label-admin'>Horarios</label>
-                                    <input type="time" id="appt" list="time-list"
+                                     <label id='select' className='form-label-admin'>Horarios</label>
+                                   {/* <input type="time" id="appt" list="time-list"
                                         disabled={!item.checked}
-                                        {...register("hour1"/* , {
+                                        {...register("hour1", {
                                             required: "Por favor ingrese una hora",
-                                        } */)}
-                                    />
+                                        })}
+                                    /> */}
+                                    <Controller
+                                        name="hour1"
+                                        control={control}
+                                        rules={{ required: 'Start time is required' }}
+                                        render={({ field }) => (
+                                            <select {...field} disabled={!item.checked}>
+                                            <option value="">Select start time</option>
+                                            {item.times.map(time => (
+                                                <option key={time} value={time}>
+                                                {time}
+                                                </option>
+                                            ))}
+                                            </select>
+                                        )}
+                                        />
                                     <span>-</span>
-                                    <input type="time" id="appt" list="time-list"
+                                    {/* <input type="time" id="appt" list="time-list"
                                      disabled={!item.checked}
-                                        {...register("hour2",/*  {
+                                        {...register("hour2", {
                                             required: "Por favor ingrese una hora",
                                              validate: (value) => {
                                                if (watchHour1 && value > watchHour1) {
@@ -212,12 +237,27 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                             } else {
                                                 return 'Max time must be later than min time'}  
                                             },
-                                        }*/) }/>
+                                        }) }/>
                                     <datalist id="time-list">
                                         {item.times.map((time: any) => (
                                             <option value={time} datatype="time" />
                                         ))}
-                                    </datalist>
+                                    </datalist> */}
+                                    <Controller
+                                        name="hour2"
+                                        control={control}
+                                        rules={{ required: 'End time is required' }}
+                                        render={({ field }) => (
+                                            <select {...field} disabled={!item.checked}>
+                                            <option value="">Select end time</option>
+                                            {getEndTimeOptions(item).map((time:any) => (
+                                                <option key={time} value={time}>
+                                                {time}
+                                                </option>
+                                            ))}
+                                            </select>
+                                        )}
+                                        />
                                     <small className='texto-validaciones'>{errors.hour2?.message}</small>
                                 </div> 
                             ))}
