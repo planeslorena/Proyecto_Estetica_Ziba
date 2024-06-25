@@ -187,13 +187,12 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                 {...register("speciality", {
                                     required: 'Por favor ingrese una especialidad',
                                 })}>
-                                <option value="si">Masajes</option>
-                                <option value="no">Peluqueria</option> </select>
+                                <option value="Masajes">Masajes</option>
+                                <option value="Peluqueria">Peluqueria</option> </select>
                         </div>
                         <div>
                             <label className='form-label-admin'>Día/s</label>
                             {checkedDay.map(item => (
-                                <div>
                                     <label key={item.day}>
                                         <input
                                             type='checkbox'
@@ -201,69 +200,54 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                             onChange={() => handleCheckboxChange(item.day)} 
                                             checked={item.checked}
                                             value={item.day}
+                                            defaultValue={data?.day}
                                         />
                                         <span>{item.day}</span>
                                     </label>
+                                ))}
+                                <small className='text-validation-register'>{errors.days?.message}</small>
                                      <label id='select' className='form-label-admin'>Horarios</label>
-                                   {/* <input type="time" id="appt" list="time-list"
-                                        disabled={!item.checked}
-                                        {...register("hour1", {
-                                            required: "Por favor ingrese una hora",
-                                        })}
-                                    /> */}
                                     <Controller
                                         name="hour1"
                                         control={control}
-                                        rules={{ required: 'Start time is required' }}
+                                        rules={{ required: 'Hora de llegada requerida'}}
                                         render={({ field }) => (
-                                            <select {...field} disabled={!item.checked}>
-                                            <option value="">Select start time</option>
-                                            {item.times.map(time => (
+                                            <select defaultValue={data.hour1} {...field}>
+                                            <option value="">Llegada</option>
+                                            {schedules.map(day => (
+                                                day.times.map(time =>(
                                                 <option key={time} value={time}>
                                                 {time}
                                                 </option>
+                                                ))
                                             ))}
                                             </select>
                                         )}
                                         />
                                     <span>-</span>
-                                    {/* <input type="time" id="appt" list="time-list"
-                                     disabled={!item.checked}
-                                        {...register("hour2", {
-                                            required: "Por favor ingrese una hora",
-                                             validate: (value) => {
-                                               if (watchHour1 && value > watchHour1) {
-                                                return true
-                                            } else {
-                                                return 'Max time must be later than min time'}  
-                                            },
-                                        }) }/>
-                                    <datalist id="time-list">
-                                        {item.times.map((time: any) => (
-                                            <option value={time} datatype="time" />
-                                        ))}
-                                    </datalist> */}
                                     <Controller
                                         name="hour2"
                                         control={control}
-                                        rules={{ required: 'End time is required' }}
+                                        rules={{ required: 'Hora de partida requerida'}}
                                         render={({ field }) => (
-                                            <select {...field} disabled={!item.checked}>
-                                            <option value="">Select end time</option>
-                                            {getEndTimeOptions(item).map((time:any) => (
-                                                <option key={time} value={time}>
-                                                {time}
-                                                </option>
+                                            <select defaultValue={data.hour1} {...field}>
+                                            <option value="">Partida</option>
+                                            {schedules.map(day => (
+                                                getEndTimeOptions(day).map((time:any) => (
+                                                    <option key={time} value={time}>
+                                                    {time}
+                                                    </option>
+                                                ))
                                             ))}
                                             </select>
                                         )}
                                         />
                                     <small className='texto-validaciones'>{errors.hour2?.message}</small>
-                                </div> 
-                            ))}
-                            <small className='text-validation-register'>{errors.days?.message}</small>
+
+                            
+                            
                         </div>
-                        <button type='submit' /* disabled={!isValid} */ className='button-agregarprofesional'>Agregar Profesional</button>
+                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
                     </form>
                 </Modal.Body>
             </Modal>

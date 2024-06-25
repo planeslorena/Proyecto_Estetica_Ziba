@@ -2,7 +2,7 @@
 import { withRoles } from "@/app/components/HOC/whitRoles";
 import { AdminTable } from "@/app/components/adminTable/adminTable";
 import { Menu } from "@/app/components/nav/nav";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 
 const dataClient = [
