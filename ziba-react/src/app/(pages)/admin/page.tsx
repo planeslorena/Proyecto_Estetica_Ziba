@@ -2,133 +2,12 @@
 import { withRoles } from "@/app/components/HOC/whitRoles";
 import { AdminTable } from "@/app/components/adminTable/adminTable";
 import { Menu } from "@/app/components/nav/nav";
-import { useMemo, useState } from "react";
+import { getAllAppointments, getServicesForAdmin } from "@/app/services/Services";
+import { getAllClients, getAllProf } from "@/app/services/User";
+import { createColumnHelper } from "@tanstack/react-table";
+import { useEffect, useMemo, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-
-const dataClient = [
-  {
-    id: 1,
-    name: 'Guada',
-    lastname: 'Chojo',
-    dni: 24000000,
-    tel: 2284897534,
-    email: 'guadachojo@gmail.com',
-  },
-  {
-    id: 2,
-    name: 'Ayelen',
-    lastname: 'Porqueres',
-    dni: 24000000,
-    tel: 2284897534,
-    email: 'ayeporqueres@gmail.com',
-  },
-  {
-    id: 3,
-    name: 'Lorena',
-    lastname: 'Planes',
-    dni: 24000000,
-    tel: 2284897534,
-    email: 'lolitaplanes@gmail.com',
-  },
-  {
-    id: 4,
-    name: 'Carla',
-    lastname: 'Rodriguez',
-    dni: 24000000,
-    tel: 2284897636,
-    email: 'carlitarodriguez@gmail.com',
-  },
-]
-
-const dataProf = [{
-  id: 1,
-  name: 'Romina',
-  lastname: 'Benegas',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'romibenegas@gmail.com',
-  specialty: 'Depilación',
-  availability: '',
-},
-{
-  id: 2,
-  name: 'Marisa',
-  lastname: 'Ruiz',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'marisaruis@gmail.com',
-  specialty: 'Cosmetología',
-  availability: '',
-},
-{
-  id: 3,
-  name: 'Maiten',
-  lastname: 'Suarez',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'maitesuar@gmail.com',
-  specialty: 'Manicuría',
-  availability: '',
-},]
-
-const dataService = [{
-  id: 1,
-  service: 'Bozo', 
-  speciality: 'Depilación',
-  name: 'Romina',
-  lastname: 'Benegas',
-  price: 10000,
-  duration:'',
-},
-{
-  id: 2,
-  service: 'Peeling', 
-  speciality: 'Cosmetología',
-  name: 'Marisa',
-  lastname: 'Ruiz',
-  price: 10000,
-  duration:'',
-},
-{
-  id: 3,
-  service: 'Soft gel', 
-  speciality: 'Manicuría',
-  name: 'Maiten',
-  lastname: 'Suarez',
-  price: 10000,
-  duration:'',
-},]
-
-const dataAppoint = [{
-  id: 1,
-  name: 'Romina',
-  lastname: 'Benegas',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'romibenegas@gmail.com',
-  specialty: 'Depilación',
-  availability: '',
-},
-{
-  id: 2,
-  name: 'Marisa',
-  lastname: 'Ruiz',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'marisaruis@gmail.com',
-  specialty: 'Cosmetología',
-  availability: '',
-},
-{
-  id: 3,
-  name: 'Maiten',
-  lastname: 'Suarez',
-  dni: 24000000,
-  tel: 2284897534,
-  email: 'maitesuar@gmail.com',
-  specialty: 'Manicuría',
-  availability: '',
-},]
+import './page.css';
 
 const columnsClient = [
   {
@@ -149,11 +28,11 @@ const columnsClient = [
   },
   {
     header: "Teléfono",
-    accessorKey: "tel"
+    accessorKey: "phone"
   },
   {
     header: "Email",
-    accessorKey: "email",
+    accessorKey: "mail",
   },
 ];
 
@@ -176,19 +55,19 @@ const columnsProf = [
   },
   {
     header: "Teléfono",
-    accessorKey: "tel"
+    accessorKey: "phone"
   },
   {
     header: "Email",
-    accessorKey: "email",
+    accessorKey: "mail",
   },
   {
     header: "Especialidad",
-    accessorKey: "specialty",
+    accessorKey: "speciality",
   },
   {
     header: "Horarios",
-    accessorKey: "availability",
+    accessorKey: "calendar"
   },
 ];
 
@@ -201,13 +80,16 @@ const columnsService = [{
   accessorKey: "service",
 },
 {
-  header: "Especialidad",
-  accessorKey: "specialty",
+  header: "Descripción",
+  accessorKey: "description",
 },
-
+{
+  header: "Especialidad",
+  accessorKey: "speciality",
+},
 {
   header: "Profesional",
-  accessorFn: (row:any) => `Prof. ${row.name} ${row.lastname}`,
+  accessorKey: "professional",
 },
 {
   header: "Precio",
@@ -220,37 +102,66 @@ const columnsAppoint = [{
   accessorKey: "id",
 },
 {
-  header: "Especialidad",
-  accessorKey: "specialty",
+  header: "Día",
+  accessorKey: "date",
 },
 {
-  header: "Profesional",
-  accessorFn: (row:any) => `Prof. ${row.name} ${row.lastname}`,
+  header: "Hora",
+  accessorKey: "hour",
 },
 {
-  header: "Horarios",
-  accessorKey: "availability",
+  header: "Servicio",
+  accessorKey: "service",
+},
+{
+  header: "Cliente",
+  accessorKey: "user",
 },]
 
 function AdminPage() {
   const [filter, setFilter] = useState('Clientes');
+  const [data, setData] = useState<any[]>([])
 
-  const data = useMemo(() => {
+  const loadClients = async () => {
+    const resp = await getAllClients();
+    setData(resp);
+  }
+
+  const loadProf = async () => {
+    const resp = await getAllProf();
+    setData(resp);
+  }
+
+  const loadServices = async () => {
+    const resp = await getServicesForAdmin();
+    setData(resp);
+  }
+
+  const loadAppointments = async () => {
+    const resp = await getAllAppointments();
+    setData(resp);
+  }
+
+  useEffect(() => {
     switch (filter) {
       case 'Clientes':
-        return dataClient;
+        loadClients();
+        break;
 
       case 'Profesionales':
-        return dataProf;
+        loadProf();
+        break;
 
       case 'Servicios':
-        return dataService;
+        loadServices();
+        break;
 
       case 'Turnos':
-        return dataAppoint;
+        loadAppointments();
+        break;
 
       default:
-        return dataClient;
+        loadClients();
     }
   }, [filter])
 
@@ -282,7 +193,7 @@ function AdminPage() {
 
       </header>
 
-      <main className="dropdown-admin">
+      <main className="page-admin">
         <Dropdown>
           <Dropdown.Toggle >{filter}</Dropdown.Toggle>
           <Dropdown.Menu>
@@ -292,8 +203,7 @@ function AdminPage() {
             <Dropdown.Item onClick={() => setFilter('Turnos')}>Turnos</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <AdminTable data={data} columns={columns} filter= {filter}/>
-        
+        <AdminTable data={data} columns={columns} filter={filter} />
       </main>
     </>
   )

@@ -15,7 +15,7 @@ import { AddServices } from '../modalsAdmin/services';
 import { AddAppoinments } from '../modalsAdmin/appointments';
 
 interface tableProps {
-    data: any[];
+    data:any[];
     columns: any[];
     filter: string;
 }
@@ -102,7 +102,7 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
     });
 
     return (
-        <div className="p-2">
+        <div className="p-2 container-principal">
             <div className='d-flex flex-row justify-content-between'>
                 <input className='inputbuscador-admin' placeholder="Buscar "
                     type='text'
@@ -111,11 +111,10 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                 />
                 <button onClick={handleShow} className='button-agregar'>Agregar {filter} +</button>
                 
-                    <AddClient show={showClient} handleClose={handleClose} />
-                    <AddProfessional show={showProfessional} handleClose={handleClose} />
-                    <AddServices show={showServices} handleClose={handleClose} />
-                    <AddAppoinments show= {showAppointments} handleClose={handleClose}/>
-
+                    <AddClient show={showClient} handleClose={handleClose}  action= 'Agregar'/>
+                    <AddProfessional show={showProfessional} handleClose={handleClose} action= 'Agregar'/>
+                    <AddServices show={showServices} handleClose={handleClose} action= 'Agregar'/>
+                    <AddAppoinments show= {showAppointments} handleClose={handleClose} action= 'Agregar'/>
             </div>
             <table className='table-admin-container'>
                 <thead className='table-admin-thead'>
@@ -150,10 +149,10 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                                 {filter !== 'Turnos' &&
                                     <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
                                 }
-                                <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} />
-                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} />
-                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} />
-                                {/* <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments}/> */}
+                                <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} action= 'Modificar' />
+                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} action= 'Modificar'/>
+                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} action= 'Modificar'/>
+                                {/* <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments(0)} action= 'Modificar'/> */}
                                 <i className='bi bi-trash3 icon-trash'/>
                             </td>
                         </tr>
@@ -161,8 +160,8 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                 </tbody>
             </table>
             <i onClick={() => table.setPageIndex(0)} className="bi bi-chevron-double-left"></i>
-            <i onClick={() => table.previousPage} className="bi bi-chevron-left"></i>
-            <i onClick={() => table.nextPage} className="bi bi-chevron-right"></i>
+            <i onClick={() => table.previousPage()} className="bi bi-chevron-left"></i>
+            <i onClick={() => table.nextPage()} className="bi bi-chevron-right"></i>
             <i onClick={() => table.setPageIndex(table.getPageCount() - 1)} className="bi bi-chevron-double-right"></i>
             <div className="h-4" />
         </div>

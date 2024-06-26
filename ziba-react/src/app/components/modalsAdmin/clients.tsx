@@ -1,11 +1,13 @@
+import { createUser, updateClient } from '@/app/services/User';
 import './clients.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
+import Swal from 'sweetalert2'
+import { useState } from 'react';
 
 
 interface data {
-    id:number,
+    id: number,
     name: string;
     lastname: string;
     dni: number;
@@ -17,25 +19,71 @@ interface clientProps {
     show: boolean;
     handleClose: () => void;
     data?: any;
+    action: string;
 }
 
-export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) => {
+export const AddClient: React.FC<clientProps> = ({ show, handleClose, data, action }) => {
 
-    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
-    const onSubmit: SubmitHandler<data> = (data) => {
-        console.log(data);
+    const [errorRegister, setErrorRegister] = useState('');
+    const { handleSubmit, register, reset, formState: { errors, isValid } } = useForm<data>({ mode: 'onChange' });
+    const onSubmit: SubmitHandler<data> = async (newData) => {
+        const user = {
+            id_user: data?.id,
+            mail: newData.email,
+            password: 'cliente1234',
+            name: newData.name,
+            lastname: newData.lastname,
+            dni: newData.dni,
+            phone: newData.tel,
+            role: 'client'
+        }
+
+        if (action == 'Agregar') {
+            const resp = await createUser(user);
+
+            if (resp == 409) {
+                setErrorRegister('El mail indicado ya se encuentra registrado.')
+            } else {
+                Swal.fire({
+                    title: `Alta Cliente`,
+                    text: "Cliente registrado con exito!",
+                    icon: "success"
+                });
+                reset();
+                handleClose();
+            }
+        } else if (action == 'Modificar') {
+            if (data.mail == newData.email && data.name == newData.name && data.lastname == newData.lastname && data.dni == newData.dni && data.phone == newData.tel) {
+                setErrorRegister('Debe modificar algún dato.');
+            } else {
+                setErrorRegister('');
+                const resp = await updateClient(user);
+
+                if (resp == 404) {
+                    setErrorRegister('No se encontro cliente para actualizar')
+                } else {
+                    Swal.fire({
+                        title: `Modificación Cliente`,
+                        text: "Cliente actualizado con exito!",
+                        icon: "success"
+                    });
+                    reset();
+                    handleClose();
+                }
+            }
+        }
     }
 
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Agregar cliente</Modal.Title>
+                    <Modal.Title>{action} cliente</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input defaultValue={data?.id} disabled hidden
-                        {...register('id')}/>
+                            {...register('id')} />
                         <div>
                             <label className='form-label-admin'>Nombre</label>
                             <input className='form-input-admin'
@@ -57,7 +105,7 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                         message: "Nombre inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.name?.message}</small>
+                            <small className='text-validation-admin'>{errors.name?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Apellido</label>
@@ -80,7 +128,7 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                         message: "Apellido inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.lastname?.message}</small>
+                            <small className='text-validation-admin'>{errors.lastname?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>DNI</label>
@@ -99,35 +147,35 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                         message: "DNI inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.dni?.message}</small>
+                            <small className='text-validation-admin'>{errors.dni?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Teléfono celular</label>
                             <input className='form-input-admin'
-                                defaultValue={data?.tel}
+                                defaultValue={data?.phone}
                                 placeholder='Ingrese su número de teléfono'
                                 {...register("tel", {
-                                        required: "Por favor ingrese su número de teléfono",
-                                        minLength: {
-                                            value: 10,
-                                            message: "El número de teléfono no puede tener menos de 10 caracteres",
+                                    required: "Por favor ingrese su número de teléfono",
+                                    minLength: {
+                                        value: 10,
+                                        message: "El número de teléfono no puede tener menos de 10 caracteres",
 
-                                        },
-                                        maxLength: {
-                                            value: 10,
-                                            message: "El número de teléfono no puede tener más de 10 caracteres",
-                                        },
-                                        pattern: {
-                                            value: /^(0|[1-9]\d*)(\.\d+)?$/,
-                                            message: "Número de teléfono inválido",
-                                        }
-                                    })} />
-                            <small className='texto-validaciones'>{errors.tel?.message}</small>
+                                    },
+                                    maxLength: {
+                                        value: 10,
+                                        message: "El número de teléfono no puede tener más de 10 caracteres",
+                                    },
+                                    pattern: {
+                                        value: /^(0|[1-9]\d*)(\.\d+)?$/,
+                                        message: "Número de teléfono inválido",
+                                    }
+                                })} />
+                            <small className='text-validation-admin'>{errors.tel?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Email</label>
                             <input className='form-input-admin'
-                                defaultValue={data?.email}
+                                defaultValue={data?.mail}
                                 placeholder="Ingrese su email"
                                 {...register("email", {
                                     required: 'Por favor ingrese su dirección de email',
@@ -138,14 +186,12 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data }) =>
                                 })} />
                             <small className='text-validation-admin'>{errors.email?.message}</small>
                         </div>
-                        <button type='submit' disabled={!isValid} className='button-agregarcliente'>Agregar cliente</button>        
+                        <small className='text-validation-admin'>{errorRegister}</small>
+                        <button type='submit' disabled={!isValid} className='button-agregarcliente'>{action} cliente</button>
                     </form>
                 </Modal.Body>
             </Modal>
         </>
     )
 }
-
-
-
 

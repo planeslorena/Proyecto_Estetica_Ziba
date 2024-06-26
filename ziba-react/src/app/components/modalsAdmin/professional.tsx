@@ -2,11 +2,15 @@ import { useEffect, useState } from 'react';
 import './professional.css';
 import { Modal } from 'react-bootstrap';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { getSpecialtiesWhitoutProf } from '@/app/services/Services';
+import { createProf } from '@/app/services/User';
+import Swal from 'sweetalert2';
 
 interface TimeRange {
     hour1: string;
     hour2: string;
   }
+
 
 interface data {
     id: number,
@@ -15,7 +19,7 @@ interface data {
     dni: number,
     tel: number,
     email: string,
-    speciality: string,
+    speciality: number,
     days: string[],
     hour1: string[],
     hour2: string[],
@@ -38,20 +42,54 @@ interface professionalProps {
     show: boolean;
     handleClose: () => void;
     data?: any;
+    action: string;
 }
 
-export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data }) => {
+export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data, action }) => {
     const [checkedDay, setCheckedDay] = useState(schedules);
-    const { handleSubmit, register, formState: { errors, isValid }, watch, setError, control } = useForm<data>();
+    const [specialties, setSpecialties] = useState([{ id: '', speciality: '' }]);
+    const [errorRegister, setErrorRegister] = useState('');
 
-    const onSubmit: SubmitHandler<data> = (data) => {
-        console.log(data);
+    const { handleSubmit, register, formState: { errors, isValid }, watch, setError, control } = useForm<data>({ mode: 'onChange' });
+
+    const onSubmit: SubmitHandler<data> = async (data) => {
         if (data.days.length == 0) {
             setError('days', {
                 type: "manual",
                 message: "Elija por lo menos un día",
             })
+        } else {
+
+            const prof = {
+                mail: data.email,
+                password: 'prof1234',
+                name: data.name,
+                lastname: data.lastname,
+                dni: data.dni,
+                phone: data.tel,
+                role: 'prof',
+                speciality: data.speciality,
+                hour_begin: data.hour1,
+                hour_end: data.hour2
+            }
+            const resp = await createProf(prof);
+
+            if (resp == 409) {
+                setErrorRegister('El mail indicado ya se encuentra registrado.')
+            } else {
+                Swal.fire({
+                    title: `Agregar Profesional`,
+                    text: "Profesional registrado con exito!",
+                    icon: "success"
+                });
+                handleClose();
+            }
         }
+    }
+
+    const loadSpecialties = async () => {
+        const resp = await getSpecialtiesWhitoutProf();
+        setSpecialties(resp);
     }
 
     const handleCheckboxChange = (day: string) => {
@@ -74,7 +112,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
     useEffect(() => {
         if (action == 'Modificar') {
             dayTime()
-    }, []);
+    }}, []);
 
     const startTime  = watch('hour1');
 
@@ -88,12 +126,12 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title >Agregar profesional</Modal.Title>
+                    <Modal.Title >{action} profesional</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input defaultValue={data?.id} disabled hidden
-                        {...register('id')}/>
+                            {...register('id')} />
                         <div>
                             <label className='form-label-admin'>Nombre</label>
                             <input className='form-input-admin'
@@ -200,15 +238,12 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                         </div>
                         <div>
                             <label className='form-label-admin'>Especialidad</label>
-                            <select className="form-select form-input-admin" aria-label="Default select example"
-                                {...register("speciality", {
-                                    required: 'Por favor ingrese una especialidad',
-                                })}>
-                                <option value="" selected disabled hidden>Elija una especialidad</option> 
-                                {especialidades.map((speciality)=>(
-                                    <option value={speciality} selected={speciality == data?.speciality}>Masajes</option>
-                                ))}   
-                                 </select>
+                            <select className="form-select form-input-admin" aria-label="Default select example" defaultValue={data?.speciality} {...register(
+                                "speciality")} onClick={() => loadSpecialties()}>
+                                {specialties.map(sp => (
+                                    <option key={sp.id + sp.speciality} value={sp.id}>{sp.speciality}</option>
+                                ))}
+                            </select>
                         </div>
                         <div>
                             <label className='form-label-admin'>Día/s</label>
@@ -263,7 +298,9 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         />
                                     <small className='texto-validaciones'>{errors.hour2?.message}</small>                   
                         </div>
-                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
+                      
+                        <small className='text-validation-register'>{errorRegister}</small>
+                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>{action} Profesional</button>
                     </form>
                 </Modal.Body>
             </Modal>

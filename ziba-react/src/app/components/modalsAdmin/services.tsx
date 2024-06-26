@@ -2,32 +2,63 @@ import { useEffect, useState } from 'react';
 import './services.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { createService, getSpecialtiesWhitProf } from '@/app/services/Services';
+import Swal from 'sweetalert2';
 interface data {
     id: number,
-    service: string,
-    speciality: string,
+    name: string,
+    speciality: number,
     description: string,
     price: number,
-    duration: string,
+    duration: number,
 }
 
 interface servicesProps {
     show: boolean;
     handleClose: () => void;
     data?: any;
+    action:string;
 }
 
-export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }) => {
-    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>();
-    const onSubmit: SubmitHandler<data> = (data) => {
-        console.log(data);
+export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, action }) => {
+    const [specialties, setSpecialties] = useState([{id:'',speciality:''}]);
+    const { handleSubmit, register, formState: { errors, isValid }, reset } = useForm<data>({ mode: 'onChange' });
+    const onSubmit: SubmitHandler<data> = async (data) => {
+        const service = {
+            name:data.name,
+            id_speciality: data.speciality,
+            description: data.description,
+            price:data.price,
+            duration: data.duration
+        }
+        const resp = await createService(service);
+
+        if (resp == 201) {
+            Swal.fire({
+            title: `Agregar Servicio`,
+            text: "Servicio registrado con exito!",
+            icon: "success"
+            });
+            reset();
+            handleClose();
+        } else {
+            Swal.fire({
+                title: `${resp}`,
+                text: "No se pudo registrar el servicio ",
+                icon: "error"
+                });
+        }
     }
 
+    const loadSpecialties = async () => {
+        const resp = await getSpecialtiesWhitProf();
+        setSpecialties(resp);
+    }
     return (
         <>
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title >Agregar servicio</Modal.Title>
+                    <Modal.Title >{action} servicio</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
@@ -38,7 +69,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                             <input className='form-input-admin'
                                 defaultValue={data?.service}
                                 placeholder='Ingrese el nombre del servicio'
-                                {...register("service", {
+                                {...register("name", {
                                     required: "Por favor ingrese un servicio",
                                     minLength: {
                                         value: 2,
@@ -54,7 +85,7 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                         message: "Servicio inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.service?.message}</small>
+                            <small className='texto-validaciones'>{errors.name?.message}</small>
                         </div>
                         <div>
                             <label id='select' className='form-label-admin'>Especialidad</label>
@@ -62,17 +93,16 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                 defaultValue={data?.speciality}
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
-                                })}>
-                                <option>Masajes</option>
-                                <option>Peluqueria</option>
-                                <option>Manicura</option>
-                                <option>Depilación</option>
+                                })} onClick= {() =>loadSpecialties()}>
+                                {specialties.map(sp => (
+                                    <option key= {sp.id+sp.speciality} value={sp.id}>{sp.speciality}</option>
+                                ))}
                             </select>
                             <small className='texto-validaciones'>{errors.speciality?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Descripción</label>
-                            <input className='form-input-admin'
+                            <textarea className='form-input-admin'
                                 defaultValue={data?.description}
                                 placeholder='Ingrese la descripción del servicio'
                                 {...register("description", {
@@ -82,19 +112,19 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                         message: "La descripción no puede contener menos de 50 caracteres",
                                     },
                                     maxLength: {
-                                        value: 280,
-                                        message: "La descripción no puede contener más de 280 caracteres",
+                                        value: 1000,
+                                        message: "La descripción no puede contener más de 1000 caracteres",
                                     },
-                                    pattern: {
+                                   /* pattern: {
                                         value: /^([a-zA-Z]+\s?)+$/,
                                         message: "Servicio inválido",
-                                    }
+                                    }*/
                                 })} />
                             <small className='texto-validaciones'>{errors.description?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Precio</label>
-                            <input className='form-input-admin'
+                            <input type='number' className='form-input-admin'
                                 defaultValue={data?.price}
                                 placeholder='Ingrese un precio'
                                 {...register("price", {
@@ -122,14 +152,14 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data }
                                 {...register("duration", {
                                     required: "Por favor ingrese una opción",
                                 })}>
-                                <option>30 mins</option>
-                                <option>1:00 hs</option>
-                                <option>1:30 hs</option>
-                                <option>2:00 hs</option>
+                                <option value= {30} >30 mins</option>
+                                <option value= {60}>1:00 hs</option>
+                                <option value= {90}>1:30 hs</option>
+                                <option value= {120}>2:00 hs</option>
                             </select>
                             <small className='texto-validaciones'>{errors.duration?.message}</small>
                         </div>
-                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar servicio</button>
+                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>{action} servicio</button>
                     </form>
                 </Modal.Body>
             </Modal>

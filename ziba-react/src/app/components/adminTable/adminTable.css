@@ -1,13 +1,8 @@
-body{
-    padding: 5%;
-}
-
 .table-admin-container{
     border-collapse: collapse;
     border-spacing: 0;
     width: 100%;
     border: 2px solid #9E7676;
-    
 }
 
 .table-admin-thead{
