@@ -6,6 +6,7 @@
     margin-left: 5%;
     
     
+    
 
 }
 
@@ -43,6 +44,7 @@
     justify-content: flex-end;
     padding-right: 2%;
     padding-bottom: 2%;
+    
 }
 
 .btn-primary{
@@ -92,9 +94,7 @@
    
 }
 
-.prof-text{
-    font-size:small;
-}
+
 
 .time-text{
     
@@ -104,6 +104,7 @@
 .service-text{
     height: auto;
     margin-bottom: 0 !important;
+    padding-top:7%;
 }
 
 .day-text{
@@ -118,6 +119,12 @@
 .card-title{
     margin-bottom: 0 !important;
     text-align: center;
+}
+.container-day-hour{
+    padding-left: 10%;
+    height: auto;
+    padding-top: 1%;
+
 }
 
 .cancel-appointment{
