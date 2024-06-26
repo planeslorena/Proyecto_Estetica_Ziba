@@ -25,10 +25,9 @@ interface data {
     hour2: string[],
 }
 
-const especialidades = ['Masajes','Peluqueria','Manicura','Depilacion'];
-
 const dias = ['Lunes', 'Miercoles', 'Jueves'];
-
+const hour1 = '12:00';
+const hour2 = '18:00';
 const schedules = [
     { day: 'Lunes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
     { day: 'Martes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
@@ -238,10 +237,11 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                         </div>
                         <div>
                             <label className='form-label-admin'>Especialidad</label>
-                            <select className="form-select form-input-admin" aria-label="Default select example" defaultValue={data?.speciality} {...register(
+                            <select className="form-select form-input-admin" aria-label="Default select example"  {...register(
                                 "speciality")} onClick={() => loadSpecialties()}>
+                                <option value="" selected disabled hidden>Elija una especialidad</option>
                                 {specialties.map(sp => (
-                                    <option key={sp.id + sp.speciality} value={sp.id}>{sp.speciality}</option>
+                                    <option key={sp.id + sp.speciality} value={sp.id} selected={sp.speciality == data?.speciality}>{sp.speciality}</option>
                                 ))}
                             </select>
                         </div>
@@ -270,7 +270,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                             <option value="" selected disabled hidden>Entrada</option> 
                                             {schedules.map(day => (
                                                 day.times.map(time =>(
-                                                <option key={time} value={time}>
+                                                <option key={time} value={time} selected={time == hour1}>
                                                 {time}
                                                 </option>
                                                 ))
@@ -288,7 +288,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                             <option value="" selected disabled hidden>Salida</option> 
                                             {schedules.map(day => (
                                                 getEndTimeOptions(day).map((time:any) => (
-                                                    <option key={time} value={time}>
+                                                    <option key={time} value={time} selected={time == hour2}>
                                                     {time}
                                                     </option>
                                                 ))
