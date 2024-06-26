@@ -29,7 +29,7 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
 
     const [showEditClient, setShowEditClient] = useState<number>();
     const [showEditProfessional, setShowEditProfessional] = useState<number>();
-    const [showEditAppointments, setShowEditAppointments] = useState<number>();
+    /* const [showEditAppointments, setShowEditAppointments] = useState<number>(); */
     const [showEditServices, setShowEditServices] = useState<number>();
 
     const handleClose = () => {
@@ -74,9 +74,9 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
             case "Profesionales":
                 setShowEditProfessional(id)
                 break;
-            case "Turnos":
+            /* case "Turnos":
                 setShowEditAppointments(id)
-                break;
+                break; */
             case "Servicios":
                 setShowEditServices(id)
                 break;
@@ -147,11 +147,13 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                                 </td>
                             ))}
                             <td table-admin-td>
-                                <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
+                                {filter !== 'Turnos' &&
+                                    <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
+                                }
                                 <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} />
                                 <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} />
                                 <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} />
-                                <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments}/>
+                                {/* <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments}/> */}
                                 <i className='bi bi-trash3 icon-trash'/>
                             </td>
                         </tr>

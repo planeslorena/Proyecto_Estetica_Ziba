@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './professional.css';
 import { Modal } from 'react-bootstrap';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
@@ -21,6 +21,10 @@ interface data {
     hour2: string[],
 }
 
+const especialidades = ['Masajes','Peluqueria','Manicura','Depilacion'];
+
+const dias = ['Lunes', 'Miercoles', 'Jueves'];
+
 const schedules = [
     { day: 'Lunes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
     { day: 'Martes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
@@ -37,7 +41,7 @@ interface professionalProps {
 }
 
 export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data }) => {
-    const [checkedDay, setCheckedDay] = useState(schedules)
+    const [checkedDay, setCheckedDay] = useState(schedules);
     const { handleSubmit, register, formState: { errors, isValid }, watch, setError, control } = useForm<data>();
 
     const onSubmit: SubmitHandler<data> = (data) => {
@@ -57,6 +61,20 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
         }));
         setCheckedDay(newSchedule);
     };
+
+    const dayTime = () => {
+        const newSchedule = checkedDay.map((item) => ({
+            ...item,
+            checked: (dias.includes(item.day)),
+        })
+    );
+        setCheckedDay(newSchedule);
+    }
+
+    useEffect(() => {
+        if (action == 'Modificar') {
+            dayTime()
+    }, []);
 
     const startTime  = watch('hour1');
 
@@ -183,12 +201,14 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                         <div>
                             <label className='form-label-admin'>Especialidad</label>
                             <select className="form-select form-input-admin" aria-label="Default select example"
-                                defaultValue={data?.speciality}
                                 {...register("speciality", {
                                     required: 'Por favor ingrese una especialidad',
                                 })}>
-                                <option value="Masajes">Masajes</option>
-                                <option value="Peluqueria">Peluqueria</option> </select>
+                                <option value="" selected disabled hidden>Elija una especialidad</option> 
+                                {especialidades.map((speciality)=>(
+                                    <option value={speciality} selected={speciality == data?.speciality}>Masajes</option>
+                                ))}   
+                                 </select>
                         </div>
                         <div>
                             <label className='form-label-admin'>Día/s</label>
@@ -200,7 +220,6 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                             onChange={() => handleCheckboxChange(item.day)} 
                                             checked={item.checked}
                                             value={item.day}
-                                            defaultValue={data?.day}
                                         />
                                         <span>{item.day}</span>
                                     </label>
@@ -212,8 +231,8 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         control={control}
                                         rules={{ required: 'Hora de llegada requerida'}}
                                         render={({ field }) => (
-                                            <select defaultValue={data.hour1} {...field}>
-                                            <option value="">Llegada</option>
+                                            <select {...field}>
+                                            <option value="" selected disabled hidden>Entrada</option> 
                                             {schedules.map(day => (
                                                 day.times.map(time =>(
                                                 <option key={time} value={time}>
@@ -230,8 +249,8 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         control={control}
                                         rules={{ required: 'Hora de partida requerida'}}
                                         render={({ field }) => (
-                                            <select defaultValue={data.hour1} {...field}>
-                                            <option value="">Partida</option>
+                                            <select {...field}>
+                                            <option value="" selected disabled hidden>Salida</option> 
                                             {schedules.map(day => (
                                                 getEndTimeOptions(day).map((time:any) => (
                                                     <option key={time} value={time}>
@@ -242,10 +261,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                             </select>
                                         )}
                                         />
-                                    <small className='texto-validaciones'>{errors.hour2?.message}</small>
-
-                            
-                            
+                                    <small className='texto-validaciones'>{errors.hour2?.message}</small>                   
                         </div>
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>Agregar Profesional</button>
                     </form>

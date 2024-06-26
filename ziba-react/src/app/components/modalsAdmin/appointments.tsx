@@ -118,6 +118,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
                                 })}>
+                                <option value="" selected disabled hidden>Elija una especialidad</option> 
                                 <option value='Masajes'>Masajes</option>
                                 <option value='Peluqueria'>Peluqueria</option>
                                 <option value='Manicura'>Manicura</option>
@@ -132,6 +133,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                 {...register("service", {
                                     required: "Por favor ingrese un servicio",
                                 })}>
+                                <option value="" selected disabled hidden>Elija un servicio</option> 
                                 <option value='Bozo'>Bozo</option>
                                 <option value='Peeling'>Peeling</option>
                                 <option value='Soft gel'>Soft gel</option>
@@ -144,8 +146,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                 <Controller
                                     name="day"
                                     control={control}
-                                    rules={{ required: 'Por favor elija un día' }} 
-                                    defaultValue={data?.day}                                  
+                                    rules={{ required: 'Por favor elija un día' }}                                 
                                     render={({ field }) => ( 
                                     <div>
                                         <Calendar
@@ -168,7 +169,8 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                         prev2Label={null}
                                         next2Label={null}
                                         showNeighboringMonth={false}
-                                        locale='es-419'                                      
+                                        locale='es-419'  
+                                        defaultValue={tomorrow}                                        
                                         />
                                     <p>
                                         Turno: {formatDate(value)}
