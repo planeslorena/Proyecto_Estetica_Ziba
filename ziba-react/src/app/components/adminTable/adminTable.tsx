@@ -34,7 +34,7 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter, update
 
     const [showEditClient, setShowEditClient] = useState<number>();
     const [showEditProfessional, setShowEditProfessional] = useState<number>();
-    const [showEditAppointments, setShowEditAppointments] = useState<number>();
+    /* const [showEditAppointments, setShowEditAppointments] = useState<number>(); */
     const [showEditServices, setShowEditServices] = useState<number>();
 
     const handleClose = () => {
@@ -79,9 +79,9 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter, update
             case "Profesionales":
                 setShowEditProfessional(id)
                 break;
-            case "Turnos":
+            /* case "Turnos":
                 setShowEditAppointments(id)
-                break;
+                break; */
             case "Servicios":
                 setShowEditServices(id)
                 break;
@@ -211,11 +211,12 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter, update
                                 </td>
                             ))}
                             <td table-admin-td>
-                                <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil' />
+                                {filter !== 'Turnos' &&
+                                    <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
+                                }
                                 <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} action='Modificar' updateData={updateData} />
                                 <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} action='Modificar' />
                                 <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} action='Modificar' />
-                                <AddAppoinments data={row.original} show={row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments(0)} action='Modificar' />
                                 <i className='bi bi-trash3 icon-trash' onClick={() => deleteRow(row.original.id)} />
                             </td>
                         </tr>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './appointments.css';
 import { Modal } from 'react-bootstrap';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
@@ -10,6 +10,7 @@ interface data {
     dni: number,
     speciality: string,
     service: string,
+    day: string,
     availability: string,
 }
 
@@ -38,11 +39,17 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
 
     const [value, setValue] = useState<any>(new Date());
     const [availableTimes, setAvailableTimes] = useState<string[]>([]);
-    const { handleSubmit, register, formState: { errors, isValid } } = useForm<data>({ mode: 'onChange' });
+    const { handleSubmit, register, formState: { errors, isValid }, control } = useForm<data>({ mode: 'onChange' });
     const onSubmit: SubmitHandler<data> = (data) => {
+        const options: Intl.DateTimeFormatOptions = {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+        };
+        data.day = value.toLocaleDateString(undefined, options)
         console.log(data);
     }
-
+    
     const now = new Date();
     const tomorrow = new Date(now);
     tomorrow.setDate(now.getDate() + 1);
@@ -62,7 +69,7 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
     const isDateDisabled = (date: Date): boolean => {
         const day = date.getDay();
         const isSunday = day === 0;
-        return isSunday || date < tomorrow || date > endDate;
+        return isSunday || date < now || date >= endDate;
     };
 
     useEffect(() => {
@@ -112,12 +119,12 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
                                 })}>
-                                <option>Masajes</option>
-                                <option>Peluqueria</option>
-                                <option>Manicura</option>
-                                <option>Depilación</option>
+                                <option value="" selected disabled hidden>Elija una especialidad</option> 
+                                <option value='Masajes'>Masajes</option>
+                                <option value='Peluqueria'>Peluqueria</option>
+                                <option value='Manicura'>Manicura</option>
+                                <option value='Depilación'>Depilación</option>
                             </select>
-
                             <small className='texto-validaciones'>{errors.speciality?.message}</small>
                         </div>
                         <div>
@@ -127,33 +134,52 @@ export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose,
                                 {...register("service", {
                                     required: "Por favor ingrese un servicio",
                                 })}>
-                                <option>Bozo</option>
-                                <option>Peeling</option>
-                                <option>Soft gel</option>
-                                <option>Piedras calientes</option>
+                                <option value="" selected disabled hidden>Elija un servicio</option> 
+                                <option value='Bozo'>Bozo</option>
+                                <option value='Peeling'>Peeling</option>
+                                <option value='Soft gel'>Soft gel</option>
+                                <option value='Piedras calientes'>Piedras calientes</option>
                             </select>
                             <small className='texto-validaciones'>{errors.service?.message}</small>
                         </div>
                         <div>
-                            <label>Día</label>
-                            <Calendar
-                                onChange={setValue}
-                                value={value}
-                                minDetail='month'
-                                maxDetail="month"
-                                minDate={startDate}
-                                maxDate={endDate}
-                                tileDisabled={({ date }) => isDateDisabled(date)}
-                                view="month"
-                                prev2Label={null}
-                                next2Label={null}
-                                showNeighboringMonth={false}
-                                locale='es-419'
-                                defaultValue={data?.availability}
-                            />
-                            <p>
-                                Turno: {formatDate(value)}
-                            </p>
+                            <label>Día</label>                          
+                                <Controller
+                                    name="day"
+                                    control={control}
+                                    rules={{ required: 'Por favor elija un día' }}                                 
+                                    render={({ field }) => ( 
+                                    <div>
+                                        <Calendar
+                                        onChange={(date) => {
+                                            setValue(date);
+                                            const options: Intl.DateTimeFormatOptions = {
+                                                year: 'numeric',
+                                                month: 'numeric',
+                                                day: 'numeric',
+                                            };
+                                            field.onChange(value.toLocaleDateString(undefined, options));
+                                        }}
+                                        value={value}
+                                        minDetail='month'
+                                        maxDetail="month"
+                                        minDate={startDate}
+                                        maxDate={endDate}
+                                        tileDisabled={({ date }) => isDateDisabled(date)}
+                                        view="month"
+                                        prev2Label={null}
+                                        next2Label={null}
+                                        showNeighboringMonth={false}
+                                        locale='es-419'  
+                                        defaultValue={tomorrow}                                        
+                                        />
+                                    <p>
+                                        Turno: {formatDate(value)}
+                                    </p>
+                                    </div>  
+                                    )}
+                                />
+                             <small className='texto-validaciones'>{errors.day?.message}</small>      
                         </div>
                         <div>
                             <label id='select' className='form-label-admin'>Hora</label>

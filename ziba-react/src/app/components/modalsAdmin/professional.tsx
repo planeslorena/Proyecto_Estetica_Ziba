@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react';
 import './professional.css';
 import { Modal } from 'react-bootstrap';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { getSpecialtiesWhitoutProf } from '@/app/services/Services';
 import { createProf } from '@/app/services/User';
 import Swal from 'sweetalert2';
+
+interface TimeRange {
+    hour1: string;
+    hour2: string;
+  }
 
 
 interface data {
@@ -20,6 +25,9 @@ interface data {
     hour2: string[],
 }
 
+const dias = ['Lunes', 'Miercoles', 'Jueves'];
+const hour1 = '12:00';
+const hour2 = '18:00';
 const schedules = [
     { day: 'Lunes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
     { day: 'Martes', checked: false, times: ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] },
@@ -37,11 +45,11 @@ interface professionalProps {
 }
 
 export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose, data, action }) => {
-    const [checkedDay, setCheckedDay] = useState(schedules)
+    const [checkedDay, setCheckedDay] = useState(schedules);
     const [specialties, setSpecialties] = useState([{ id: '', speciality: '' }]);
     const [errorRegister, setErrorRegister] = useState('');
 
-    const { handleSubmit, register, formState: { errors, isValid }, watch, setError } = useForm<data>({ mode: 'onChange' });
+    const { handleSubmit, register, formState: { errors, isValid }, watch, setError, control } = useForm<data>({ mode: 'onChange' });
 
     const onSubmit: SubmitHandler<data> = async (data) => {
         if (data.days.length == 0) {
@@ -91,8 +99,27 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
         setCheckedDay(newSchedule);
     };
 
-    /* const watchHour1 = watch('hour1', '');
-    const watchHour2 = watch('hour2', ''); */
+    const dayTime = () => {
+        const newSchedule = checkedDay.map((item) => ({
+            ...item,
+            checked: (dias.includes(item.day)),
+        })
+    );
+        setCheckedDay(newSchedule);
+    }
+
+    useEffect(() => {
+        if (action == 'Modificar') {
+            dayTime()
+    }}, []);
+
+    const startTime  = watch('hour1');
+
+    const getEndTimeOptions = (item:any) => {
+        if (!startTime) return item.times;
+        const startTimeIndex = item.times.indexOf(startTime);
+        return item.times.slice(startTimeIndex + 1);
+      };
 
     return (
         <>
@@ -210,17 +237,17 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                         </div>
                         <div>
                             <label className='form-label-admin'>Especialidad</label>
-                            <select className="form-select form-input-admin" aria-label="Default select example" defaultValue={data?.speciality} {...register(
+                            <select className="form-select form-input-admin" aria-label="Default select example"  {...register(
                                 "speciality")} onClick={() => loadSpecialties()}>
+                                <option value="" selected disabled hidden>Elija una especialidad</option>
                                 {specialties.map(sp => (
-                                    <option key={sp.id + sp.speciality} value={sp.id}>{sp.speciality}</option>
+                                    <option key={sp.id + sp.speciality} value={sp.id} selected={sp.speciality == data?.speciality}>{sp.speciality}</option>
                                 ))}
                             </select>
                         </div>
                         <div>
                             <label className='form-label-admin'>Día/s</label>
                             {checkedDay.map(item => (
-                                <div>
                                     <label key={item.day}>
                                         <input
                                             type='checkbox'
@@ -231,35 +258,47 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         />
                                         <span>{item.day}</span>
                                     </label>
-                                    <label id='select' className='form-label-admin'>Horarios</label>
-                                    <input type="time" id="appt" list="time-list"
-                                        disabled={!item.checked}
-                                        {...register("hour1"/* , {
-                                            required: "Por favor ingrese una hora",
-                                        } */)}
-                                    />
+                                ))}
+                                <small className='text-validation-register'>{errors.days?.message}</small>
+                                     <label id='select' className='form-label-admin'>Horarios</label>
+                                    <Controller
+                                        name="hour1"
+                                        control={control}
+                                        rules={{ required: 'Hora de llegada requerida'}}
+                                        render={({ field }) => (
+                                            <select {...field}>
+                                            <option value="" selected disabled hidden>Entrada</option> 
+                                            {schedules.map(day => (
+                                                day.times.map(time =>(
+                                                <option key={time} value={time} selected={time == hour1}>
+                                                {time}
+                                                </option>
+                                                ))
+                                            ))}
+                                            </select>
+                                        )}
+                                        />
                                     <span>-</span>
-                                    <input type="time" id="appt" list="time-list"
-                                     disabled={!item.checked}
-                                        {...register("hour2",/*  {
-                                            required: "Por favor ingrese una hora",
-                                             validate: (value) => {
-                                               if (watchHour1 && value > watchHour1) {
-                                                return true
-                                            } else {
-                                                return 'Max time must be later than min time'}  
-                                            },
-                                        }*/) }/>
-                                    <datalist id="time-list">
-                                        {item.times.map((time: any) => (
-                                            <option value={time} datatype="time" />
-                                        ))}
-                                    </datalist>
-                                    <small className='texto-validaciones'>{errors.hour2?.message}</small>
-                                </div>
-                            ))}
-                            <small className='text-validation-register'>{errors.days?.message}</small>
+                                    <Controller
+                                        name="hour2"
+                                        control={control}
+                                        rules={{ required: 'Hora de partida requerida'}}
+                                        render={({ field }) => (
+                                            <select {...field}>
+                                            <option value="" selected disabled hidden>Salida</option> 
+                                            {schedules.map(day => (
+                                                getEndTimeOptions(day).map((time:any) => (
+                                                    <option key={time} value={time} selected={time == hour2}>
+                                                    {time}
+                                                    </option>
+                                                ))
+                                            ))}
+                                            </select>
+                                        )}
+                                        />
+                                    <small className='texto-validaciones'>{errors.hour2?.message}</small>                   
                         </div>
+                      
                         <small className='text-validation-register'>{errorRegister}</small>
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>{action} Profesional</button>
                     </form>
