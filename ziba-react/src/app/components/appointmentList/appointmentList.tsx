@@ -148,9 +148,8 @@ export const AppointmentList: React.FC<listProps> = ({data}) => {
                           Hora:{' '}{card.horario}hs
                         </Card.Text>
                       </div>
-                    </div>
-                  </Card.Body>
-                  {data.nombre ?
+                    </div>          
+                     {data.nombre ?
                   <OverlayTrigger
                     key='bottom'
                     placement='bottom'
@@ -162,11 +161,14 @@ export const AppointmentList: React.FC<listProps> = ({data}) => {
                   >
                     <CloseButton onClick={cancelAppointment} className='cancel-appointment-cross' aria-label="Hide" />
                   </OverlayTrigger> :
-                  <div>
-                    <button onClick={checkAppointment}>Atendido</button>
-                    <button onClick={cancelAppointment}>Cancelar turno</button>
+                  <div className='container-buttons-appointment'>
+                    <button onClick={checkAppointment} className='button-atendido-appointment'>Atendido</button>
+                    <button onClick={cancelAppointment} className='button-cancelar-appointment'>Cancelar turno</button>
                   </div>
 }
+
+                  </Card.Body>
+       
                 </div>
               </Card>
             </div>
