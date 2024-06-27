@@ -34,7 +34,12 @@ const servicesQueries = {
                             on s.id_speciality = p.id_speciality 
                             where p.id_speciality is null`,
     insertService: `insert into services (name,id_speciality,description,price,duration, active) 
-	                    values (?,?, ?, ?, ?, 1); `
-                
+	                    values (?,?, ?, ?, ?, 1); `,
+    updateService:`update services 
+                set name = ?,id_speciality = ?,description = ?,price = ?,duration = ?
+                where id_service = ?;`,
+    deleteService: `update services set active = 0 where id_service = ?`,
+    deleteAppointmentsbyService:'delete from appointments where id_service = ? and date >= sysdate() and state = 0;' ,
+    deleteAppointment: 'delete from appointments where id_appointment = ?'
 }
 export default servicesQueries;

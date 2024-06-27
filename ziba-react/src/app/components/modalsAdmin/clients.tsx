@@ -20,9 +20,10 @@ interface clientProps {
     handleClose: () => void;
     data?: any;
     action: string;
+    updateData: () => void;
 }
 
-export const AddClient: React.FC<clientProps> = ({ show, handleClose, data, action }) => {
+export const AddClient: React.FC<clientProps> = ({ show, handleClose, data, action, updateData }) => {
 
     const [errorRegister, setErrorRegister] = useState('');
     const { handleSubmit, register, reset, formState: { errors, isValid } } = useForm<data>({ mode: 'onChange' });
@@ -49,8 +50,9 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data, acti
                     text: "Cliente registrado con exito!",
                     icon: "success"
                 });
-                reset();
                 handleClose();
+                reset();
+                updateData();
             }
         } else if (action == 'Modificar') {
             if (data.mail == newData.email && data.name == newData.name && data.lastname == newData.lastname && data.dni == newData.dni && data.phone == newData.tel) {
@@ -67,8 +69,10 @@ export const AddClient: React.FC<clientProps> = ({ show, handleClose, data, acti
                         text: "Cliente actualizado con exito!",
                         icon: "success"
                     });
-                    reset();
                     handleClose();
+                    reset();
+                    updateData();
+
                 }
             }
         }

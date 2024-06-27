@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './services.css';
 import { Modal } from 'react-bootstrap';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { createService, getSpecialtiesWhitProf } from '@/app/services/Services';
+import { createService, getSpecialtiesWhitProf, updateService } from '@/app/services/Services';
 import Swal from 'sweetalert2';
 interface data {
     id: number,
@@ -17,53 +17,101 @@ interface servicesProps {
     show: boolean;
     handleClose: () => void;
     data?: any;
-    action:string;
+    action: string;
 }
 
 export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, action }) => {
-    const [specialties, setSpecialties] = useState([{id:'',speciality:''}]);
-    const { handleSubmit, register, formState: { errors, isValid }, reset } = useForm<data>({ mode: 'onChange' });
-    const onSubmit: SubmitHandler<data> = async (data) => {
-        const service = {
-            name:data.name,
-            id_speciality: data.speciality,
-            description: data.description,
-            price:data.price,
-            duration: data.duration
-        }
-        const resp = await createService(service);
 
-        if (resp == 201) {
-            Swal.fire({
-            title: `Agregar Servicio`,
-            text: "Servicio registrado con exito!",
-            icon: "success"
-            });
-            reset();
-            handleClose();
-        } else {
-            Swal.fire({
-                title: `${resp}`,
-                text: "No se pudo registrar el servicio ",
-                icon: "error"
-                });
+    const [errorRegister, setErrorRegister] = useState('');
+    const [specialties, setSpecialties] = useState([{ id: '', speciality: '' }]);
+    const { handleSubmit, register, formState: { errors, isValid }, reset } = useForm<data>({ mode: 'onChange' });
+
+
+    const onSubmit: SubmitHandler<data> = async (newData) => {
+        const service = {
+            id_service: data?.id,
+            name: newData.name,
+            id_speciality: newData.speciality,
+            description: newData.description,
+            price: newData.price,
+            duration: newData.duration
         }
+
+        //AGREGAR SERVICIO
+        if (action == 'Agregar') {
+            const resp = await createService(service);
+
+            if (resp == 201) {
+                Swal.fire({
+                    title: `Agregar Servicio`,
+                    text: "Servicio registrado con exito!",
+                    icon: "success"
+                });
+                reset();
+                handleClose();
+            } else {
+                Swal.fire({
+                    title: `${resp}`,
+                    text: "No se pudo registrar el servicio ",
+                    icon: "error"
+                });
+            }
+        //MOFICICAR SERVICIO
+        } else if (action == 'Modificar') {
+            //Sino se modifico ningun dato, muestra error
+            if (data.name == newData.name && data.speciality == newData.speciality && data.description == newData.description && data.price == newData.price && data.duration == newData.duration) {
+                setErrorRegister('Debe modificar algún dato.');
+            //Si se modificaron datos se llama al backend para actualizarlos
+            } else {
+                setErrorRegister('');
+                const resp = await updateService(service);
+
+                if (resp == 200) {
+                    Swal.fire({
+                        title: `Modificación Servicio`,
+                        text: "Servicio actualizado con exito!",
+                        icon: "success"
+                    });
+                    reset();
+                    handleClose();
+                }
+                else if (resp == 404) {
+                    setErrorRegister('No se encontro servicio para actualizar')
+                } else {
+                    Swal.fire({
+                        title: `${resp}`,
+                        text: "No se pudo actualizar el servicio ",
+                        icon: "error"
+                    });
+                }
+            }
+        }
+    }
+
+    const resetAndHandleClose = () => {
+        reset();
+        handleClose();
     }
 
     const loadSpecialties = async () => {
         const resp = await getSpecialtiesWhitProf();
         setSpecialties(resp);
     }
+
+    useEffect(() => {
+        loadSpecialties();
+    }, [])
+
     return (
         <>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={resetAndHandleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title >{action} servicio</Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <input defaultValue={data?.id} disabled hidden
-                        {...register('id')}/>
+                            {...register('id')} />
                         <div>
                             <label className='form-label-admin'>Servicios</label>
                             <input className='form-input-admin'
@@ -90,12 +138,11 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
                         <div>
                             <label id='select' className='form-label-admin'>Especialidad</label>
                             <select id='select' className="form-select form-input-admin" aria-label="Default select example"
-                                defaultValue={data?.speciality}
                                 {...register("speciality", {
                                     required: "Por favor ingrese una especialidad",
-                                })} onClick= {() =>loadSpecialties()}>
+                                })}>
                                 {specialties.map(sp => (
-                                    <option key= {sp.id+sp.speciality} value={sp.id}>{sp.speciality}</option>
+                                    <option selected={sp.speciality == data?.speciality} key={sp.id + sp.speciality} value={sp.id}>{sp.speciality}</option>
                                 ))}
                             </select>
                             <small className='texto-validaciones'>{errors.speciality?.message}</small>
@@ -115,10 +162,10 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
                                         value: 1000,
                                         message: "La descripción no puede contener más de 1000 caracteres",
                                     },
-                                   /* pattern: {
-                                        value: /^([a-zA-Z]+\s?)+$/,
-                                        message: "Servicio inválido",
-                                    }*/
+                                    /* pattern: {
+                                         value: /^([a-zA-Z]+\s?)+$/,
+                                         message: "Servicio inválido",
+                                     }*/
                                 })} />
                             <small className='texto-validaciones'>{errors.description?.message}</small>
                         </div>
@@ -152,13 +199,14 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
                                 {...register("duration", {
                                     required: "Por favor ingrese una opción",
                                 })}>
-                                <option value= {30} >30 mins</option>
-                                <option value= {60}>1:00 hs</option>
-                                <option value= {90}>1:30 hs</option>
-                                <option value= {120}>2:00 hs</option>
+                                <option value={30} >30 mins</option>
+                                <option value={60}>1:00 hs</option>
+                                <option value={90}>1:30 hs</option>
+                                <option value={120}>2:00 hs</option>
                             </select>
                             <small className='texto-validaciones'>{errors.duration?.message}</small>
                         </div>
+                        <small className='text-validation-admin'>{errorRegister}</small>
                         <button type='submit' disabled={!isValid} className='button-agregarprofesional'>{action} servicio</button>
                     </form>
                 </Modal.Body>

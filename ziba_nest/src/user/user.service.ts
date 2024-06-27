@@ -192,7 +192,6 @@ export class UserService {
     }
 
     async updateUser(user: User): Promise<string> {
-
         //Se acomodan los datos para insertarlos en la DB
         user = {
             ...user,
@@ -223,7 +222,34 @@ export class UserService {
             );
         } catch (error) {
             throw new HttpException(
-                `Error insertando usuario: ${error.sqlMessage}`,
+                `Error actualizando usuario: ${error.sqlMessage}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
+
+    async deleteUser(id_user:number): Promise<void> {
+        try {
+            //Se deshabilita el usuario
+            const resultQuery = await this.dbService.executeQuery(
+                userQueries.deleteUser,
+                [id_user],
+            );
+            if (resultQuery.affectedRows != 1) {
+            throw new HttpException(
+                'No se pudo deshabilitar usuario',
+                HttpStatus.NOT_FOUND,
+            );}
+
+            //Luego se borran todos los turnos de hoy en adelante reservados por el usuario
+            const resultQuery2 = await this.dbService.executeQuery(
+                userQueries.deleteAppointmentsbyuser,
+                [id_user],
+            );
+
+        } catch (error) {
+            throw new HttpException(
+                `Error deshabilitando usuario: ${error.sqlMessage}`,
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
         }

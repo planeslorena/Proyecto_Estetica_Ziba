@@ -43,3 +43,21 @@ export const updateClient = async (data:any) => {
     return error.response.data.statusCode;
   }
 }
+
+export const deleteClient = async (id:number) => {
+  try {
+    const respuesta: AxiosResponse<any, any> = await clientAxios.delete('/user/client/'+id);
+    return respuesta.status;
+  } catch (error:any) {
+    return error.response.data.statusCode;
+  }
+}
+
+export const deleteProf = async (id:number) => {
+  try {
+    const respuesta: AxiosResponse<any, any> = await clientAxios.delete('/user/prof/'+id);
+    return respuesta.status;
+  } catch (error:any) {
+    return error.response.data.statusCode;
+  }
+}

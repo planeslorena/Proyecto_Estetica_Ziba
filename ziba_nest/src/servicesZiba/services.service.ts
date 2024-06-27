@@ -144,4 +144,79 @@ export class ServicesService {
             );
         }
     }
+
+    async updateService(service): Promise<string> {
+        //Se actualiza la info del servicio en la DB
+        try {
+            const resultQuery = await this.dbService.executeQuery(
+                servicesQueries.updateService,
+                [
+                    service.name,
+                    service.id_speciality,
+                    service.description,
+                    service.price,
+                    service.duration,
+                    service.id_service
+                ],
+            );
+            if (resultQuery.affectedRows == 1) {
+                return 'Se actualizo el servicio correctamente';
+            }
+            throw new HttpException(
+                'No se pudo actualizar el servicio',
+                HttpStatus.NOT_FOUND,
+            );
+        } catch (error) {
+            throw new HttpException(
+                `Error actualizando servicio: ${error.sqlMessage}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
+
+    async deleteService(id_service:number): Promise<void> {
+        try {
+            //Deshabilita el servicio de la tabla servicios
+            const resultQuery = await this.dbService.executeQuery(
+                servicesQueries.deleteService,
+                [id_service],
+            );
+            if (resultQuery.affectedRows != 1) {
+            throw new HttpException(
+                'No se pudo deshabilitar servicio',
+                HttpStatus.NOT_FOUND,
+            );}
+
+            //Borra los turnos futuros de ese servicio
+            await this.dbService.executeQuery(
+                servicesQueries.deleteAppointmentsbyService,
+                [id_service],
+            );
+        } catch (error) {
+            throw new HttpException(
+                `Error deshabilitando servicio: ${error.sqlMessage}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
+
+        async deleteAppointment(id_appointment:number): Promise<void> {
+        try {
+            //Borra el turno con el id_appontment indicado
+            const resultQuery = await this.dbService.executeQuery(
+                servicesQueries.deleteAppointment,
+                [id_appointment],
+            );
+            if (resultQuery.affectedRows != 1) {
+            throw new HttpException(
+                'No se pudo eliminar, turno no encontrado',
+                HttpStatus.NOT_FOUND,
+            );}
+        } catch (error) {
+            throw new HttpException(
+                `Error eliminando turno: ${error.sqlMessage}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
 }

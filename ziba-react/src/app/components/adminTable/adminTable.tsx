@@ -13,14 +13,19 @@ import { AddClient } from '../modalsAdmin/clients';
 import { AddProfessional } from '../modalsAdmin/professional';
 import { AddServices } from '../modalsAdmin/services';
 import { AddAppoinments } from '../modalsAdmin/appointments';
+import Swal from 'sweetalert2';
+import { deleteClient, deleteProf } from '@/app/services/User';
+import { deleteAppointment, deleteService } from '@/app/services/Services';
+
 
 interface tableProps {
-    data:any[];
+    data: any[];
     columns: any[];
     filter: string;
+    updateData: () => void;
 }
 
-export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
+export const AdminTable: React.FC<tableProps> = ({ data, columns, filter, updateData }) => {
 
     const [showClient, setShowClient] = useState(false);
     const [showProfessional, setShowProfessional] = useState(false);
@@ -83,6 +88,66 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
         }
     };
 
+    const deleteFunction = async (id: number) => {
+            switch (filter) {
+                case "Clientes":
+                    return await deleteClient(id);
+                case "Profesionales":
+                    return await deleteProf(id);
+                case "Turnos":
+                    return await deleteAppointment(id);
+                case "Servicios":
+                    return await deleteService(id);
+            }
+    }
+
+    const deleteRow = async (id: number) => {
+        let deleteItem = ''
+        switch (filter) {
+            case "Clientes":
+                deleteItem = 'cliente';
+                break;
+            case "Profesionales":
+                deleteItem = 'profesional';
+                break;
+            case "Turnos":
+                deleteItem = 'turno';
+                break;
+            case "Servicios":
+                deleteItem = 'servicio';
+                break;
+        }
+
+        Swal.fire({
+            title: "Advertencia",
+            text: `Estas seguro de que quieres eliminar el ${deleteItem} numero ${id}?`,
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Confirmar",
+            cancelButtonText: "Cancelar"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                const resp = await deleteFunction(id);
+                if (resp == 200) {
+                    Swal.fire({
+                        title: `Eliminar ${deleteItem}`,
+                        text: `El ${deleteItem} fue eliminado con exito!`,
+                        icon: "success"
+                    });
+                    updateData();
+                } else {
+                    Swal.fire({
+                        title: `${resp}`,
+                        text: `No se pudo eliminar el ${deleteItem}`,
+                        icon: "error"
+                    });
+                }
+            }
+        });
+    }
+
     const [sorting, setSorting] = useState<SortingState>([]);
     const [filtering, setFiltering] = useState("");
 
@@ -110,11 +175,11 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                     onChange={e => setFiltering(e.target.value)}
                 />
                 <button onClick={handleShow} className='button-agregar'>Agregar {filter} +</button>
-                
-                    <AddClient show={showClient} handleClose={handleClose}  action= 'Agregar'/>
-                    <AddProfessional show={showProfessional} handleClose={handleClose} action= 'Agregar'/>
-                    <AddServices show={showServices} handleClose={handleClose} action= 'Agregar'/>
-                    <AddAppoinments show= {showAppointments} handleClose={handleClose} action= 'Agregar'/>
+
+                <AddClient show={showClient} handleClose={handleClose} action='Agregar' updateData={updateData} />
+                <AddProfessional show={showProfessional} handleClose={handleClose} action='Agregar' />
+                <AddServices show={showServices} handleClose={handleClose} action='Agregar' />
+                <AddAppoinments show={showAppointments} handleClose={handleClose} action='Agregar' />
             </div>
             <table className='table-admin-container'>
                 <thead className='table-admin-thead'>
@@ -146,12 +211,12 @@ export const AdminTable: React.FC<tableProps> = ({ data, columns, filter }) => {
                                 </td>
                             ))}
                             <td table-admin-td>
-                                <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil'/> 
-                                <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} action= 'Modificar' />
-                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} action= 'Modificar'/>
-                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} action= 'Modificar'/>
-                                <AddAppoinments data={row.original} show= {row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments(0)} action= 'Modificar'/>
-                                <i className='bi bi-trash3 icon-trash'/>
+                                <i onClick={() => handleShowEdit(row.original.id)} className='bi bi-pencil icon-pencil' />
+                                <AddClient data={row.original} show={row.original.id == showEditClient} handleClose={() => setShowEditClient(0)} action='Modificar' updateData={updateData} />
+                                <AddProfessional data={row.original} show={row.original.id == showEditProfessional} handleClose={() => setShowEditProfessional(0)} action='Modificar' />
+                                <AddServices data={row.original} show={row.original.id == showEditServices} handleClose={() => setShowEditServices(0)} action='Modificar' />
+                                <AddAppoinments data={row.original} show={row.original.id == showEditAppointments} handleClose={() => setShowEditAppointments(0)} action='Modificar' />
+                                <i className='bi bi-trash3 icon-trash' onClick={() => deleteRow(row.original.id)} />
                             </td>
                         </tr>
                     ))}

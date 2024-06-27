@@ -4,7 +4,6 @@ import { AdminTable } from "@/app/components/adminTable/adminTable";
 import { Menu } from "@/app/components/nav/nav";
 import { getAllAppointments, getServicesForAdmin } from "@/app/services/Services";
 import { getAllClients, getAllProf } from "@/app/services/User";
-import { createColumnHelper } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import './page.css';
@@ -142,6 +141,26 @@ function AdminPage() {
     setData(resp);
   }
 
+  const updateData = () => {
+    switch (filter) {
+      case 'Clientes':
+        loadClients();
+        break;
+
+      case 'Profesionales':
+        loadProf();
+        break;
+
+      case 'Servicios':
+        loadServices();
+        break;
+
+      case 'Turnos':
+        loadAppointments();
+        break;
+    }
+  }
+
   useEffect(() => {
     switch (filter) {
       case 'Clientes':
@@ -203,7 +222,7 @@ function AdminPage() {
             <Dropdown.Item onClick={() => setFilter('Turnos')}>Turnos</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <AdminTable data={data} columns={columns} filter={filter} />
+        <AdminTable data={data} columns={columns} filter={filter} updateData={updateData} />
       </main>
     </>
   )

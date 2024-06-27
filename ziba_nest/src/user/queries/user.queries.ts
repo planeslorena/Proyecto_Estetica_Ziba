@@ -12,11 +12,14 @@ const userQueries = {
                                 join calendar c
                                 on p.id_professional  = c.id_professional `,
     selectUserByMail: 'select * from users where mail = ? and active = 1',
+    selectProfbyId:'select id_user from professional where id_professional = ?',
     insertUser: `insert into users (mail,password,name,lastname,dni,phone,role,active) values (?,?,?,?,?,?,?,1);`,
     insertProf:`insert into professional (id_user,id_speciality) values(?,?)`,
     updateUser:`update users 
                 set mail = ?,name = ?,lastname = ?,dni = ?,phone = ?
-                where id_user = ?;` 
+                where id_user = ?;`,
+    deleteUser: `update users set active = 0 where id_user = ?`,
+    deleteAppointmentsbyuser: 'delete from appointments where id_user = ? and date >= sysdate() and state = 0;'
 }
 
 export default userQueries;
