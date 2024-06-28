@@ -1,5 +1,6 @@
 'use client'
 import { withRoles } from "@/app/components/HOC/whitRoles";
+import { CardService } from "@/app/components/cardService/cardService";
 import { Menu } from "@/app/components/nav/nav";
 
 function AppointmentPage() {
@@ -7,16 +8,19 @@ function AppointmentPage() {
     <>
       <header>
         <div>
-            <Menu></Menu>
+          <Menu></Menu>
+
         </div>
 
       </header>
 
       <main>
-        <h1>appointment</h1>
+        <div className="d-flex justify-content-center">
+          <CardService></CardService>
+        </div>
       </main>
     </>
   )
 }
 
-export default withRoles(AppointmentPage,'client', '/home')
+export default withRoles(AppointmentPage, 'client', '/home')
