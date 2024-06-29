@@ -9,20 +9,7 @@
 .title-primary{
     background-color: #9e7676;
    margin-bottom: 5px;
-    
-}
-
-.p-service{
-    text-align: center;
-    color: white;
-    font-size: 30px;
-    margin: 0;
-}
-
-.p-professional{
-    text-align: center;
-    color: white;
-    margin: 0;
+   height: 50px;
     
 }
 
@@ -31,14 +18,12 @@
     height: 50px;
 }
 
-.p-que-es{
-    color:white;
-    margin: 0;
-}
-
-.p-beneficios{
+.p-title{
     color: white;
     margin: 0;
+    & .p-service{
+        font-size: 30px;
+    }
 }
 
 .p-input-service{
