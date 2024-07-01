@@ -4,6 +4,7 @@
     box-shadow: 0px 0px 5px 1px #594545;
     border: none !important;
     border-radius: 0 !important;
+    margin-bottom: 1rem;
 }
 
 .title-primary{
@@ -34,8 +35,6 @@
 .container-option-hour{
     width: 206px;
     height: 28px;
-    
-    
 }
 
 .inputs-service{
