@@ -89,10 +89,10 @@ export const CardService: React.FC<cardServiceProps> = ({ speciality }) => {
     }, [value]);
 
     return (
-        <div className="d-flex flex-wrap">
-            <Card className="d-flex flex-row conteiner-card-service">
+        <div className="d-flex  container-card-service-dos">
+            <Card className="d-flex flex-row  container-card-service">
                 <img src={`imagenes/services/${speciality.img}.jpg`} alt="" />
-                <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column justify-content-evenly align-items-evenly">
+                <form onSubmit={handleSubmit(onSubmit)} className="d-flex flex-column justify-content-evenly form-service ">
                     <div>
                         <Card.Title className="title-primary d-flex justify-content-evenly align-items-center">
                             <p className="p-title p-service">{speciality.img.toUpperCase()}</p>

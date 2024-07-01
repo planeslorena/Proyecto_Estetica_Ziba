@@ -32,7 +32,7 @@ function AppointmentPage() {
 
       <main>
         {paginatedData.map((specialities: any) => (
-          <div className="d-flex flex-column align-items-center">
+          <div className="d-flex flex-column align-items-center ">
 
             <>
               <CardService speciality={specialities}></CardService>
