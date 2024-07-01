@@ -27,25 +27,19 @@ const schedules: Schedule[] = [
     { day: 'Saturday', times: ['09:00 AM', '10:00 AM', '11:00 AM'] },
 ];
 
-const specialities = [
-    { img: 'cosmetologia', prof: 'Marisa Ruiz', price: '10000', services: ['Peeling', 'Limpieza facial'] },
-    { img: 'depilacion', prof: 'Romina Benegas', price: '10000', services: ['Bozo', 'Piernas'] },
-    { img: 'manicuria', prof: 'Maiten Suarez', price: '10000', services: ['Soft gel', 'Semipermanente'] },
-    { img: 'maquillaje', prof: 'Eva Jimenez', price: '10000', services: ['Novias', 'Quinceañeras'] },
-    { img: 'masoterapia', prof: 'Naomi Almeida', price: '10000', services: ['Masaje terapéutico', 'Masaje lifático'] },
-    { img: 'peluqueria', prof: 'Irene Acosta', price: '10000', services: ['Corte', 'Nutrición'] },
-]
+
 
 interface cardServiceProps {
     speciality: any,
 }
 
 export const CardService: React.FC<cardServiceProps> = ({ speciality }) => {
+    const [selected, setSelected] = useState<string>();
     const [show, setShow] = useState<any>(false);
     const [value, setValue] = useState<any>(new Date());
     const [availableTimes, setAvailableTimes] = useState<string[]>([]);
     const [format, setFormat] = useState<string>('');
-    const { register, handleSubmit, formState: { errors, isValid }, control } = useForm<data>();
+    const { register, handleSubmit, formState: { errors, isValid }, control, watch } = useForm<data>();
     const onSubmit: SubmitHandler<data> = (data) => {
         console.log(data);
     }
@@ -106,12 +100,15 @@ export const CardService: React.FC<cardServiceProps> = ({ speciality }) => {
                                     })}>
                                     <option value="" selected disabled hidden>Servicio</option>
                                     {speciality.services.map((service: any) => ( 
-                                        <option value={service}>{service}</option>
+                                        <option value={service.id} onSelect={() => setSelected(`${service.name}`)}>{service.name}</option>
                                         ))}
                                 </select>
                                 <small>{errors.service?.message}</small>
                                 <p onClick={() => setShow(true)} className="p-title">¿Que es?</p>
-                                <DescriptionModal service={speciality.services[0]} desc='lorem ipsum' show={show} handleClose={handleClose}></DescriptionModal> 
+                                {speciality.services.map((service: any) => (
+                                    selected == service.name ?              
+                                        <DescriptionModal service={service.name} desc='lorem ipsum' show={show} handleClose={handleClose}></DescriptionModal> : null
+                                ))} 
                                </> 
                             
                         </Card.Title> 
@@ -152,8 +149,6 @@ export const CardService: React.FC<cardServiceProps> = ({ speciality }) => {
                             <small>{errors.day?.message}</small>
                         </div>
                         <div className="d-flex flex-column justify-content-evenly">
-                            <input type="text" defaultValue={speciality.img} hidden
-                                {...register('speciality')} />
                             <div className="container-price-service">
                                 <p className="p-input-service">Precio</p>
                                 <input type="text" defaultValue={speciality.price} disabled className="input-precio inputs-service" />
