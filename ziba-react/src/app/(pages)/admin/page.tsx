@@ -70,7 +70,7 @@ const columnsProf = [
   },
   {
     header: "Horario",
-    accesorFn: (row:any) => `${row.hour_begin[0]} ${row.hour_end[0]}`
+    accessorFn: (row:any) => `De ${row.hour_begin} a ${row.hour_end}`
   },
 ];
 

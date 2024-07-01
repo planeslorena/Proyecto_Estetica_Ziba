@@ -51,6 +51,9 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
     const { handleSubmit, register, formState: { errors, isValid }, watch, setError, control, reset } = useForm<data>({ mode: 'onChange' });
 
     const onSubmit: SubmitHandler<data> = async (newData) => {
+        //Filtra los dias que esten checkeados en checkedDay y mapea los nombres de esos dias
+        const selectedDays = checkedDay.filter(day => day.checked).map(day => day.day);
+        newData.days = selectedDays;
         //CHEQUEA QUE SE HAYA SELECCIONADO POR LO MENOS UN DIA 
         if (newData.days.length == 0) {
             setError('days', {
@@ -96,7 +99,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                 //MODIFICAR PROFESIONAL
             } else if (action == 'Modificar') {
                 //Sino se modifico ningun dato, muestra error
-                if (data.name == newData.name && data.lastname == newData.lastname && data.mail == newData.email && data.phone == newData.tel && data.speciality == newData.speciality && data.dni == newData.dni && data.days == newData.days && data.hour_begin == newData.hour1 && data.hour_end == newData.hour2) {
+                if (data.name == newData.name && data.lastname == newData.lastname && data.mail == newData.email && data.phone == newData.tel && data.speciality == newData.speciality && data.dni == newData.dni && JSON.stringify(data.days) === JSON.stringify(newData.days) && data.hour_begin == newData.hour1 && data.hour_end == newData.hour2) {
                     setErrorRegister('Debe modificar algún dato.'); 
                     //Si se modificaron datos se llama al backend para actualizarlos
                 } else {
