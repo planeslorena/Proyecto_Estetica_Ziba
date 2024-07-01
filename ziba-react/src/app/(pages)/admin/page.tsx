@@ -65,8 +65,12 @@ const columnsProf = [
     accessorKey: "speciality",
   },
   {
-    header: "Horarios",
-    accessorKey: "calendar"
+    header: "Dias",
+    accessorKey: "days",
+  },
+  {
+    header: "Horario",
+    accesorFn: (row:any) => `${row.hour_begin[0]} ${row.hour_end[0]}`
   },
 ];
 

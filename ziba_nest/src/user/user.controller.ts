@@ -52,6 +52,13 @@ export class UserController {
     return this.userService.updateUser(body);
   }
 
+  //ACTUALIZAR PROFESIONAL
+  @UseGuards(JwtMiddlewareGuard)
+  @Put('/prof')
+  async updateProf(@Body() body: any) {
+    return this.userService.updateProf(body);
+  }
+
   //DESHABILITAR CLIENTE
   @UseGuards(JwtMiddlewareGuard)
   @Delete('/client/:id_user')

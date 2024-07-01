@@ -55,7 +55,9 @@ export class UserService {
                 phone: rs['phone'],
                 mail: rs['mail'],
                 speciality: rs['speciality'],
-                calendar: ''
+                days: [],
+                hour_begin: '',
+                hour_end: ''
             };
         });
 
@@ -68,8 +70,9 @@ export class UserService {
         resultQuery2.map((rs: RowDataPacket) => {
             result.map((se) => {
                 if (rs['id_professional'] == se.id) {
-                    se.calendar = `${se.calendar}
-                     ${rs['week_day']} de ${rs['hour_begin'].substring(0, 5)} a ${rs['hour_end'].substring(0, 5)}`
+                    se.days.push(rs['week_day']);
+                    se.hour_begin = rs['hour_begin'].substring(0, 5);
+                    se.hour_end = rs['hour_end'].substring(0, 5);
                 }
             })
         });
@@ -157,15 +160,13 @@ export class UserService {
             phone: data.phone,
             role: data.role
         }
-
-        const id_user = this.createUser(user);
+        const id_user = await this.createUser(user);
 
         //Luego se crea el profesional
         const prof = {
             id_user: id_user,
-            id_speciality: data.id_speciality
+            id_speciality: data.speciality
         }
-
         //Se inserta el profesional en la tabla de profesionales
         try {
             const resultQuery = await this.dbService.executeQuery(
@@ -178,16 +179,24 @@ export class UserService {
 
             const id_professional = resultQuery.insertId;
 
+            //Por ultimo se crea la agenda del profesional
+            data.days.map(async (day: string) => {
+                await this.dbService.executeQuery(
+                    userQueries.insertCalendar,
+                    [
+                        id_professional,
+                        day,
+                        data.hour_begin,
+                        data.hour_end
+                    ],
+                )
+            })
         } catch (error) {
             throw new HttpException(
                 `Error insertando profesional: ${error.sqlMessage}`,
                 HttpStatus.INTERNAL_SERVER_ERROR,
             );
         }
-
-        //Por ultimo se crea la agenda del profesional
-
-
         return 'Profesional creado con exito'
     }
 
@@ -228,7 +237,80 @@ export class UserService {
         }
     }
 
-    async deleteUser(id_user:number): Promise<void> {
+    async updateProf(data: any): Promise<string> {
+
+        const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
+            userQueries.selectProfbyId,
+            [data.id_professional],
+        );
+        const id_user = resultQuery[0].id_user;
+
+        //Se acomodan los datos para insertarlos en la DB
+        const user = {
+            mail: data.mail.toLocaleLowerCase(), //pongo el mail todo en minuscula
+            name: this.fixNameAndLastname(data.name),
+            lastname: this.fixNameAndLastname(data.lastname),
+            dni: data.dni,
+            phone: data.phone,
+            id_user: id_user
+        }
+
+        //actualiza los datos del usuario
+        await this.updateUser(user);
+
+        const resultSelect = await this.dbService.executeSelect(
+            userQueries.selectSpecialitybyId,
+            [
+                data.speciality,
+            ],
+        );
+
+        const id_speciality = resultSelect[0].id_speciality;
+
+        try {
+            //actualiza especialidad de la tabla professional
+            const resultQuery = await this.dbService.executeQuery(
+                userQueries.updateProfessional,
+                [
+                    id_speciality,
+                    data.id_professional
+                ],
+            );
+            if (resultQuery.affectedRows == 1) {
+                //actualiza la agenda del profesional (se borra agenda actual y se inserta agenda enviada)
+                await this.dbService.executeQuery(
+                    userQueries.deleteCalendar,
+                    [data.id_professional],
+                );
+
+                data.days.map(async (day: string) => {
+                    await this.dbService.executeQuery(
+                        userQueries.insertCalendar,
+                        [
+                            data.id_professional,
+                            day,
+                            data.hour_begin,
+                            data.hour_end
+                        ],
+                    )
+                })
+
+                return 'El profesional se actualizo exitosamente'
+            }
+            throw new HttpException(
+                'No se pudo actualizar professionañ',
+                HttpStatus.NOT_FOUND,
+            );
+
+        } catch (error) {
+            throw new HttpException(
+                `Error actualizando profesional: ${error.sqlMessage}`,
+                HttpStatus.INTERNAL_SERVER_ERROR,
+            );
+        }
+    }
+
+    async deleteUser(id_user: number): Promise<void> {
         try {
             //Se deshabilita el usuario
             const resultQuery = await this.dbService.executeQuery(
@@ -236,10 +318,11 @@ export class UserService {
                 [id_user],
             );
             if (resultQuery.affectedRows != 1) {
-            throw new HttpException(
-                'No se pudo deshabilitar usuario',
-                HttpStatus.NOT_FOUND,
-            );}
+                throw new HttpException(
+                    'No se pudo deshabilitar usuario',
+                    HttpStatus.NOT_FOUND,
+                );
+            }
 
             //Luego se borran todos los turnos de hoy en adelante reservados por el usuario
             const resultQuery2 = await this.dbService.executeQuery(

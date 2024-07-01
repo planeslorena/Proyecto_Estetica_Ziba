@@ -18,9 +18,10 @@ interface servicesProps {
     handleClose: () => void;
     data?: any;
     action: string;
+    updateData: () => void;
 }
 
-export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, action }) => {
+export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, action, updateData }) => {
 
     const [errorRegister, setErrorRegister] = useState('');
     const [specialties, setSpecialties] = useState([{ id: '', speciality: '' }]);
@@ -47,8 +48,9 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
                     text: "Servicio registrado con exito!",
                     icon: "success"
                 });
-                reset();
                 handleClose();
+                reset();
+                updateData();
             } else {
                 Swal.fire({
                     title: `${resp}`,
@@ -72,8 +74,9 @@ export const AddServices: React.FC<servicesProps> = ({ show, handleClose, data, 
                         text: "Servicio actualizado con exito!",
                         icon: "success"
                     });
-                    reset();
                     handleClose();
+                    reset();
+                    updateData();
                 }
                 else if (resp == 404) {
                     setErrorRegister('No se encontro servicio para actualizar')

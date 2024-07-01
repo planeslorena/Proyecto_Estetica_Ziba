@@ -33,9 +33,10 @@ interface appointmentsProps {
     handleClose: () => void;
     data?: any;
     action:string;
+    updateData: () => void;
 }
 
-export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose, data ,action}) => {
+export const AddAppoinments: React.FC<appointmentsProps> = ({ show, handleClose, data ,action, updateData}) => {
 
     const [value, setValue] = useState<any>(new Date());
     const [availableTimes, setAvailableTimes] = useState<string[]>([]);
