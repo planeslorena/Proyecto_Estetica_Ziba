@@ -21,6 +21,7 @@ export class UserService {
         return arrayText.join(" ");
     }
 
+    //OBTENER TODOS LOS CLIENTES
     async getAllClients(): Promise<any> {
         //Se obtienen todos los usuarios con rol Client
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
@@ -40,6 +41,7 @@ export class UserService {
         return result;
     }
 
+    //OBTENER TODOS LOS PROFESIONALES
     async getAllProf(): Promise<any> {
         //Se obtienen todos los profesionales
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
@@ -79,7 +81,7 @@ export class UserService {
         return result;
     }
 
-
+    //OBTENER USUARIO BUSCANDO POR MAIL
     async getUserByMail(mail: string): Promise<User> {
         //Se obtiene el usuario de la base de datos filtrando por mail
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
@@ -103,6 +105,7 @@ export class UserService {
         }
     }
 
+    //CREAR USUARIO
     async createUser(user: User): Promise<number> {
         //Se encripta la contraseña que llega de la registración
         const salt = await bcrypt.genSalt(8);
@@ -148,6 +151,7 @@ export class UserService {
         }
     }
 
+    //CREAR PROFESIONAL
     async createProf(data: any): Promise<string> {
 
         //Primero se manda a crear el usuario del profesional
@@ -200,6 +204,7 @@ export class UserService {
         return 'Profesional creado con exito'
     }
 
+    //ACTUALIZAR USUARIO 
     async updateUser(user: User): Promise<string> {
         //Se acomodan los datos para insertarlos en la DB
         user = {
@@ -230,13 +235,20 @@ export class UserService {
                 HttpStatus.NOT_FOUND,
             );
         } catch (error) {
+            if (error.errno == 1062) {
+                throw new HttpException(
+                    'El mail ya esta siendo utilizado por un usuario',
+                    HttpStatus.CONFLICT,
+                );
+            } else {
             throw new HttpException(
                 `Error actualizando usuario: ${error.sqlMessage}`,
                 HttpStatus.INTERNAL_SERVER_ERROR,
-            );
+            );}
         }
     }
 
+    //ACTUALIZAR PROFESIONAL
     async updateProf(data: any): Promise<string> {
 
         const resultQuery: RowDataPacket[] = await this.dbService.executeSelect(
@@ -310,6 +322,7 @@ export class UserService {
         }
     }
 
+    //DESHABILITAR USUARIO
     async deleteUser(id_user: number): Promise<void> {
         try {
             //Se deshabilita el usuario

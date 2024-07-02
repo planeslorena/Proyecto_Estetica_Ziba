@@ -24,12 +24,12 @@ insert into specialties (name) values ('Depilación');
 insert into specialties (name) values ('Cejas y pestañas');
 
 
-insert into professional (id_speciality,id_user) values (1,4);
-insert into professional (id_speciality,id_user) values (2,5);
-insert into professional (id_speciality,id_user) values (3,6);
-insert into professional (id_speciality,id_user) values (4,7);
-insert into professional (id_speciality,id_user) values (5,8);
-insert into professional (id_speciality,id_user) values (6,9);
+insert into professional (id_speciality,id_user) values (1,2);
+insert into professional (id_speciality,id_user) values (2,3);
+insert into professional (id_speciality,id_user) values (3,4);
+insert into professional (id_speciality,id_user) values (4,5);
+insert into professional (id_speciality,id_user) values (5,6);
+insert into professional (id_speciality,id_user) values (6,7);
 
 /*["Limpieza facial", "Peeling facial","Drenaje linfático","Peeling corporal", "Tratamiento para celulitis", "Drenaje linfático corporal"]/
 */
@@ -105,13 +105,13 @@ insert into professional (id_speciality,id_user) values (6,9);
 	insert into services (name,id_speciality ,description,price,duration, active) 
 	values ("Bozo",6, "La depilación láser en bozo es un procedimiento en el que se aplica un láser específico en la zona del labio superior para destruir el folículo piloso. Esto reduce el crecimiento del vello de manera efectiva y duradera.", null, null, 1);
 	
-insert into calendar (id_professional,week_day,hour_begin,hour_end) values (1,'lunes','10:00:00','16:00:00');
-insert into calendar (id_professional,week_day,hour_begin,hour_end) values (1,'martes','10:00:00','16:00:00');
-insert into calendar (id_professional,week_day,hour_begin,hour_end) values (2,'lunes','10:00:00','16:00:00');
-insert into calendar (id_professional,week_day,hour_begin,hour_end) values (3,'lunes','10:00:00','16:00:00');
-insert into calendar (id_professional,week_day,hour_begin,hour_end) values (4,'lunes','10:00:00','16:00:00');
-insert into calendar (id_professional,week_day,hour_begin,hour_end) values (5,'lunes','10:00:00','16:00:00');
-insert into calendar (id_professional,week_day,hour_begin,hour_end) values (6,'martes','11:00:00','18:00:00');
+insert into calendar (id_professional,week_day,hour_begin,hour_end) values (1,'Lunes','10:00:00','16:00:00');
+insert into calendar (id_professional,week_day,hour_begin,hour_end) values (1,'Martes','10:00:00','16:00:00');
+insert into calendar (id_professional,week_day,hour_begin,hour_end) values (2,'Lunes','10:00:00','16:00:00');
+insert into calendar (id_professional,week_day,hour_begin,hour_end) values (3,'Lunes','10:00:00','16:00:00');
+insert into calendar (id_professional,week_day,hour_begin,hour_end) values (4,'Lunes','10:00:00','16:00:00');
+insert into calendar (id_professional,week_day,hour_begin,hour_end) values (5,'Lunes','10:00:00','16:00:00');
+insert into calendar (id_professional,week_day,hour_begin,hour_end) values (6,'Martes','11:00:00','18:00:00');
 
 insert into appointments (date,hour,id_user,id_service,state) values ('2024-06-29', '14:00:00',2,2,0);
 insert into appointments (date,hour,id_user,id_service,state) values ('2024-06-29', '13:00:00',2,1,0);

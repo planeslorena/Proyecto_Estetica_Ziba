@@ -36,7 +36,7 @@ create table if not exists services (
 	id_service int not null auto_increment,
 	name varchar(100) not null,
 	id_speciality int not null,
-	description varchar(500) not null,
+	description varchar(1000) not null,
 	price float,
 	duration int,
 	active bit not null,

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './professional.css';
 import { Modal } from 'react-bootstrap';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { getSpecialtiesWhitoutProf } from '@/app/services/Services';
 import { createProf, updateProf } from '@/app/services/User';
 import Swal from 'sweetalert2';
@@ -27,13 +27,13 @@ interface data {
 const schedules = [
     { day: 'Lunes', checked: false, },
     { day: 'Martes', checked: false, },
-    { day: 'Miercoles', checked: false,  },
-    { day: 'Jueves', checked: false,  },
-    { day: 'Viernes', checked: false,  },
-    { day: 'Sábado', checked: false,  },
+    { day: 'Miercoles', checked: false, },
+    { day: 'Jueves', checked: false, },
+    { day: 'Viernes', checked: false, },
+    { day: 'Sábado', checked: false, },
 ];
 
-const times = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00'] 
+const times = ['10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00', '20:00', '20:30', '21:00']
 
 interface professionalProps {
     show: boolean;
@@ -100,11 +100,11 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
             } else if (action == 'Modificar') {
                 //Sino se modifico ningun dato, muestra error
                 if (data.name == newData.name && data.lastname == newData.lastname && data.mail == newData.email && data.phone == newData.tel && data.speciality == newData.speciality && data.dni == newData.dni && JSON.stringify(data.days) === JSON.stringify(newData.days) && data.hour_begin == newData.hour1 && data.hour_end == newData.hour2) {
-                    setErrorRegister('Debe modificar algún dato.'); 
+                    setErrorRegister('Debe modificar algún dato.');
                     //Si se modificaron datos se llama al backend para actualizarlos
                 } else {
                     setErrorRegister('');
-                    /*const resp = await updateProf(prof);
+                    const resp = await updateProf(prof);
 
                     if (resp == 200) {
                         Swal.fire({
@@ -112,12 +112,12 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                             text: "Profesional actualizado con exito!",
                             icon: "success"
                         });
-                        handleClose(); 
+                        handleClose();
                         reset();
                         updateData();
-                    }else if (resp == 404) {
+                    } else if (resp == 404) {
                         setErrorRegister('No se encontro profesional para actualizar')
-                    }else if (resp == 409) {
+                    } else if (resp == 409) {
                         setErrorRegister('El mail indicado ya se encuentra registrado.')
                     } else {
                         Swal.fire({
@@ -125,7 +125,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                             text: "No se pudo actualizar el profesional ",
                             icon: "error"
                         });
-                    }*/
+                    }
                 }
             }
         }
@@ -198,7 +198,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         message: "Nombre inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.name?.message}</small>
+                            <small className='text-validation'>{errors.name?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Apellido</label>
@@ -221,7 +221,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         message: "Apellido inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.lastname?.message}</small>
+                            <small className='text-validation'>{errors.lastname?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>DNI</label>
@@ -240,7 +240,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         message: "DNI inválido",
                                     }
                                 })} />
-                            <small className='texto-validaciones'>{errors.dni?.message}</small>
+                            <small className='text-validation'>{errors.dni?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Teléfono celular</label>
@@ -265,7 +265,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         }
 
                                     })} />
-                            <small className='texto-validaciones'>{errors.tel?.message}</small>
+                            <small className='text-validation'>{errors.tel?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Email</label>
@@ -279,7 +279,7 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                         message: 'Dirección de email invalida'
                                     },
                                 })} />
-                            <small className='text-validation-register'>{errors.email?.message}</small>
+                            <small className='text-validation'>{errors.email?.message}</small>
                         </div>
                         <div>
                             <label className='form-label-admin'>Especialidad</label>
@@ -306,37 +306,36 @@ export const AddProfessional: React.FC<professionalProps> = ({ show, handleClose
                                     <span>{item.day}</span>
                                 </label>
                             ))}
-                            <small className='text-validation-register'>{errors.days?.message}</small>
+                            <small className='text-validation'>{errors.days?.message}</small>
+                        </div>
+                        <div>
                             <label id='select' className='form-label-admin'>Horarios</label>
                             <div className='d-flex flex-row'>
-                                    <select className="form-select form-input-admin" aria-label="Default select example"  {...register( "hour1")} >
-                                        <option value="" selected disabled hidden>Entrada</option>
-                                            {times.map(time => (
-                                                <option key={time} value={time} selected={time == data?.hour_begin}>
-                                                    {time}
-                                                </option>
-                                            ))}
-                                    </select>
-                              
-                       
-                            
-                                    <select className="form-select form-input-admin" aria-label="Default select example"  {...register( "hour2")}>
-                                        <option value="" selected disabled hidden>Salida</option>
-                                        {
-                                            getEndTimeOptions(times).map((time: any) => (
-                                                <option key={time} value={time} selected={time == data?.hour_end}>
-                                                    {time}
-                                                </option>
-                                            ))
+                                <select className="form-select form-input-admin" aria-label="Default select example"  {...register("hour1")}>
+                                    <option value="" selected disabled hidden>Entrada</option>
+                                    {times.map(time => (
+                                        <option key={time} value={time} selected={time == data?.hour_begin}>
+                                            {time}
+                                        </option>
+                                    ))}
+                                </select>
+                                <select className="form-select form-input-admin" aria-label="Default select example"  {...register("hour2")}>
+                                    <option value="" selected disabled hidden>Salida</option>
+                                    {
+                                        getEndTimeOptions(times).map((time: any) => (
+                                            <option key={time} value={time} selected={time == data?.hour_end}>
+                                                {time}
+                                            </option>
+                                        ))
                                     }
-                                    </select>
-                                    </div> 
-                            
-                            <small className='texto-validaciones'>{errors.hour2?.message}</small>
+                                </select>
+                            </div>
+                            <small className='text-validation'>{errors.hour1?.message}</small>
+                            <small className='text-validation'>{errors.hour2?.message}</small>
                         </div>
 
-                        <small className='text-validation-register'>{errorRegister}</small>
-                        <button type='submit' /*disabled={!isValid}*/ className='button-agregarprofesional'>{action} Profesional</button>
+                        <small className='text-validation'>{errorRegister}</small>
+                        <button type='submit' disabled={!isValid} className='button-agregarprofesional'>{action} Profesional</button>
                     </form>
                 </Modal.Body>
             </Modal>
